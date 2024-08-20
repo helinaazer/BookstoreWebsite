@@ -1,4 +1,4 @@
-# BookstoreWebsite
+# Bookstore Website
 
 ## St. Mary’s Coptic Orthodox Church Bookstore
 
