@@ -13,4 +13,4 @@ Inventory Management: Real-time updates of available stock.
 Online Purchases: Secure online payment options.
 Order Tracking: Customers can track their orders from purchase to delivery.
 
-Contributers: Helina Azer
+Contributers: Helina Azer, monmon
