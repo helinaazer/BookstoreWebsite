@@ -30,6 +30,6 @@ To setup react project, run `npx create-react-app@latest [appName]` <br>
 ### Build:
 
 Go into the client app directory (cd clientapp) <br>
-run: `npm start'
+run: `npm start`
 
 Contributers: Helina Azer, Mina Shoukrala
