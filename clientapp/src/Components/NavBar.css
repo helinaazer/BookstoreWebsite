@@ -21,3 +21,13 @@ html {
   background-color: #d9caaa;
   color: rgb(54, 49, 39);
 }
+
+.search-bar
+  .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: transparent;
+}
+
+.search-bar .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: none;
+}
