@@ -92,20 +92,9 @@ html {
     line-height: 1.2; /* Adjust line height for better readability */
     padding: 5px; /* Reduce padding */
   }
-}
 
-@media (min-width: 880px) and (max-width: 1000px) {
   .menu-icon {
-    display: none; /* Ensure the hamburger menu appears */
-  }
-
-  .nav-links button {
-    font-size: 0.8rem; /* Make navbar items smaller */
-  }
-
-  .custom-appbar .MuiTypography-root {
-    font-size: 1rem; /* Adjust the bookstore title size for this range */
-    padding: 5px; /* Reduce padding */
+    display: block; /* Ensure the hamburger menu appears */
   }
 }
 
