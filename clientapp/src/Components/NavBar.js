@@ -5,12 +5,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PersonIcon from "@mui/icons-material/Person";
+import SearchIcon from "@mui/icons-material/Search";
 
 const NavBar = () => {
   return (
-    <AppBar position="static" className="custom-appbar">
+    <AppBar position="static" class="custom-appbar">
       <Toolbar>
         <img
           src={"/bookstoreLogo.jpg"}
@@ -33,13 +34,13 @@ const NavBar = () => {
           Contact Us
         </Button>
         <Button color="inherit" component={Link} to="/search">
-          Search
+          <SearchIcon />
         </Button>
         <Button color="inherit" component={Link} to="/cart">
-          Cart
+          <ShoppingCartIcon />
         </Button>
         <Button color="inherit" component={Link} to="/login">
-          Login/Sign Up
+          <PersonIcon />
         </Button>
       </Toolbar>
     </AppBar>
