@@ -23,7 +23,7 @@ const NavBar = () => {
       setShowSearch(false);
       setSearchText("");
     }
-    setMenuOpen(!menuOpen); // Toggle the menu
+    setMenuOpen(!menuOpen);
   };
 
   const handleSearchChange = (event) => {
@@ -39,20 +39,14 @@ const NavBar = () => {
 
   return (
     <AppBar position="static" class="custom-appbar">
-      <Toolbar className="toolbar">
-        <div className="left-section">
-          <img
-            src={"/bookstoreLogo.jpg"}
-            alt="Bookstore Logo"
-            style={{ height: "70px", marginRight: "10px" }}
-          />
-          <Typography variant="h6" component="div">
-            St. Mary's Coptic Orthodox Church Bookstore
-          </Typography>
-        </div>
-
+      <Toolbar>
+        <img
+          src={"/bookstoreLogo.jpg"}
+          alt="Bookstore Logo"
+          style={{ height: "70px", marginRight: "10px" }}
+        />
         {showSearch ? (
-          <div className="search-section">
+          <>
             <TextField
               id="search-bar"
               className="text search-bar"
@@ -69,9 +63,12 @@ const NavBar = () => {
                 Search
               </Button>
             )}
-          </div>
+          </>
         ) : (
           <>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              St. Mary's Coptic Orthodox Church Bookstore
+            </Typography>
             <div className={`nav-links ${menuOpen ? "open" : ""}`}>
               <Button color="inherit" component={Link} to="/">
                 Home
@@ -94,20 +91,17 @@ const NavBar = () => {
             </div>
           </>
         )}
-
-        <div className="right-section">
-          <IconButton color="inherit" onClick={handleSearchToggle}>
-            {showSearch ? <CloseIcon /> : <SearchIcon />}
-          </IconButton>
-          <IconButton
-            color="inherit"
-            className="menu-icon"
-            onClick={handleMenuToggle}
-            style={{ outline: "none" }}
-          >
-            {menuOpen ? <CloseIcon /> : <MenuIcon />}
-          </IconButton>
-        </div>
+        <IconButton color="inherit" onClick={handleSearchToggle}>
+          {showSearch ? <CloseIcon /> : <SearchIcon />}
+        </IconButton>
+        <IconButton
+          color="inherit"
+          class="menu-icon"
+          onClick={handleMenuToggle}
+          style={{ outline: "none" }}
+        >
+          {menuOpen ? <CloseIcon /> : <MenuIcon />}
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
