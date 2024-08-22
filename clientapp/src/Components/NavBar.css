@@ -1,33 +1,82 @@
-a.navbar-brand {
-  white-space: normal;
-  /* text-align: center; */
-  word-break: break-all;
-}
-
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 20px;
-  }
-}
-
-.box-shadow {
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-}
-
 .custom-appbar {
   background-color: #d9caaa;
   color: rgb(54, 49, 39);
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.search-bar
-  .MuiOutlinedInput-root.Mui-focused
-  .MuiOutlinedInput-notchedOutline {
-  border-color: transparent;
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 }
 
-.search-bar .MuiOutlinedInput-root.Mui-focused {
-  box-shadow: none;
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.menu-icon {
+  display: none;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+@media (max-width: 877px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background-color: #d3c49a;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%; /* Full width for dropdown */
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links button {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 878px) and (max-width: 1024px) {
+  .nav-links button {
+    font-size: 0.9rem;
+  }
+
+  .custom-appbar .MuiTypography-root {
+    font-size: 1.2rem;
+  }
+}
+
+.search-bar .MuiOutlinedInput-root {
+  height: 100%;
 }
