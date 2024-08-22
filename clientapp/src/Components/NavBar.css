@@ -1,3 +1,4 @@
+/* NavBar.css */
 a.navbar-brand {
   white-space: normal;
   word-break: break-all;
@@ -45,17 +46,17 @@ html {
   border: none; /* Remove border */
 }
 
-@media (max-width: 877px) {
+@media (max-width: 1125px) {
   .nav-links {
     display: none;
     flex-direction: column;
-    width: auto;
+    width: 100%; /* Take up the full width of the screen */
     position: absolute;
     top: 70px;
-    right: 0;
+    left: 0; /* Align to the left edge */
     background-color: #d3c49a;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 0; /* Remove border radius */
   }
 
   .nav-links.open {
@@ -85,10 +86,11 @@ html {
   }
 
   .custom-appbar .MuiTypography-root {
-    font-size: 1.2rem; /* Adjust the bookstore title size for medium screens */
+    font-size: 1.1rem; /* Adjust the bookstore title size for medium screens */
     max-width: 100%; /* Ensure the title fits within the available space */
     white-space: normal; /* Allow text to wrap */
     line-height: 1.2; /* Adjust line height for better readability */
+    padding: 5px; /* Reduce padding */
   }
 }
 
@@ -103,6 +105,13 @@ html {
 
   .custom-appbar .MuiTypography-root {
     font-size: 1rem; /* Adjust the bookstore title size for this range */
+    padding: 5px; /* Reduce padding */
+  }
+}
+
+@media (min-width: 1126px) {
+  .search-bar .MuiOutlinedInput-root {
+    height: 70px; /* Match the height of the navbar */
   }
 }
 
