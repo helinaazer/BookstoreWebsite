@@ -1,51 +1,51 @@
 .item-card {
-    width: 100%;
-    max-width: 100%;
-    height: 350px;    /* Fixed height for consistency */
-    margin: auto;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #e7decb;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Ensure content is spaced consistently */
+  width: 100%;
+  max-width: 100%;
+  height: 350px; /* Fixed height for consistency */
+  margin: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #e7decb;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure content is spaced consistently */
 }
 
 .image-container {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
 }
 
 .overlay-content {
-    background: rgba(0, 0, 0, 0.3);
-    color: #e7decb;
-    width: 100%;
-    padding: 12px;
-    flex-grow: 1; /* Allow this area to grow and maintain space */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Align content to the bottom */
+  background: rgba(0, 0, 0, 0.3);
+  color: #e7decb;
+  width: 100%;
+  padding: 12px;
+  flex-grow: 1; /* Allow this area to grow and maintain space */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Align content to the bottom */
 }
 
 .card-title {
-    font-family: 'Playfair Display', serif;
-    font-weight: bold;
-    color: #d5cebb;
+  font-family: "Playfair Display", serif;
+  font-weight: bold;
+  color: #d5cebb;
 }
 
 .card-description {
-    margin-top: 4px;
-    margin-bottom: 8px;
-    color: #d5cebb;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  color: #d5cebb;
 }
 
 .card-price {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #d5cebb;
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #d5cebb;
 }
