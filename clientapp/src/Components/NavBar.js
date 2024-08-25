@@ -96,7 +96,7 @@ const NavBar = () => {
         </IconButton>
         <IconButton
           color="inherit"
-          className="menu-icon"
+          class="menu-icon"
           onClick={handleMenuToggle}
           style={{ outline: "none" }}
         >
