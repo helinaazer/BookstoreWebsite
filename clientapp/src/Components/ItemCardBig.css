@@ -1,0 +1,40 @@
+.item-card {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    background-color: #e7decb;
+  }
+  
+  .item-card-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .item-image img {
+    max-width: 150px;
+  }
+  
+  .item-details {
+    flex-grow: 1;
+    padding-left: 20px;
+  }
+  
+  .item-actions {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .item-actions label {
+    margin-right: 5px;
+  }
+  
+  .item-actions select {
+    margin-right: 15px;
+  }
+  
+  .item-price {
+    align-self: flex-end;
+  }
+  
