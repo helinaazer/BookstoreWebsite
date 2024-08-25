@@ -8,50 +8,59 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    background-color: #d5cebb; /* Apply the extracted color */
-  }
-  
-  .image-container {
+    background-color: #e7decb; /* Apply the extracted color */
+}
+
+.image-container {
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: flex-end;
-  }
-  
-  .overlay-content {
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-    color: white;
+}
+
+.overlay-content {
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent black background */
+    color: #e7decb;
     width: 100%;
     padding: 12px;
-  }
-  
-  .card-title {
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
     font-weight: bold;
     color: #d5cebb; /* Apply the extracted color */
-  }
-  
-  .card-description {
+}
+
+.card-description {
     margin-top: 4px;
     margin-bottom: 8px;
     color: #d5cebb; /* Apply the extracted color */
-  }
-  
-  .card-price {
+}
+
+.card-price {
+    font-family: 'Playfair Display', serif;
     font-size: 1.1rem;
     font-weight: bold;
     color: #d5cebb; /* Apply the extracted color */
-  }
-  
-  .card-button {
+}
+
+.card-button {
     margin-top: 12px;  /* Adds spacing above the button */
-    background-color: #d5cebb; /* Button matches the card's color */
+    background-color: beige; /* Change button color to beige */
     color: black; /* Ensure text is black */
-  }
-  
-  .card-button:hover {
-    background-color: #d5cebb;; /* Slightly darker shade on hover */
-    color: red; /* Ensure text remains black on hover */
-  }
-  
+}
+
+.card-button:hover {
+    background-color: #d5cebb; /* Slightly darker beige shade on hover */
+    color: black; /* Ensure text remains black on hover */
+}
+
+/* Coptic Text Style */
+.coptic-text {
+    font-family: 'Noto Sans Coptic', sans-serif;
+    font-size: 1.2rem; /* Adjust size as needed */
+    color: #333; /* A dark color to ensure good readability */
+    line-height: 1.5; /* Improve readability */
+}

@@ -1,6 +1,6 @@
+/* NavBar.css */
 a.navbar-brand {
   white-space: normal;
-  /* text-align: center; */
   word-break: break-all;
 }
 
@@ -30,4 +30,90 @@ html {
 
 .search-bar .MuiOutlinedInput-root.Mui-focused {
   box-shadow: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center align elements */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.menu-icon {
+  display: none;
+  background-color: transparent; /* Ensure the background is transparent */
+  outline: none; /* Remove outline */
+  border: none; /* Remove border */
+}
+
+@media (max-width: 1125px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%; /* Take up the full width of the screen */
+    position: absolute;
+    top: 70px;
+    left: 0; /* Align to the left edge */
+    background-color: #d3c49a;
+    padding: 10px;
+    border-radius: 0; /* Remove border radius */
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links button {
+    width: 100%;
+    text-align: center; /* Center align text */
+    padding: 10px;
+    color: white;
+    font-size: 0.8rem; /* Make text smaller */
+  }
+
+  .custom-appbar .MuiTypography-root {
+    font-size: 1rem; /* Adjust the font size for smaller screens */
+  }
+}
+
+@media (min-width: 878px) and (max-width: 1024px) {
+  .nav-links button {
+    font-size: 0.9rem; /* Slightly larger text for medium screens */
+  }
+
+  .custom-appbar .MuiTypography-root {
+    font-size: 1.1rem; /* Adjust the bookstore title size for medium screens */
+    max-width: 100%; /* Ensure the title fits within the available space */
+    white-space: normal; /* Allow text to wrap */
+    line-height: 1.2; /* Adjust line height for better readability */
+    padding: 5px; /* Reduce padding */
+  }
+
+  .menu-icon {
+    display: block; /* Ensure the hamburger menu appears */
+  }
+}
+
+@media (min-width: 1126px) {
+  .search-bar .MuiOutlinedInput-root {
+    height: 70px; /* Match the height of the navbar */
+  }
+}
+
+/* Ensure search bar height matches navbar height */
+.search-bar .MuiOutlinedInput-root {
+  height: 100%; /* Match the height of the navbar */
+}
+
+/* Disable click flash effect */
+button,
+.menu-icon,
+.nav-links button {
+  -webkit-tap-highlight-color: transparent; /* For mobile browsers */
+  outline: none; /* Remove outline */
+  border: none; /* Remove border */
 }

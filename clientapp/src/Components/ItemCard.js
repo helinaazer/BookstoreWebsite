@@ -7,7 +7,7 @@ import './ItemCard.css'; // Import the CSS file
 
 const ItemCard = ({ image, title, description, price }) => {
   return (
-    <Card className="item-card">
+    <Card class="item-card">
       <div className="image-container" style={{ backgroundImage: `url(${image})` }}>
         <CardContent className="overlay-content">
           <Typography variant="h5" component="div" className="card-title">
@@ -19,7 +19,7 @@ const ItemCard = ({ image, title, description, price }) => {
           <Typography variant="h6" className="card-price">
             ${price}
           </Typography>
-          <Button variant="contained" color = 'inherit' className="card-button">
+          <Button variant="contained" style={{ backgroundColor: '#e7decb', color: 'black' }} className="card-button">
             Buy Now
           </Button>
         </CardContent>
