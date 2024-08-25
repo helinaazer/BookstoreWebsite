@@ -1,85 +1,55 @@
-/* Home.css */
-
-
 .container {
-    margin-top: 24px; /* Adds top margin to the container */
-    padding: 0 16px; /* Adds some padding to the container */
-  }
-  
-  .home-title {
-    text-align: center;
-    margin-bottom: 24px; /* Adds bottom margin to the title */
-    color: #333; /* A darker color for the title */
-    font-size: 2rem; /* Adjusts the font size for better readability */
-  }
-  
-  .grid-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-  }
-  
+  margin-top: 24px; /* Adds top margin to the container */
+  padding: 0 16px; /* Adds some padding to the container */
+}
+
+/* Grid Layout */
+.grid-container {
+  display: flex;
+  justify-content: space-between; /* Space between items */
+  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+}
+
+.grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px; /* Adjusted padding to reduce space between items */
+  flex-direction: column;
+  flex-grow: 1; /* Ensure all grid items grow equally */
+  box-sizing: border-box; /* Ensure padding is included in width calculations */
+}
+
+
+
+/* Responsive Grid Layout */
+@media (max-width: 600px) {
   .grid-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 8px; /* Adds padding between grid items */
+    width: 100%; /* Full width on small screens */
   }
-  
+
   .item-card {
-    width: 100%;
-    max-width: 100%; /* Allows the card to stretch to full width within the grid item */
-    height: auto; /* Ensures the card height is flexible */
-    margin: auto;
-    box-sizing: border-box; /* Ensures padding and border are included in the width and height */
+    max-width: 100%; /* Full width cards on small screens */
   }
-  
-  /* Responsive Font Sizes */
-  .home-title {
-    font-size: 1.5rem; /* Default font size */
+}
+
+@media (min-width: 600px) and (max-width: 960px) {
+  .grid-item {
+    width: 50%; /* Two cards per row on medium screens */
   }
-  
-  @media (min-width: 600px) {
-    .home-title {
-      font-size: 2rem; /* Larger font size on bigger screens */
-    }
+
+  .item-card {
+    max-width: 100%; /* Full width within grid item */
   }
-  
-  @media (min-width: 960px) {
-    .home-title {
-      font-size: 2.5rem; /* Even larger font size on larger screens */
-    }
+}
+
+@media (min-width: 960px) {
+  .grid-item {
+    width: 33.3%; /* Three cards per row on large screens */
   }
-  
-  /* Responsive Grid Layout */
-  @media (max-width: 600px) {
-    .grid-item {
-      width: 100%; /* Full width on small screens */
-    }
-  
-    .item-card {
-      max-width: 100%; /* Full width cards on small screens */
-    }
+
+  .item-card {
+    max-width: 100%; /* Full width within grid item */
   }
-  
-  @media (min-width: 600px) and (max-width: 960px) {
-    .grid-item {
-      width: 50%; /* Two cards per row on medium screens */
-    }
-  
-    .item-card {
-      max-width: 90%; /* Slight padding on medium screens */
-    }
-  }
-  
-  @media (min-width: 960px) {
-    .grid-item {
-      width: 25%; /* Four cards per row on large screens */
-    }
-  
-    .item-card {
-      max-width: 90%; /* Slight padding on large screens */
-    }
-  }
-  
+}
