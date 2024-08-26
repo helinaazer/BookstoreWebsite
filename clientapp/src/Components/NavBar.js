@@ -85,7 +85,7 @@ const NavBar = () => {
               <Button color="inherit" component={Link} to="/cart">
                 <ShoppingCartIcon />
               </Button>
-              <Button color="inherit" component={Link} to="/login">
+              <Button color="inherit" component={Link} to="/profile">
                 <PersonIcon />
               </Button>
             </div>
