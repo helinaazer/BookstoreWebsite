@@ -26,7 +26,7 @@ const ProductDetails = ({ product, onAddToCart }) => {
           variant="contained"
           color="primary"
           onClick={onAddToCart}
-          className="add-to-cart-button"
+          class="add-to-cart-button"
         >
           Add to Cart
         </Button>
