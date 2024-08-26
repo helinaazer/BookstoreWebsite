@@ -22,7 +22,7 @@ const Home = () => {
           component="img"
           src="/home_pic.webp" // Replace with your image path
           alt="Home Page"
-          sx={{ width: "100%", height: "auto", marginBottom: "24px" }} // Adjust width and height as needed
+          className="smooth-image"  // Adjust width and height as needed
         />
        
         <div className="homeheader" >
