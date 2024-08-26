@@ -3,6 +3,21 @@
   padding: 0 16px; /* Adds some padding to the container */
 }
 
+.smooth-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 24px;
+  border-radius: 12px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.smooth-image:hover {
+  transform: scale(1.02); /* Slight zoom effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+}
+
 /* Grid Layout */
 .grid-container {
   display: flex;
@@ -21,6 +36,15 @@
   box-sizing: border-box; /* Ensure padding is included in width calculations */
 }
 
+.homeheader {
+  text-align: center !important;
+  font-size: 32px !important;
+  font-weight: bold !important;
+  color: #444 !important;
+  padding: 20px 0 !important;
+  border-bottom: 2px solid #d3c49a !important;
+  margin-bottom: 20px !important;
+}
 
 
 /* Responsive Grid Layout */
