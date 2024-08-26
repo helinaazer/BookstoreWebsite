@@ -1,0 +1,128 @@
+body {
+  background-color: #ffffff; /* Set background color to white */
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.profile-info-container {
+  display: flex;
+  padding: 24px;
+  background-color: #ffffff; /* Ensure background color is white */
+  min-height: 100vh; /* Ensure it covers the full height of the viewport */
+  color: rgb(54, 49, 39);
+}
+
+.left-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 24px;
+}
+
+.avatar {
+  width: 150px; /* Set a bigger width */
+  height: 150px; /* Set a bigger height to keep it round */
+  border-radius: 50%; /* Keep the avatar round */
+  margin-bottom: 16px;
+}
+
+.profile-tabs {
+  margin-top: 16px;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center; /* Align items (icon and text) in the center */
+  justify-content: center; /* Center them horizontally */
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #9f8a71;
+  color: rgb(54, 49, 39);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 150px; /* Force both tabs to take the same width */
+}
+
+.tab-button:hover {
+  background-color: #9f8a71; /* Keep the same background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+  transform: scale(1.05); /* Slightly increase the size */
+  border: 2px solid #e0d8b4; /* Add a border */
+}
+
+.tab-button:active {
+  transform: translateY(0); /* Reset transform on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slightly reduce shadow */
+}
+
+.right-side {
+  flex: 1;
+}
+
+.profile-details {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* .edit-button {
+  float: right;
+  background-color: #9f8a71;
+  color: rgb(54, 49, 39);
+  padding: 10px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #e0d8b4;
+  color: #333;
+} */
+
+.MuiTextField-root {
+  margin-bottom: 16px;
+}
+
+.MuiInputBase-input {
+  font-size: 16px; /* Increase font size */
+  color: #333; /* Darker text color */
+}
+
+@media (max-width: 768px) {
+  .profile-info-container {
+    flex-direction: column; /* Stack the layout vertically on smaller screens */
+    align-items: center;
+  }
+
+  .left-side {
+    margin-right: 0; /* Remove the margin on smaller screens */
+    margin-bottom: 16px; /* Add space between avatar and tabs */
+  }
+
+  .avatar {
+    width: 120px; /* Smaller avatar on small screens */
+    height: 120px;
+  }
+
+  .tab-button {
+    width: 100%; /* Make the tab buttons take up full width */
+    padding: 10px; /* Adjust padding */
+    max-width: 300px; /* Limit maximum width */
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatar {
+    width: 100px; /* Even smaller avatar on very small screens */
+    height: 100px;
+  }
+
+  .tab-button {
+    padding: 8px; /* Smaller padding on very small screens */
+    max-width: 250px;
+  }
+}
