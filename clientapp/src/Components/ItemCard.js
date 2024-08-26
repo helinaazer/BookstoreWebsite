@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 const ItemCard = ({ image, title, description, price, link }) => {
   return (
-    <Link to={link} class="item-card" style={{ textDecoration: "none" }}>
-      <Card class="item-card">
+    <Link to={link} className="item-card-link">
+      <Card classes={{ root: 'custom-card' }} className="item-card">
         <div
           className="image-container"
           style={{ backgroundImage: `url(${image})` }}
