@@ -1,51 +1,95 @@
+/* General Styles for Item Card */
 .item-card {
   width: 100%;
   max-width: 100%;
   height: 350px; /* Fixed height for consistency */
-  margin: auto;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #e7decb;
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  background-color: #e7decb; /* Set background color */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Ensure content is spaced consistently */
 }
 
+/* Custom styles to override MUI Card styles */
+.item-card.custom-card {
+  box-shadow: none !important; /* Remove shadow */
+  border-radius: 0 !important; /* Remove rounded corners */
+  padding: 0 !important; /* Remove padding */
+  margin: 0 !important; /* Remove margin */
+  border: none !important; /* Ensure no borders */
+  background-color: #e7decb; 
+}
+
+
+/* Link Styling */
+.item-card-link {
+  text-decoration: none; /* Ensure no text decoration on links */
+  display: block; /* Make sure the link covers the entire card */
+  width: 100%;
+}
+
+/* Image Container Styling */
 .image-container {
   width: 100%;
   height: 100%;
   background-size: cover;
   background-position: center;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: flex-end;
+  border-radius: 10px; /* Rounded corners for smoother look */
+  overflow: hidden; /* Prevent overflow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  image-rendering: auto; /* Optimize image rendering */
+  -webkit-font-smoothing: antialiased; /* For smoother fonts on Webkit */
+  -moz-osx-font-smoothing: grayscale; /* For smoother fonts on Firefox */
 }
 
+/* Hover Effect */
+.image-container:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Overlay Content Styling */
 .overlay-content {
-  background: rgba(0, 0, 0, 0.3);
-  color: #e7decb;
+  background: rgba(0, 0, 0, 0.3); /* Dark overlay with transparency */
+  color: #e7decb; /* Text color matching the background */
   width: 100%;
-  padding: 12px;
+  padding: 12px; /* Padding inside the overlay */
+  margin: 0; /* Ensure no margin */
   flex-grow: 1; /* Allow this area to grow and maintain space */
   display: flex;
   flex-direction: column;
   justify-content: flex-end; /* Align content to the bottom */
 }
 
+/* Title Styling */
 .card-title {
-  font-family: "Playfair Display", serif;
-  font-weight: bold;
-  color: #d5cebb;
+  font-family: "Playfair Display", serif; /* Font family for the title */
+  font-weight: bold; /* Bold text */
+  color: #d5cebb; /* Color for the title text */
+  margin: 0; /* Ensure no margin */
+  padding: 0; /* Ensure no padding */
 }
 
+/* Description Styling */
 .card-description {
-  margin-top: 4px;
-  margin-bottom: 8px;
-  color: #d5cebb;
+  margin-top: 4px; /* Small margin at the top */
+  margin-bottom: 8px; /* Small margin at the bottom */
+  color: #d5cebb; /* Color for the description text */
+  font-family: Arial, sans-serif; /* Default font family for description */
 }
 
+/* Price Styling */
 .card-price {
-  font-family: "Playfair Display", serif;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #d5cebb;
+  font-family: "Playfair Display", serif; /* Font family for the price */
+  font-size: 1.1rem; /* Slightly larger font size for emphasis */
+  font-weight: bold; /* Bold text */
+  color: #d5cebb; /* Color for the price text */
+  margin: 0; /* Ensure no margin */
+  padding: 0; /* Ensure no padding */
 }
