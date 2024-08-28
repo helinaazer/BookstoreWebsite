@@ -1,0 +1,21 @@
+.header {
+    font-size: 2rem;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .admin-form {
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  .add-item-button {
+    margin-top: 20px;
+  }
+  
+  .admin-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  

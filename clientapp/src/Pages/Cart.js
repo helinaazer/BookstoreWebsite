@@ -14,6 +14,7 @@ const Cart = () => {
       price: 824.91,
       quantity: 1,
       stockNumber: 8,
+      
     },
     {
       id: 2,
@@ -55,11 +56,11 @@ const Cart = () => {
           <ItemCardBig
             image={item.image}
             title={item.title}
-            description={item.description}
             price={item.price}
             quantity={item.quantity}
             onRemove={() => handleRemove(item.id)}
             stockNumber={item.stockNumber}
+            isCart={true} 
           />
         </div>
       ))}

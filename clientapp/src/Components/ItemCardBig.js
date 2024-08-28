@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import './ItemCardBig.css';
 import { Link } from "react-router-dom";
 
-const ItemCardBig = ({ image, title, description, price, quantity, onRemove, stockNumber, redirectUrl }) => {
+const ItemCardBig = ({ image, title, price, quantity, onRemove, stockNumber, isCart }) => {
   return (
     <Card className="item-card-big">
       <div className="item-card-container">
@@ -22,20 +22,26 @@ const ItemCardBig = ({ image, title, description, price, quantity, onRemove, sto
           <Typography variant="body2" color="textSecondary">
             Only {stockNumber} left in stock - order soon.
           </Typography>
-          
-          <div className="item-actions">
-            <label htmlFor="quantity">Qty:</label>
-            <select name="quantity" id="quantity" value={quantity}>
-              {[...Array(10).keys()].map((num) => (
-                <option key={num + 1} value={num + 1}>
-                  {num + 1}
-                </option>
-              ))}
-            </select>
-            <Button variant="text" onClick={onRemove}>
-              Delete
-            </Button> 
-          </div>
+
+          {isCart ? (
+            <div className="item-actions">
+              <label htmlFor="quantity">Qty:</label>
+              <select name="quantity" id="quantity" value={quantity}>
+                {[...Array(10).keys()].map((num) => (
+                  <option key={num + 1} value={num + 1}>
+                    {num + 1}
+                  </option>
+                ))}
+              </select>
+              <Button variant="text" onClick={onRemove}>
+                Delete
+              </Button>
+            </div>
+          ) : (
+            <Typography variant="body2" color="textSecondary">
+              Number of items: {quantity}
+            </Typography>
+          )}
         </div>
         <div className="item-price">
           <Typography variant="h6" component="div">
