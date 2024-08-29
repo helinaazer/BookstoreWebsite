@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import ItemCardBig from "../Components/ItemCardBig";
 import NavBar from "../Components/NavBar";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "./AdminAddItems.css";
 import { UserProvider } from "../Components/UserAdminContext";
+import CustomButton from "../Components/CustomeButton";
 
 const AdminAddItems = () => {
   const [items, setItems] = useState([]); // Initialize items state as an empty array
@@ -80,14 +80,11 @@ const AdminAddItems = () => {
           fullWidth
           margin="normal"
         />
-        <Button
+        <CustomButton
           variant="contained"
           onClick={handleAddItem}
-          className="add-item-button"
-          fullWidth
-        >
-          Add Item
-        </Button>
+          text={"Add Item"}
+        />
       </div>
 
       {items.map((item) => (
