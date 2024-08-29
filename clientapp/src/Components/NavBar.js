@@ -16,10 +16,15 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import PersonIcon from "@mui/icons-material/Person";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
+import { useUser } from "./UserAdminContext"; // Import the custom hook
 import "./NavBar.css";
 
-const NavBar = ({ logoSrc, title, links = [], onSearch }) => {
+const NavBar = ({ logoSrc, title, onSearch }) => {
+  const { user } = useUser(); // Access the user context
   const [showSearch, setShowSearch] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -32,11 +37,13 @@ const NavBar = ({ logoSrc, title, links = [], onSearch }) => {
 
   useEffect(() => {
     const checkOverflow = () => {
-      if (navLinksRef.current && toolbarRef.current) {
-        const toolbarWidth = toolbarRef.current.clientWidth;
-        const navLinksWidth = navLinksRef.current.scrollWidth;
-        setShowHamburger(navLinksWidth > toolbarWidth || isMobile);
-      }
+      setTimeout(() => {
+        if (navLinksRef.current && toolbarRef.current) {
+          const toolbarWidth = toolbarRef.current.clientWidth;
+          const navLinksWidth = navLinksRef.current.scrollWidth;
+          setShowHamburger(navLinksWidth > toolbarWidth || isMobile);
+        }
+      }, 0);
     };
 
     window.addEventListener("resize", checkOverflow);
@@ -55,7 +62,7 @@ const NavBar = ({ logoSrc, title, links = [], onSearch }) => {
 
   const handleSearchToggle = () => {
     if (showSearch) {
-      setSearchText("");
+      setSearchText(""); // Clear search text on close
     }
     setShowSearch((prev) => !prev);
   };
@@ -65,6 +72,35 @@ const NavBar = ({ logoSrc, title, links = [], onSearch }) => {
       onSearch(searchText);
     }
   };
+
+  // Define the common links for all users
+  const commonLinks = [
+    { label: "Home", to: "/" },
+    { label: "Profile", to: "/profile", icon: PersonIcon },
+  ];
+
+  // Admin-specific links
+  const adminLinks = [
+    { label: "Admin Dashboard", to: "/admin", icon: DashboardIcon },
+    { label: "Orders", to: "/orders", icon: ShoppingCartIcon },
+  ];
+
+  // Regular user-specific links
+  const userLinks = [
+    {
+      label: "St. Mary's COC Website",
+      to: "https://www.stmaryseattle.org/Default.aspx",
+      external: true,
+    },
+    { label: "Contact Us", to: "/contact" },
+    { label: "Cart", to: "/cart", icon: ShoppingCartIcon },
+    { label: "Logout", to: "/logout" },
+  ];
+
+  // Combine links based on user's role
+  const roleBasedLinks = user.isAdmin
+    ? [...commonLinks, ...adminLinks]
+    : [...commonLinks, ...userLinks];
 
   const drawerContent = (
     <Box
@@ -77,7 +113,7 @@ const NavBar = ({ logoSrc, title, links = [], onSearch }) => {
       }}
     >
       <List>
-        {links.map((link, index) => (
+        {roleBasedLinks.map((link, index) => (
           <ListItem
             button
             key={index}
@@ -131,15 +167,16 @@ const NavBar = ({ logoSrc, title, links = [], onSearch }) => {
                 {title}
               </Typography>
               <div ref={navLinksRef} className="nav-links">
-                {links.map((link, index) => (
+                {roleBasedLinks.map((link, index) => (
                   <Button
                     key={index}
                     color="inherit"
                     component={link.external ? "a" : Link}
                     to={link.external ? undefined : link.to}
                     href={link.external ? link.to : undefined}
+                    sx={{ mx: 1 }} // Add some margin for spacing
                   >
-                    {link.icon && <link.icon />}
+                    {link.icon && <link.icon sx={{ mr: 0.5 }} />}
                     {link.label}
                   </Button>
                 ))}
@@ -169,7 +206,7 @@ const NavBar = ({ logoSrc, title, links = [], onSearch }) => {
               width: "100%",
               backgroundColor: "#d9caaa",
               color: "rgb(54, 49, 39)",
-              zIndex: 1300, // Make sure it appears on top of other elements
+              zIndex: 1300, // Ensure it appears on top of other elements
               display: "flex",
               justifyContent: "center",
             }}
