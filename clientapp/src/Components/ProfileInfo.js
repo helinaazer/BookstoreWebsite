@@ -1,9 +1,10 @@
 import React from "react";
-import { Avatar, Tabs, Tab, Box, Button, TextField } from "@mui/material";
+import { Avatar, Tabs, Tab, Box, TextField } from "@mui/material";
 import "./ProfileInfo.css";
 import { useNavigate } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import CustomButton from "./CustomeButton";
 
 const ProfileInfo = ({ user }) => {
   const navigate = useNavigate();
@@ -119,22 +120,7 @@ const ProfileInfo = ({ user }) => {
         <Box
           sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
         >
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#e0d8b4",
-              color: "rgb(54, 49, 39)",
-              "&:hover": {
-                backgroundColor: "#9f8a71",
-                color: "#333",
-              },
-              padding: "10px",
-              borderRadius: "4px",
-              transition: "all 0.3s ease",
-            }}
-          >
-            Edit
-          </Button>
+          <CustomButton text="Edit Information" />
         </Box>
       </Box>
     </Box>

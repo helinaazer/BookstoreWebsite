@@ -9,7 +9,7 @@ export const useUser = () => useContext(UserAdminContext);
 // Provider component to wrap around the app
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
-    isAdmin: true, // Set user role here
+    isAdmin: false, // Set user role here
     username: "JohnDoe",
   });
 

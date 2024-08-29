@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "./UserAdminContext"; // Import the custom hook
 import "./NavBar.css";
 
+//To Use: <UserProvider> <NavBar logoSrc="/bookstoreLogo.jpg" title="St. Mary's Coptic Orthodox Church Bookstore"/> </UserProvider>
 const NavBar = ({ logoSrc, title, onSearch }) => {
   const { user } = useUser(); // Access the user context
   const [showSearch, setShowSearch] = useState(false);
@@ -81,7 +82,7 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
 
   // Admin-specific links
   const adminLinks = [
-    { label: "Admin Dashboard", to: "/admin", icon: DashboardIcon },
+    { label: "Manage Inventory", to: "/AdminAddItems", icon: DashboardIcon },
     { label: "Orders", to: "/orders", icon: ShoppingCartIcon },
   ];
 

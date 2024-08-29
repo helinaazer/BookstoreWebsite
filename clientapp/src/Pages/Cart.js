@@ -1,9 +1,9 @@
 import React from "react";
 import ItemCardBig from "../Components/ItemCardBig";
 import NavBar from "../Components/NavBar";
-import Button from "@mui/material/Button"; // Import the Button component from Material-UI
 import "./Cart.css";
 import { UserProvider } from "../Components/UserAdminContext";
+import CustomButton from "../Components/CustomeButton";
 
 const Cart = () => {
   const cartItems = [
@@ -84,13 +84,11 @@ const Cart = () => {
             .reduce((acc, item) => acc + item.price * item.quantity, 0)
             .toFixed(2)}
         </h2>
-        <Button
+        <CustomButton
           variant="contained"
           onClick={handleProceedToOrder}
-          className="orderbutton" // Custom background and text color
-        >
-          Proceed to Order
-        </Button>
+          text={"Proceed to Order"}
+        />
       </div>
     </div>
   );
