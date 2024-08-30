@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import ItemCardBig from '../Components/ItemCardBig';
-import NavBar from '../Components/NavBar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import React, { useState } from "react";
+import ItemCardBig from "../Components/ItemCardBig";
+import NavBar from "../Components/NavBar";
+import TextField from "@mui/material/TextField";
 import "./AdminAddItems.css";
+import { UserProvider } from "../Components/UserAdminContext";
+import CustomButton from "../Components/CustomeButton";
 
 const AdminAddItems = () => {
   const [items, setItems] = useState([]); // Initialize items state as an empty array
-  
+
   const [newItem, setNewItem] = useState({
-    id: '',
-    image: '',
-    title: '',
-    price: '',
-    stockNumber: '',
+    id: "",
+    image: "",
+    title: "",
+    price: "",
+    stockNumber: "",
   });
 
   // Handle image upload
@@ -28,7 +29,7 @@ const AdminAddItems = () => {
 
   const handleAddItem = () => {
     setItems([...items, { ...newItem, id: items.length + 1 }]);
-    setNewItem({ id: '', image: '', title: '', price: '', stockNumber: '' });
+    setNewItem({ id: "", image: "", title: "", price: "", stockNumber: "" });
   };
 
   const handleInputChange = (e) => {
@@ -38,17 +39,20 @@ const AdminAddItems = () => {
 
   return (
     <div>
-      <NavBar />
-      <div className="header">
-        Admin - Add Items
-      </div>
-      
+      <UserProvider>
+        <NavBar
+          logoSrc="/bookstoreLogo.jpg"
+          title="St. Mary's Coptic Orthodox Church Bookstore"
+        />
+      </UserProvider>
+      <div className="header">Admin - Add Items</div>
+
       <div className="admin-form">
         <input
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: "20px" }}
         />
         <TextField
           label="Title"
@@ -76,14 +80,11 @@ const AdminAddItems = () => {
           fullWidth
           margin="normal"
         />
-        <Button
+        <CustomButton
           variant="contained"
           onClick={handleAddItem}
-          className="add-item-button"
-          fullWidth
-        >
-          Add Item
-        </Button>
+          text={"Add Item"}
+        />
       </div>
 
       {items.map((item) => (

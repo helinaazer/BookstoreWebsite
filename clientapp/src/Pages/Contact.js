@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Contact.css";
 import NavBar from "../Components/NavBar";
+import { UserProvider } from "../Components/UserAdminContext";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +26,12 @@ const Contact = () => {
 
   return (
     <div>
-      <NavBar />
+      <UserProvider>
+        <NavBar
+          logoSrc="/bookstoreLogo.jpg"
+          title="St. Mary's Coptic Orthodox Church Bookstore"
+        />
+      </UserProvider>
       <div className="full-screen-background">
         <div className="contact-form-container">
           <h2>Contact Us</h2>
