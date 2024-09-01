@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import ProductDetails from "../Components/ProductDetails";
 import NavBar from "../Components/NavBar";
+import { UserProvider } from "../Components/UserAdminContext";
 
 const products = {
   1: {
@@ -43,7 +44,12 @@ const Product = () => {
 
   return (
     <div>
-      <NavBar />
+      <UserProvider>
+        <NavBar
+          logoSrc="/bookstoreLogo.jpg"
+          title="St. Mary's Coptic Orthodox Church Bookstore"
+        />
+      </UserProvider>
       <ProductDetails product={product} onAddToCart={handleAddToCart} />
     </div>
   );

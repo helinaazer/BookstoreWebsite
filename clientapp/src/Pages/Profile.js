@@ -1,6 +1,7 @@
 import React from "react";
 import ProfileInfo from "../Components/ProfileInfo";
 import NavBar from "../Components/NavBar";
+import { UserProvider } from "../Components/UserAdminContext";
 
 const Profile = () => {
   const user = {
@@ -17,7 +18,12 @@ const Profile = () => {
 
   return (
     <div>
-      <NavBar />
+      <UserProvider>
+        <NavBar
+          logoSrc="/bookstoreLogo.jpg"
+          title="St. Mary's Coptic Orthodox Church Bookstore"
+        />
+      </UserProvider>
       <ProfileInfo user={user} />
     </div>
   );
