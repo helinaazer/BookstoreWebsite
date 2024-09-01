@@ -37,11 +37,7 @@ const ItemCardBig = ({ image, title, price, quantity, onRemove, stockNumber, isC
                 Delete
               </Button>
             </div>
-          ) : (
-            <Typography variant="body2" color="textSecondary">
-              Number of items: {quantity}
-            </Typography>
-          )}
+          ) : null /* Do not display anything when isCart is false */}
         </div>
         <div className="item-price">
           <Typography variant="h6" component="div">
