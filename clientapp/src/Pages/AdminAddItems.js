@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ItemCardBig from "../Components/ItemCardBig";
 import NavBar from "../Components/NavBar";
 import TextField from "@mui/material/TextField";
@@ -17,12 +17,25 @@ const AdminAddItems = () => {
     stockNumber: "",
   });
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    // Check if all fields are filled
+    const allFieldsFilled =
+      newItem.image &&
+      newItem.title &&
+      newItem.price &&
+      newItem.stockNumber;
+
+    setIsButtonDisabled(!allFieldsFilled);
+  }, [newItem]);
+
   // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setNewItem({ ...newItem, image: reader.result });
+      setNewItem((prevItem) => ({ ...prevItem, image: reader.result }));
     };
     reader.readAsDataURL(file);
   };
@@ -34,7 +47,7 @@ const AdminAddItems = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewItem({ ...newItem, [name]: value });
+    setNewItem((prevItem) => ({ ...prevItem, [name]: value }));
   };
 
   return (
@@ -45,7 +58,7 @@ const AdminAddItems = () => {
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
-      <div className="header">Admin - Add Items</div>
+      <div className="header">Add Items</div>
 
       <div className="admin-form">
         <input
@@ -84,21 +97,23 @@ const AdminAddItems = () => {
           variant="contained"
           onClick={handleAddItem}
           text={"Add Item"}
+          disabled={isButtonDisabled} // Disable button based on form validation
         />
       </div>
 
-      {items.map((item) => (
-        <div key={item.id}>
-          <ItemCardBig
-            image={item.image}
-            title={item.title}
-            price={item.price}
-            quantity={item.quantity}
-            stockNumber={item.stockNumber}
-            isCart={false}
-          />
-        </div>
-      ))}
+      {items
+        .filter((item) => item.image && item.title && item.price && item.stockNumber) // Only show items with all fields filled
+        .map((item) => (
+          <div key={item.id}>
+            <ItemCardBig
+              image={item.image}
+              title={item.title}
+              price={item.price}
+              stockNumber={item.stockNumber}
+              isCart={false}
+            />
+          </div>
+        ))}
     </div>
   );
 };
