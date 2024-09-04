@@ -12,29 +12,64 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
+  Menu,
+  MenuItem,
+  Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import { Link } from "react-router-dom";
-import { useUser } from "./UserAdminContext"; // Import the custom hook
+import { useUser } from "./UserAdminContext";
 import "./NavBar.css";
 
-//To Use: <UserProvider> <NavBar logoSrc="/bookstoreLogo.jpg" title="St. Mary's Coptic Orthodox Church Bookstore"/> </UserProvider>
 const NavBar = ({ logoSrc, title, onSearch }) => {
-  const { user } = useUser(); // Access the user context
+  const { user, setUser } = useUser();
+
   const [showSearch, setShowSearch] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [showHamburger, setShowHamburger] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navLinksRef = useRef(null);
   const toolbarRef = useRef(null);
+  const menuRef = useRef(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  // Function to handle click outside of the hamburger menu
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setMenuOpen(false);
+    }
+  };
+
+  // Effect to listen for clicks outside of the hamburger menu and resize events
+  useEffect(() => {
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    const handleResize = () => {
+      // Automatically close the hamburger menu if the screen size increases
+      if (!isMobile && menuOpen) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [menuOpen, isMobile]);
 
   useEffect(() => {
     const checkOverflow = () => {
@@ -53,40 +88,26 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
     return () => window.removeEventListener("resize", checkOverflow);
   }, [isMobile]);
 
-  const handleMenuToggle = () => {
-    setMenuOpen((prev) => !prev);
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-  };
-
+  const handleSearchChange = (event) => setSearchText(event.target.value);
+  const handleSearchClick = () => onSearch && onSearch(searchText);
   const handleSearchToggle = () => {
-    if (showSearch) {
-      setSearchText(""); // Clear search text on close
-    }
     setShowSearch((prev) => !prev);
+    if (showSearch) setSearchText("");
   };
 
-  const handleSearchClick = () => {
-    if (onSearch) {
-      onSearch(searchText);
-    }
+  const handleMenuToggle = () => setMenuOpen((prev) => !prev);
+  const handlePersonMenuClick = (event) => setAnchorEl(event.currentTarget);
+  const handlePersonMenuClose = () => setAnchorEl(null);
+  const handleLogout = () => {
+    setUser(null);
+    handlePersonMenuClose();
   };
 
-  // Define the common links for all users
-  const commonLinks = [
-    { label: "Home", to: "/" },
-    { label: "Profile", to: "/profile", icon: PersonIcon },
-  ];
-
-  // Admin-specific links
+  const commonLinks = [{ label: "Home", to: "/" }];
   const adminLinks = [
-    { label: "Manage Inventory", to: "/AdminAddItems", icon: DashboardIcon },
-    { label: "Orders", to: "/orders", icon: ShoppingCartIcon },
+    { label: "Manage Inventory", to: "/AdminAddItems" },
+    { label: "Orders", to: "/orders" },
   ];
-
-  // Regular user-specific links
   const userLinks = [
     {
       label: "St. Mary's COC Website",
@@ -94,11 +115,8 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
       external: true,
     },
     { label: "Contact Us", to: "/contact" },
-    { label: "Cart", to: "/cart", icon: ShoppingCartIcon },
-    { label: "Logout", to: "/logout" },
   ];
 
-  // Combine links based on user's role
   const roleBasedLinks = user.isAdmin
     ? [...commonLinks, ...adminLinks]
     : [...commonLinks, ...userLinks];
@@ -121,11 +139,14 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
             component={link.external ? "a" : Link}
             to={link.external ? undefined : link.to}
             href={link.external ? link.to : undefined}
-            onClick={() => setMenuOpen(false)} // Close menu on link click
+            onClick={() => setMenuOpen(false)}
           >
             <ListItemText primary={link.label} />
           </ListItem>
         ))}
+        <ListItem button onClick={handlePersonMenuClick}>
+          {menuOpen ? "Manage" : <PersonIcon />}
+        </ListItem>
       </List>
     </Box>
   );
@@ -147,7 +168,6 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
             <>
               <TextField
                 id="search-bar"
-                className="text search-bar"
                 variant="outlined"
                 placeholder="Search..."
                 size="small"
@@ -175,14 +195,18 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
                     component={link.external ? "a" : Link}
                     to={link.external ? undefined : link.to}
                     href={link.external ? link.to : undefined}
-                    sx={{ mx: 1 }} // Add some margin for spacing
+                    sx={{ mx: 1 }}
                   >
-                    {link.icon && <link.icon sx={{ mr: 0.5 }} />}
                     {link.label}
                   </Button>
                 ))}
               </div>
             </>
+          )}
+          {!showHamburger && (
+            <IconButton color="inherit" onClick={handlePersonMenuClick}>
+              <PersonIcon />
+            </IconButton>
           )}
           <IconButton color="inherit" onClick={handleSearchToggle}>
             {showSearch ? <CloseIcon /> : <SearchIcon />}
@@ -200,14 +224,15 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
         </Toolbar>
         {menuOpen && (
           <Box
+            ref={menuRef}
             sx={{
               position: "absolute",
-              top: "64px", // Height of AppBar
+              top: "64px",
               left: 0,
               width: "100%",
               backgroundColor: "#d9caaa",
               color: "rgb(54, 49, 39)",
-              zIndex: 1300, // Ensure it appears on top of other elements
+              zIndex: 1300,
               display: "flex",
               justifyContent: "center",
             }}
@@ -216,6 +241,60 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
           </Box>
         )}
       </AppBar>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handlePersonMenuClose}
+        sx={{
+          marginTop: "10px",
+          marginLeft: showHamburger ? "16px" : "0px",
+          "& .MuiPaper-root": {
+            backgroundColor: "#d9caaa",
+            color: "rgb(54, 49, 39)",
+            borderRadius: "8px",
+            padding: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            minWidth: "150px",
+          },
+        }}
+      >
+        {user ? (
+          <>
+            <MenuItem
+              onClick={handlePersonMenuClose}
+              component={Link}
+              to="/profile"
+            >
+              Profile
+            </MenuItem>
+            <Divider />
+            <MenuItem
+              onClick={handlePersonMenuClose}
+              component={Link}
+              to="/orders"
+            >
+              <ListAltIcon sx={{ mr: 1 }} /> Orders
+            </MenuItem>
+            <MenuItem
+              onClick={handlePersonMenuClose}
+              component={Link}
+              to="/cart"
+            >
+              <ShoppingCartIcon sx={{ mr: 1 }} /> Cart
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </>
+        ) : (
+          <MenuItem
+            onClick={handlePersonMenuClose}
+            component={Link}
+            to="/login"
+          >
+            Sign In/Up
+          </MenuItem>
+        )}
+      </Menu>
     </>
   );
 };
