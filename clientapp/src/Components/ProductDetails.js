@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import "./ProductDetails.css";
+import CustomButton from "../Components/CustomeButton";
 
 const ProductDetails = ({ product, onAddToCart }) => {
   return (
@@ -22,14 +23,12 @@ const ProductDetails = ({ product, onAddToCart }) => {
         <Typography variant="h6" className="product-price">
           Price: ${product.price}
         </Typography>
-        <Button
+        <CustomButton
           variant="contained"
           color="primary"
           onClick={onAddToCart}
-          class="add-to-cart-button"
-        >
-          Add to Cart
-        </Button>
+          text={"Add to Cart"}
+        />
       </Box>
     </Box>
   );
