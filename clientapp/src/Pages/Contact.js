@@ -3,6 +3,7 @@ import "./Contact.css";
 import NavBar from "../Components/NavBar"; // Assuming you already have a NavBar component
 import Footer from "../Components/Footer"; // Assuming Footer component with social media links
 import { UserProvider } from "../Components/UserAdminContext"; // Context for user data
+import { TextField, Button, Typography } from "@mui/material";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,18 +13,20 @@ const Contact = () => {
     notes: "",
   });
 
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log("Form Data Submitted:", formData);
+  };
+
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form Data Submitted:", formData);
   };
 
   return (
@@ -36,48 +39,58 @@ const Contact = () => {
       </UserProvider>
       <div className="contact-background">
         <div className="contact-container">
-          <h2>Contact Us</h2>
+          <Typography variant="h4" align="center" gutterBottom>
+            Contact Us
+          </Typography>
           <form onSubmit={handleSubmit}>
             <div className="form-row">
-              <input
-                type="text"
-                id="firstName"
+              <TextField
+                label="First Name"
+                variant="outlined"
+                fullWidth
+                required
                 name="firstName"
-                placeholder="First Name"
                 value={formData.firstName}
                 onChange={handleChange}
-                required
+                sx={{ marginBottom: 2 }}
               />
-              <input
-                type="text"
-                id="lastName"
+              <TextField
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+                required
                 name="lastName"
-                placeholder="Last Name"
                 value={formData.lastName}
                 onChange={handleChange}
-                required
+                sx={{ marginBottom: 2 }}
               />
             </div>
-            <input
-              type="email"
-              id="email"
+            <TextField
+              label="Email Address"
+              variant="outlined"
+              fullWidth
+              required
               name="email"
-              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              required
+              sx={{ marginBottom: 2 }}
             />
-            <div className="spacer"></div>{" "}
-            {/* Added spacer for visual separation */}
-            <textarea
-              id="notes"
+            <div className="spacer"></div> {/* Spacer for visual separation */}
+            <TextField
+              label="Notes"
+              variant="outlined"
+              fullWidth
+              required
+              multiline
+              rows={4}
               name="notes"
-              placeholder="Notes"
               value={formData.notes}
               onChange={handleChange}
-              required
+              sx={{ marginBottom: 2 }}
             />
-            <button type="submit">Submit</button>
+            <Button type="submit" variant="contained" fullWidth>
+              Submit
+            </Button>
           </form>
         </div>
       </div>
