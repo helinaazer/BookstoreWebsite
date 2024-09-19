@@ -22,6 +22,8 @@ In terminal, run: <br>
 - `npm install @mui/material @emotion/react @emotion/styled` <br>
 - `npm install @mui/icons-material` <br>
 - `npm install @fontsource/roboto` <br>
+- `npm install @fortawesome/free-solid-svg-icons` <br>
+- `npm install @fortawesome/react-fontawesome` <br>
 
 ### Setup:
 

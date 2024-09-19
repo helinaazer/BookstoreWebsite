@@ -1,25 +1,87 @@
-/* NavBar.css */
-a.navbar-brand {
-  white-space: normal;
-  word-break: break-all;
-}
-
 html {
   font-size: 14px;
 }
+
 @media (min-width: 768px) {
   html {
     font-size: 20px;
   }
 }
 
-.box-shadow {
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+.custom-appbar {
+  background-color: #2b2d42;
+  color: #ffffff;
 }
 
-.custom-appbar {
-  background-color: #d9caaa;
-  color: rgb(54, 49, 39);
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.menu-icon {
+  display: none;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+/* Responsive Styling for Smaller Screens */
+@media (max-width: 1125px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    background-color: #2b2d42;
+    padding: 10px;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .menu-icon {
+    display: block;
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .nav-links button {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-size: 0.8rem;
+  }
+
+  .custom-appbar .MuiTypography-root {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 878px) and (max-width: 1024px) {
+  .nav-links button {
+    font-size: 0.9rem;
+  }
+
+  .custom-appbar .MuiTypography-root {
+    font-size: 1.1rem;
+    white-space: normal;
+    padding: 5px;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+}
+
+/* Search bar styling */
+.search-bar .MuiOutlinedInput-root {
+  height: 70px;
 }
 
 .search-bar
@@ -32,88 +94,11 @@ html {
   box-shadow: none;
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center align elements */
-  white-space: nowrap; /* Prevent text wrapping */
-}
-
-.menu-icon {
-  display: none;
-  background-color: transparent; /* Ensure the background is transparent */
-  outline: none; /* Remove outline */
-  border: none; /* Remove border */
-}
-
-@media (max-width: 1125px) {
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    width: 100%; /* Take up the full width of the screen */
-    position: absolute;
-    top: 70px;
-    left: 0; /* Align to the left edge */
-    background-color: #d3c49a;
-    padding: 10px;
-    border-radius: 0; /* Remove border radius */
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .menu-icon {
-    display: block;
-  }
-
-  .nav-links button {
-    width: 100%;
-    text-align: center; /* Center align text */
-    padding: 10px;
-    color: white;
-    font-size: 0.8rem; /* Make text smaller */
-  }
-
-  .custom-appbar .MuiTypography-root {
-    font-size: 1rem; /* Adjust the font size for smaller screens */
-  }
-}
-
-@media (min-width: 878px) and (max-width: 1024px) {
-  .nav-links button {
-    font-size: 0.9rem; /* Slightly larger text for medium screens */
-  }
-
-  .custom-appbar .MuiTypography-root {
-    font-size: 1.1rem; /* Adjust the bookstore title size for medium screens */
-    max-width: 100%; /* Ensure the title fits within the available space */
-    white-space: normal; /* Allow text to wrap */
-    line-height: 1.2; /* Adjust line height for better readability */
-    padding: 5px; /* Reduce padding */
-  }
-
-  .menu-icon {
-    display: block; /* Ensure the hamburger menu appears */
-  }
-}
-
-@media (min-width: 1126px) {
-  .search-bar .MuiOutlinedInput-root {
-    height: 70px; /* Match the height of the navbar */
-  }
-}
-
-/* Ensure search bar height matches navbar height */
-.search-bar .MuiOutlinedInput-root {
-  height: 100%; /* Match the height of the navbar */
-}
-
-/* Disable click flash effect */
+/* Remove tap highlight on mobile */
 button,
 .menu-icon,
 .nav-links button {
-  -webkit-tap-highlight-color: transparent; /* For mobile browsers */
-  outline: none; /* Remove outline */
-  border: none; /* Remove border */
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  border: none;
 }

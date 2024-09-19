@@ -7,6 +7,8 @@ import Product from "./Pages/Product";
 import Profile from "./Pages/Profile";
 import Orders from "./Pages/Orders";
 import AdminAddItems from "./Pages/AdminAddItems";
+import Login from "./Pages/Login";
+import Signup from "./Pages/Signup";
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         <Route path="/product/:id" element={<Product />} />{" "}
         <Route path="/profile" element={<Profile />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/AdminAddItems" element={<AdminAddItems />} />
+        <Route path="/adminadditems" element={<AdminAddItems />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         {/* Dynamic route */}
       </Routes>
     </Router>

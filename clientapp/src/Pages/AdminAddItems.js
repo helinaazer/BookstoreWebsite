@@ -22,10 +22,7 @@ const AdminAddItems = () => {
   useEffect(() => {
     // Check if all fields are filled
     const allFieldsFilled =
-      newItem.image &&
-      newItem.title &&
-      newItem.price &&
-      newItem.stockNumber;
+      newItem.image && newItem.title && newItem.price && newItem.stockNumber;
 
     setIsButtonDisabled(!allFieldsFilled);
   }, [newItem]);
@@ -54,7 +51,7 @@ const AdminAddItems = () => {
     <div>
       <UserProvider>
         <NavBar
-          logoSrc="/bookstoreLogo.jpg"
+          logoSrc="/St_Mary_COC_Logo_No_Background.png"
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
@@ -102,7 +99,9 @@ const AdminAddItems = () => {
       </div>
 
       {items
-        .filter((item) => item.image && item.title && item.price && item.stockNumber) // Only show items with all fields filled
+        .filter(
+          (item) => item.image && item.title && item.price && item.stockNumber
+        ) // Only show items with all fields filled
         .map((item) => (
           <div key={item.id}>
             <ItemCardBig

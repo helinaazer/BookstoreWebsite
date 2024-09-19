@@ -8,11 +8,7 @@ export const useUser = () => useContext(UserAdminContext);
 
 // Provider component to wrap around the app
 export const UserProvider = ({ children }) => {
-  // Simulate logged-in or logged-out state
-  const [user, setUser] = useState({ isAdmin: true, username: "JohnDoe" });
-
-  // Simulate logged-out state
-  // const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ isAdmin: false, username: "JohnDoe" });
 
   return (
     <UserAdminContext.Provider value={{ user, setUser }}>

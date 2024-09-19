@@ -37,6 +37,8 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
   const navLinksRef = useRef(null);
   const toolbarRef = useRef(null);
   const menuRef = useRef(null);
+  const titleRef = useRef(null);
+  const logoRef = useRef(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -57,13 +59,14 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
     }
 
     const handleResize = () => {
-      // Automatically close the hamburger menu if the screen size increases
       if (!isMobile && menuOpen) {
         setMenuOpen(false);
       }
+      checkOverflow();
     };
 
     window.addEventListener("resize", handleResize);
+    checkOverflow();
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -71,20 +74,31 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
     };
   }, [menuOpen, isMobile]);
 
+  // Function to check for overflow and trigger hamburger menu
+  const checkOverflow = () => {
+    if (
+      navLinksRef.current &&
+      toolbarRef.current &&
+      titleRef.current &&
+      logoRef.current
+    ) {
+      const toolbarWidth = toolbarRef.current.clientWidth;
+      const navLinksWidth = navLinksRef.current.scrollWidth;
+      const titleWidth = titleRef.current.scrollWidth;
+      const logoWidth = logoRef.current.clientWidth;
+
+      // Calculate available space for nav links
+      const availableSpace = toolbarWidth - logoWidth - titleWidth;
+
+      // Check if nav links exceed available space
+      const shouldShowHamburger = navLinksWidth > availableSpace;
+      setShowHamburger(shouldShowHamburger);
+    }
+  };
+
   useEffect(() => {
-    const checkOverflow = () => {
-      setTimeout(() => {
-        if (navLinksRef.current && toolbarRef.current) {
-          const toolbarWidth = toolbarRef.current.clientWidth;
-          const navLinksWidth = navLinksRef.current.scrollWidth;
-          setShowHamburger(navLinksWidth > toolbarWidth || isMobile);
-        }
-      }, 0);
-    };
-
-    window.addEventListener("resize", checkOverflow);
     checkOverflow();
-
+    window.addEventListener("resize", checkOverflow);
     return () => window.removeEventListener("resize", checkOverflow);
   }, [isMobile]);
 
@@ -125,8 +139,8 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
     <Box
       sx={{
         textAlign: "center",
-        backgroundColor: "#d9caaa",
-        color: "rgb(54, 49, 39)",
+        backgroundColor: "#2b2d42",
+        color: "#ffffff",
         padding: "16px",
         width: "100%",
       }}
@@ -156,10 +170,11 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
       <AppBar
         position="static"
         className="custom-appbar"
-        sx={{ backgroundColor: "#d9caaa", color: "rgb(54, 49, 39)" }}
+        sx={{ backgroundColor: "#2b2d42", color: "#ffffff" }}
       >
         <Toolbar ref={toolbarRef}>
           <img
+            ref={logoRef}
             src={logoSrc}
             alt="Bookstore Logo"
             style={{ height: "70px", marginRight: "10px" }}
@@ -184,7 +199,12 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
             </>
           ) : (
             <>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                ref={titleRef}
+                sx={{ flexGrow: 1 }}
+              >
                 {title}
               </Typography>
               <div ref={navLinksRef} className="nav-links">
@@ -230,8 +250,8 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
               top: "64px",
               left: 0,
               width: "100%",
-              backgroundColor: "#d9caaa",
-              color: "rgb(54, 49, 39)",
+              backgroundColor: "#2b2d42",
+              color: "#ffffff",
               zIndex: 1300,
               display: "flex",
               justifyContent: "center",
@@ -249,8 +269,8 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
           marginTop: "10px",
           marginLeft: showHamburger ? "16px" : "0px",
           "& .MuiPaper-root": {
-            backgroundColor: "#d9caaa",
-            color: "rgb(54, 49, 39)",
+            backgroundColor: "#2b2d42",
+            color: "#ffffff",
             borderRadius: "8px",
             padding: "8px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -266,6 +286,20 @@ const NavBar = ({ logoSrc, title, onSearch }) => {
               to="/profile"
             >
               Profile
+            </MenuItem>
+            <MenuItem
+              onClick={handlePersonMenuClose}
+              component={Link}
+              to="/Login"
+            >
+              Login
+            </MenuItem>
+            <MenuItem
+              onClick={handlePersonMenuClose}
+              component={Link}
+              to="/signup"
+            >
+              Sign Up
             </MenuItem>
             <Divider />
             <MenuItem

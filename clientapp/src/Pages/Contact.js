@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "./Contact.css";
-import NavBar from "../Components/NavBar";
-import { UserProvider } from "../Components/UserAdminContext";
+import NavBar from "../Components/NavBar"; // Assuming you already have a NavBar component
+import Footer from "../Components/Footer"; // Assuming Footer component with social media links
+import { UserProvider } from "../Components/UserAdminContext"; // Context for user data
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    message: "",
+    notes: "",
   });
 
   const handleChange = (e) => {
@@ -21,57 +23,65 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log("Form submitted:", formData);
+    console.log("Form Data Submitted:", formData);
   };
 
   return (
-    <div>
+    <div className="background">
       <UserProvider>
         <NavBar
-          logoSrc="/bookstoreLogo.jpg"
+          logoSrc="/St_Mary_COC_Logo_No_Background.png"
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
-      <div className="full-screen-background">
-        <div className="contact-form-container">
+      <div className="contact-background">
+        <div className="contact-container">
           <h2>Contact Us</h2>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
+            <div className="form-row">
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="firstName"
+                name="firstName"
+                placeholder="First Name"
+                value={formData.firstName}
                 onChange={handleChange}
                 required
               />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
               <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Last Name"
+                value={formData.lastName}
                 onChange={handleChange}
                 required
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <div className="spacer"></div>{" "}
+            {/* Added spacer for visual separation */}
+            <textarea
+              id="notes"
+              name="notes"
+              placeholder="Notes"
+              value={formData.notes}
+              onChange={handleChange}
+              required
+            />
             <button type="submit">Submit</button>
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

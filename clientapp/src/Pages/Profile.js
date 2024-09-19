@@ -20,7 +20,7 @@ const Profile = () => {
     <div>
       <UserProvider>
         <NavBar
-          logoSrc="/bookstoreLogo.jpg"
+          logoSrc="/St_Mary_COC_Logo_No_Background.png"
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
