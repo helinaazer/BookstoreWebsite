@@ -7,6 +7,10 @@ import {
   Typography,
   Grid,
   Paper,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
@@ -19,6 +23,7 @@ const Signup = () => {
     address: "",
     username: "",
     phoneNumber: "",
+    gender: "", // Add gender field in formData state
   });
 
   const handleChange = (e) => {
@@ -33,17 +38,17 @@ const Signup = () => {
   };
 
   return (
-    <div>
+    <div className="background">
       <UserProvider>
         <NavBar
-          logoSrc="/bookstoreLogo.jpg"
+          logoSrc="/St_Mary_COC_Logo_No_Background.png"
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
       <Container maxWidth="sm" sx={{ mt: 4 }}>
-        <Paper elevation={3} sx={{ p: 4, backgroundColor: "#d9caaa" }}>
+        <Paper elevation={3} sx={{ p: 4 }}>
           <Box textAlign="center" mb={4}>
-            <Typography variant="h4" sx={{ color: "rgb(54, 49, 39)" }}>
+            <Typography variant="h4" sx={{ color: "#2b2d42" }}>
               Sign Up
             </Typography>
           </Box>
@@ -59,7 +64,7 @@ const Signup = () => {
                   variant="outlined"
                   value={formData.firstName}
                   onChange={handleChange}
-                  InputLabelProps={{ sx: { color: "rgb(54, 49, 39)" } }}
+                  InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -72,7 +77,7 @@ const Signup = () => {
                   variant="outlined"
                   value={formData.lastName}
                   onChange={handleChange}
-                  InputLabelProps={{ sx: { color: "rgb(54, 49, 39)" } }}
+                  InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -86,7 +91,7 @@ const Signup = () => {
                   variant="outlined"
                   value={formData.email}
                   onChange={handleChange}
-                  InputLabelProps={{ sx: { color: "rgb(54, 49, 39)" } }}
+                  InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -99,7 +104,7 @@ const Signup = () => {
                   variant="outlined"
                   value={formData.address}
                   onChange={handleChange}
-                  InputLabelProps={{ sx: { color: "rgb(54, 49, 39)" } }}
+                  InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -112,7 +117,7 @@ const Signup = () => {
                   variant="outlined"
                   value={formData.username}
                   onChange={handleChange}
-                  InputLabelProps={{ sx: { color: "rgb(54, 49, 39)" } }}
+                  InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -126,18 +131,39 @@ const Signup = () => {
                   variant="outlined"
                   value={formData.phoneNumber}
                   onChange={handleChange}
-                  InputLabelProps={{ sx: { color: "rgb(54, 49, 39)" } }}
+                  InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
+              </Grid>
+              {/* Add Gender Dropdown */}
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="gender-label" sx={{ color: "#2b2d42" }}>
+                    Gender
+                  </InputLabel>
+                  <Select
+                    labelId="gender-label"
+                    id="gender"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    label="Gender"
+                    required
+                  >
+                    <MenuItem value="male">Male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
             <Box textAlign="center" mt={4}>
               <Button
                 type="submit"
                 variant="contained"
+                fullWidth
                 sx={{
-                  backgroundColor: "rgb(54, 49, 39)",
+                  backgroundColor: "#2b2d42",
                   color: "#fff",
-                  "&:hover": { backgroundColor: "#4a3e31" },
+                  "&:hover": { backgroundColor: "#1d202e" },
                 }}
               >
                 Sign Up
