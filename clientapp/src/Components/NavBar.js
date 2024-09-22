@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -24,11 +23,14 @@ import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useMediaQuery } from "@mui/material";
 import "./NavBar.css"; // Importing the CSS file
+import axios from 'axios';
+import { useState, useContext, useEffect } from 'react';
+import isAuthenticated from "../App"
+import { AuthContext } from '../AuthContext';
 
 const Navbar = () => {
   // Simulate user states
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // User is logged in or not
-  const [isAdmin, setIsAdmin] = useState(true); // If the user is an admin or not
+  const { isAuthenticated, isAdmin, username } = useContext(AuthContext);
   const [searchOpen, setSearchOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [productMenuAnchorEl, setProductMenuAnchorEl] = useState(null); // For Manage Products dropdown
@@ -53,6 +55,9 @@ const Navbar = () => {
   const toggleDrawer = (open) => (event) => {
     setDrawerOpen(open);
   };
+
+  console.log(isAdmin);
+  console.log(isAuthenticated);
 
   return (
     <AppBar
@@ -113,7 +118,8 @@ const Navbar = () => {
             >
               Home
             </Button>
-
+            
+            
             {/* Admin: Manage Products Dropdown */}
             {isAdmin && (
               <>

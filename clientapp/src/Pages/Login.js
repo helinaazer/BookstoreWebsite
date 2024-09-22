@@ -28,10 +28,9 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:8000/api/login/', {
         username: username, // Ensure these match the expected keys in your Django view
-        password: password,
-        remember: rememberMe
+        password: password
       });
-      console.log("Login successful", response.data);
+      console.log("Login succesminasful", response.data);
       // Handle further actions after successful login like redirecting the user or storing the login token
     } catch (error) {
       console.error("Login failed:", error.response ? error.response.data : "Server error");

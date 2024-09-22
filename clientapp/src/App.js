@@ -11,25 +11,27 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Products from "./Pages/Products";
 import ForgetPassword from "./Pages/ForgetPassword";
+import { AuthProvider } from './AuthContext';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/productinfo/:id" element={<ProductInfo />} />{" "}
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/adminadditems" element={<AdminAddItems />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/forgetpassword" element={<ForgetPassword />} />
-        {/* Dynamic route */}
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/productinfo/:id" element={<ProductInfo />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/adminadditems" element={<AdminAddItems />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/forgetpassword" element={<ForgetPassword />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
