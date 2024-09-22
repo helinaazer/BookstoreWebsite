@@ -1,119 +1,85 @@
-/* NavBar.css */
-a.navbar-brand {
-  white-space: normal;
-  word-break: break-all;
-}
+/* Navbar.css */
 
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 20px;
-  }
-}
-
-.box-shadow {
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-}
-
-.custom-appbar {
-  background-color: #d9caaa;
-  color: rgb(54, 49, 39);
-}
-
-.search-bar
-  .MuiOutlinedInput-root.Mui-focused
-  .MuiOutlinedInput-notchedOutline {
-  border-color: transparent;
-}
-
-.search-bar .MuiOutlinedInput-root.Mui-focused {
+.navbar {
+  background-color: #00203fff;
+  padding: 10px 20px;
   box-shadow: none;
+  border-bottom: 2px solid #adefd1ff;
 }
 
-.nav-links {
+.navbar-logo {
   display: flex;
   align-items: center;
-  justify-content: center; /* Center align elements */
-  white-space: nowrap; /* Prevent text wrapping */
+  color: #adefd1ff;
+  font-weight: bold;
 }
 
-.menu-icon {
-  display: none;
-  background-color: transparent; /* Ensure the background is transparent */
-  outline: none; /* Remove outline */
-  border: none; /* Remove border */
+.navbar-logo img {
+  height: 40px;
+  margin-right: 15px;
+  border-radius: 50%;
 }
 
-@media (max-width: 1125px) {
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    width: 100%; /* Take up the full width of the screen */
-    position: absolute;
-    top: 70px;
-    left: 0; /* Align to the left edge */
-    background-color: #d3c49a;
-    padding: 10px;
-    border-radius: 0; /* Remove border radius */
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .menu-icon {
-    display: block;
-  }
-
-  .nav-links button {
-    width: 100%;
-    text-align: center; /* Center align text */
-    padding: 10px;
-    color: white;
-    font-size: 0.8rem; /* Make text smaller */
-  }
-
-  .custom-appbar .MuiTypography-root {
-    font-size: 1rem; /* Adjust the font size for smaller screens */
-  }
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
-@media (min-width: 878px) and (max-width: 1024px) {
-  .nav-links button {
-    font-size: 0.9rem; /* Slightly larger text for medium screens */
-  }
-
-  .custom-appbar .MuiTypography-root {
-    font-size: 1.1rem; /* Adjust the bookstore title size for medium screens */
-    max-width: 100%; /* Ensure the title fits within the available space */
-    white-space: normal; /* Allow text to wrap */
-    line-height: 1.2; /* Adjust line height for better readability */
-    padding: 5px; /* Reduce padding */
-  }
-
-  .menu-icon {
-    display: block; /* Ensure the hamburger menu appears */
-  }
+.navbar-link {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: none;
+  transition: 0.3s ease;
 }
 
-@media (min-width: 1126px) {
-  .search-bar .MuiOutlinedInput-root {
-    height: 70px; /* Match the height of the navbar */
-  }
+.navbar-link:hover {
+  background-color: rgb(173, 176, 239);
+  color: #00203fff;
 }
 
-/* Ensure search bar height matches navbar height */
-.search-bar .MuiOutlinedInput-root {
-  height: 100%; /* Match the height of the navbar */
+.search-box {
+  background-color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
 }
 
-/* Disable click flash effect */
-button,
-.menu-icon,
-.nav-links button {
-  -webkit-tap-highlight-color: transparent; /* For mobile browsers */
-  outline: none; /* Remove outline */
-  border: none; /* Remove border */
+.search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 5px;
+}
+
+.search-box-icon {
+  color: #00203fff;
+  cursor: pointer;
+}
+
+.drawer-content {
+  width: 250px;
+  background-color: #00203fff;
+  height: 100%;
+  color: #ffffff;
+  padding: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.drawer-link {
+  color: #adefd1ff;
+  text-decoration: none;
+}
+
+.drawer-divider {
+  background-color: #adefd1ff;
+}
+
+.menu-item {
+  color: #adefd1ff;
+  text-decoration: none;
 }
