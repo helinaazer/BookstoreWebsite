@@ -98,6 +98,20 @@ const Signup = () => {
                 <TextField
                   required
                   fullWidth
+                  id="password"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  value={formData.email}
+                  onChange={handleChange}
+                  InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
                   id="address"
                   name="address"
                   label="Address"
