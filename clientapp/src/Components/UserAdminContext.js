@@ -8,10 +8,7 @@ export const useUser = () => useContext(UserAdminContext);
 
 // Provider component to wrap around the app
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    isAdmin: false, // Set user role here
-    username: "JohnDoe",
-  });
+  const [user, setUser] = useState({ isAdmin: false, username: "JohnDoe" });
 
   return (
     <UserAdminContext.Provider value={{ user, setUser }}>

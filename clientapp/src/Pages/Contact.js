@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import "./Contact.css";
-import NavBar from "../Components/NavBar";
-import { UserProvider } from "../Components/UserAdminContext";
+import NavBar from "../Components/NavBar"; // Assuming you already have a NavBar component
+import Footer from "../Components/Footer"; // Assuming Footer component with social media links
+import { UserProvider } from "../Components/UserAdminContext"; // Context for user data
+import { TextField, Button, Typography } from "@mui/material";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    message: "",
+    notes: "",
   });
 
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log("Form Data Submitted:", formData);
+  };
+
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -18,60 +29,72 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
-  };
-
   return (
-    <div>
+    <div className="background">
       <UserProvider>
         <NavBar
-          logoSrc="/bookstoreLogo.jpg"
+          logoSrc="/St_Mary_COC_Logo_No_Background.png"
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
-      <div className="full-screen-background">
-        <div className="contact-form-container">
-          <h2>Contact Us</h2>
+      <div className="contact-background">
+        <div className="contact-container">
+          <Typography variant="h4" align="center" gutterBottom>
+            Contact Us
+          </Typography>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
+            <div className="form-row">
+              <TextField
+                label="First Name"
+                variant="outlined"
+                fullWidth
                 required
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                sx={{ marginBottom: 2 }}
+              />
+              <TextField
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+                required
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                sx={{ marginBottom: 2 }}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-            <button type="submit">Submit</button>
+            <TextField
+              label="Email Address"
+              variant="outlined"
+              fullWidth
+              required
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              sx={{ marginBottom: 2 }}
+            />
+            <div className="spacer"></div> {/* Spacer for visual separation */}
+            <TextField
+              label="Notes"
+              variant="outlined"
+              fullWidth
+              required
+              multiline
+              rows={4}
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              sx={{ marginBottom: 2 }}
+            />
+            <Button type="submit" variant="contained" fullWidth>
+              Submit
+            </Button>
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

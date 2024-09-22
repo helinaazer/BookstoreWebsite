@@ -2,94 +2,105 @@
 .item-card {
   width: 100%;
   max-width: 100%;
-  height: 350px; /* Fixed height for consistency */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  background-color: #e7decb; /* Set background color */
+  height: 450px; /* Fixed height for consistency */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensure content is spaced consistently */
+  background-color: #ffffff; /* White background for modern look */
+  border-radius: 12px; /* Smooth rounded corners */
+  overflow: hidden; /* Clip overflow content */
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-/* Custom styles to override MUI Card styles */
-.item-card.custom-card {
-  box-shadow: none !important; /* Remove shadow */
-  border-radius: 0 !important; /* Remove rounded corners */
-  padding: 0 !important; /* Remove padding */
-  margin: 0 !important; /* Remove margin */
-  border: none !important; /* Ensure no borders */
-  background-color: #e7decb; 
+.item-card:hover {
+  transform: translateY(-5px); /* Slightly raise the card on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
 }
-
 
 /* Link Styling */
 .item-card-link {
-  text-decoration: none; /* Ensure no text decoration on links */
-  display: block; /* Make sure the link covers the entire card */
+  text-decoration: none; /* No text decoration for links */
+  display: block; /* Ensure the link covers the entire card */
   width: 100%;
+}
+
+.item-card-link:hover {
+  text-decoration: none; /* Ensure no underline on hover */
 }
 
 /* Image Container Styling */
 .image-container {
   width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: flex-end;
-  border-radius: 10px; /* Rounded corners for smoother look */
-  overflow: hidden; /* Prevent overflow */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-  image-rendering: auto; /* Optimize image rendering */
-  -webkit-font-smoothing: antialiased; /* For smoother fonts on Webkit */
-  -moz-osx-font-smoothing: grayscale; /* For smoother fonts on Firefox */
-}
-
-/* Hover Effect */
-.image-container:hover {
-  transform: scale(1.05); /* Slight zoom on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  height: 60%; /* Allocate 60% of the card height to the image */
+  background-size: contain; /* Ensure the image fits inside the container without cropping */
+  background-position: center; /* Center the image within the container */
+  background-repeat: no-repeat; /* No repetition of the image */
 }
 
 /* Overlay Content Styling */
-.overlay-content {
-  background: rgba(0, 0, 0, 0.3); /* Dark overlay with transparency */
-  color: #e7decb; /* Text color matching the background */
-  width: 100%;
-  padding: 12px; /* Padding inside the overlay */
-  margin: 0; /* Ensure no margin */
-  flex-grow: 1; /* Allow this area to grow and maintain space */
+.text-content {
+  height: 40%; /* Allocate 40% of the card height to text content */
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Align content to the bottom */
+  justify-content: flex-start; /* Align text at the top */
+  gap: 4px; /* Reduce space between text elements */
 }
 
 /* Title Styling */
 .card-title {
-  font-family: "Playfair Display", serif; /* Font family for the title */
-  font-weight: bold; /* Bold text */
-  color: #d5cebb; /* Color for the title text */
-  margin: 0; /* Ensure no margin */
-  padding: 0; /* Ensure no padding */
+  font-family: "Roboto", sans-serif; /* Modern sans-serif font */
+  font-weight: 700; /* Bold text */
+  font-size: 1.2rem; /* Responsive font size */
+  color: #000000; /* Black text for title */
+  white-space: normal; /* Allow the title to wrap to multiple lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Show up to 2 lines */
+  -webkit-box-orient: vertical;
 }
 
 /* Description Styling */
 .card-description {
-  margin-top: 4px; /* Small margin at the top */
-  margin-bottom: 8px; /* Small margin at the bottom */
-  color: #d5cebb; /* Color for the description text */
-  font-family: Arial, sans-serif; /* Default font family for description */
+  font-family: "Roboto", sans-serif; /* Consistent font family */
+  font-size: 1rem; /* Standard font size */
+  color: #000000; /* Grey for less emphasis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit description to 2 lines */
+  -webkit-box-orient: vertical;
 }
 
 /* Price Styling */
 .card-price {
-  font-family: "Playfair Display", serif; /* Font family for the price */
-  font-size: 1.1rem; /* Slightly larger font size for emphasis */
-  font-weight: bold; /* Bold text */
-  color: #d5cebb; /* Color for the price text */
-  margin: 0; /* Ensure no margin */
-  padding: 0; /* Ensure no padding */
+  font-family: "Roboto", sans-serif; /* Consistency in typography */
+  font-size: 1.1rem; /* Slightly smaller to balance space */
+  font-weight: bold; /* Bold to highlight price */
+  color: #000000; /* Bright accent color for price */
+  margin-top: auto; /* Push price to the bottom of the content area */
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+  .item-card {
+    height: 350px; /* Adjust height for smaller screens */
+  }
+
+  .card-title,
+  .card-description {
+    font-size: 1.2rem; /* Adjust font size on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .item-card {
+    height: 300px; /* Further adjustment for mobile screens */
+  }
+
+  .card-title,
+  .card-description {
+    font-size: 1rem; /* Smaller font size for mobile screens */
+  }
 }
