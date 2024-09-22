@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ItemCardBig from "../Components/ItemCardBig";
 import NavBar from "../Components/NavBar";
 import TextField from "@mui/material/TextField";
+import { Box, Typography, Grid } from "@mui/material";
 import "./AdminAddItems.css";
 import { UserProvider } from "../Components/UserAdminContext";
 import CustomButton from "../Components/CustomeButton";
@@ -11,8 +12,9 @@ const AdminAddItems = () => {
 
   const [newItem, setNewItem] = useState({
     id: "",
-    image: "",
+    images: [],
     title: "",
+    description: "",
     price: "",
     stockNumber: "",
   });
@@ -22,24 +24,41 @@ const AdminAddItems = () => {
   useEffect(() => {
     // Check if all fields are filled
     const allFieldsFilled =
-      newItem.image && newItem.title && newItem.price && newItem.stockNumber;
+      newItem.images.length > 0 &&
+      newItem.title &&
+      newItem.description &&
+      newItem.price &&
+      newItem.stockNumber;
 
     setIsButtonDisabled(!allFieldsFilled);
   }, [newItem]);
 
-  // Handle image upload
+  // Handle image upload (multiple images)
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setNewItem((prevItem) => ({ ...prevItem, image: reader.result }));
-    };
-    reader.readAsDataURL(file);
+    const files = Array.from(e.target.files); // Convert FileList to array
+    const readers = files.map((file) => {
+      const reader = new FileReader();
+      return new Promise((resolve) => {
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(readers).then((images) => {
+      setNewItem((prevItem) => ({ ...prevItem, images }));
+    });
   };
 
   const handleAddItem = () => {
     setItems([...items, { ...newItem, id: items.length + 1 }]);
-    setNewItem({ id: "", image: "", title: "", price: "", stockNumber: "" });
+    setNewItem({
+      id: "",
+      images: [],
+      title: "",
+      description: "",
+      price: "",
+      stockNumber: "",
+    });
   };
 
   const handleInputChange = (e) => {
@@ -55,12 +74,18 @@ const AdminAddItems = () => {
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
-      <div className="header">Add Items</div>
+      <Box className="header">
+        <Typography variant="h4" component="h1">
+          Add Items
+        </Typography>
+      </Box>
 
-      <div className="admin-form">
+      <Box className="admin-form">
+        {/* File Upload Input */}
         <input
           type="file"
           accept="image/*"
+          multiple
           onChange={handleImageUpload}
           style={{ marginBottom: "20px" }}
         />
@@ -71,6 +96,16 @@ const AdminAddItems = () => {
           onChange={handleInputChange}
           fullWidth
           margin="normal"
+        />
+        <TextField
+          label="Description"
+          name="description"
+          value={newItem.description}
+          onChange={handleInputChange}
+          fullWidth
+          margin="normal"
+          multiline
+          rows={4} // Text area for description
         />
         <TextField
           label="Price"
@@ -90,29 +125,39 @@ const AdminAddItems = () => {
           fullWidth
           margin="normal"
         />
-        <CustomButton
-          variant="contained"
-          onClick={handleAddItem}
-          text={"Add Item"}
-          disabled={isButtonDisabled} // Disable button based on form validation
-        />
-      </div>
+        <Box className="admin-actions">
+          <CustomButton
+            variant="contained"
+            onClick={handleAddItem}
+            text={"Add Item"}
+            disabled={isButtonDisabled} // Disable button based on form validation
+          />
+        </Box>
+      </Box>
 
-      {items
-        .filter(
-          (item) => item.image && item.title && item.price && item.stockNumber
-        ) // Only show items with all fields filled
-        .map((item) => (
-          <div key={item.id}>
-            <ItemCardBig
-              image={item.image}
-              title={item.title}
-              price={item.price}
-              stockNumber={item.stockNumber}
-              isCart={false}
-            />
-          </div>
-        ))}
+      <Grid container spacing={3} style={{ marginTop: "20px" }}>
+        {items
+          .filter(
+            (item) =>
+              item.images.length > 0 &&
+              item.title &&
+              item.description &&
+              item.price &&
+              item.stockNumber
+          ) // Only show items with all fields filled
+          .map((item) => (
+            <Grid item xs={12} sm={6} md={4} key={item.id}>
+              <ItemCardBig
+                image={item.images[0]} // Show the first image
+                title={item.title}
+                description={item.description}
+                price={item.price}
+                stockNumber={item.stockNumber}
+                isCart={false}
+              />
+            </Grid>
+          ))}
+      </Grid>
     </div>
   );
 };

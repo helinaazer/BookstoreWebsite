@@ -13,22 +13,19 @@ const ItemCard = ({ image, title, description, price, link }) => {
           className="image-container"
           style={{ backgroundImage: `url(${image})` }}
         >
-          <CardContent className="overlay-content">
-            <Typography variant="h5" component="div" className="card-title">
-              {title}
-            </Typography>
-            {description && (
-              <Typography variant="body2" className="card-description">
-                {description}
-              </Typography>
-            )}
-            {price && (
-              <Typography variant="h6" className="card-price">
-                ${price}
-              </Typography>
-            )}
-          </CardContent>
+          {/* Image container only contains the image */}
         </div>
+        <CardContent className="text-content">
+          <Typography variant="h5" component="div" className="card-title">
+            {title}
+          </Typography>
+
+          {price && (
+            <Typography variant="h6" className="card-price">
+              ${price}
+            </Typography>
+          )}
+        </CardContent>
       </Card>
     </Link>
   );

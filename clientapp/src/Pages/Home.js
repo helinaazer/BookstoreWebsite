@@ -16,37 +16,37 @@ const categories = [
   {
     title: "Category 1",
     image: "/image.png", // URL to the image
-    link: "/page-1", // URL or path the user should be taken to when clicking
+    link: "/products", // URL or path the user should be taken to when clicking
   },
   {
     title: "Category 2",
     image: "/image.png",
-    link: "/page-2",
+    link: "/products",
   },
   {
     title: "Category 3",
     image: "/image.png",
-    link: "/page-3",
+    link: "/products",
   },
   {
     title: "Category 4",
     image: "/image.png",
-    link: "/page-2",
+    link: "/products",
   },
   {
     title: "Category 5",
     image: "/image.png",
-    link: "/page-2",
+    link: "/products",
   },
   {
     title: "Category 6",
     image: "/image.png",
-    link: "/page-2",
+    link: "/products",
   },
   {
     title: "Category 7",
     image: "/image.png",
-    link: "/page-2",
+    link: "/products",
   },
   // Add more categories as needed
 ];

@@ -24,6 +24,7 @@ In terminal, run: <br>
 - `npm install @fontsource/roboto` <br>
 - `npm install @fortawesome/free-solid-svg-icons` <br>
 - `npm install @fortawesome/react-fontawesome` <br>
+- `npm install @mui/material @mui/system`<br>
 
 ### Setup:
 

@@ -1,104 +1,85 @@
-html {
-  font-size: 14px;
+/* Navbar.css */
+
+.navbar {
+  background-color: #00203fff;
+  padding: 10px 20px;
+  box-shadow: none;
+  border-bottom: 2px solid #adefd1ff;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 20px;
-  }
-}
-
-.custom-appbar {
-  background-color: #2b2d42;
-  color: #ffffff;
-}
-
-.nav-links {
+.navbar-logo {
   display: flex;
   align-items: center;
-  justify-content: center;
-  white-space: nowrap;
+  color: #adefd1ff;
+  font-weight: bold;
 }
 
-.menu-icon {
-  display: none;
-  background-color: transparent;
-  outline: none;
+.navbar-logo img {
+  height: 40px;
+  margin-right: 15px;
+  border-radius: 50%;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navbar-link {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: none;
+  transition: 0.3s ease;
+}
+
+.navbar-link:hover {
+  background-color: rgb(173, 176, 239);
+  color: #00203fff;
+}
+
+.search-box {
+  background-color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
   border: none;
-}
-
-/* Responsive Styling for Smaller Screens */
-@media (max-width: 1125px) {
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    background-color: #2b2d42;
-    padding: 10px;
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .menu-icon {
-    display: block;
-    color: white;
-    font-size: 1.5rem;
-  }
-
-  .nav-links button {
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    color: white;
-    font-size: 0.8rem;
-  }
-
-  .custom-appbar .MuiTypography-root {
-    font-size: 1rem;
-  }
-}
-
-@media (min-width: 878px) and (max-width: 1024px) {
-  .nav-links button {
-    font-size: 0.9rem;
-  }
-
-  .custom-appbar .MuiTypography-root {
-    font-size: 1.1rem;
-    white-space: normal;
-    padding: 5px;
-  }
-
-  .menu-icon {
-    display: block;
-  }
-}
-
-/* Search bar styling */
-.search-bar .MuiOutlinedInput-root {
-  height: 70px;
-}
-
-.search-bar
-  .MuiOutlinedInput-root.Mui-focused
-  .MuiOutlinedInput-notchedOutline {
-  border-color: transparent;
-}
-
-.search-bar .MuiOutlinedInput-root.Mui-focused {
-  box-shadow: none;
-}
-
-/* Remove tap highlight on mobile */
-button,
-.menu-icon,
-.nav-links button {
-  -webkit-tap-highlight-color: transparent;
   outline: none;
-  border: none;
+  width: 100%;
+  padding: 5px;
+}
+
+.search-box-icon {
+  color: #00203fff;
+  cursor: pointer;
+}
+
+.drawer-content {
+  width: 250px;
+  background-color: #00203fff;
+  height: 100%;
+  color: #ffffff;
+  padding: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.drawer-link {
+  color: #adefd1ff;
+  text-decoration: none;
+}
+
+.drawer-divider {
+  background-color: #adefd1ff;
+}
+
+.menu-item {
+  color: #adefd1ff;
+  text-decoration: none;
 }
