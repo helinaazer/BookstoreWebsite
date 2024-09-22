@@ -13,16 +13,32 @@ import {
 import { Link } from "react-router-dom";
 import "./Login.css"; // Add custom styles here
 
+
+import axios from 'axios'; // Ensure Axios is imported
+
+
+
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    // Add your login logic here (API call, form validation, etc.)
-    alert(`Logging in with ${email}`);
+    try {
+      const response = await axios.post('http://localhost:8000/api/login/', {
+        username: username, // Ensure these match the expected keys in your Django view
+        password: password,
+        remember: rememberMe
+      });
+      console.log("Login successful", response.data);
+      // Handle further actions after successful login like redirecting the user or storing the login token
+    } catch (error) {
+      console.error("Login failed:", error.response ? error.response.data : "Server error");
+      // Handle errors (like showing a notification to the user)
+    }
   };
+
 
   return (
     <div className="background">
@@ -42,10 +58,10 @@ const Login = () => {
               <TextField
                 label="Email Address"
                 variant="outlined"
-                type="email"
+                type="username"
                 fullWidth
                 required
-                value={email}
+                value={username}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Box>
@@ -76,7 +92,7 @@ const Login = () => {
               Login
             </Button>
             <Box display="flex" justifyContent="space-between">
-              <Link to="/forgot-password" className="links">
+              <Link to="/forgetpassword" className="links">
                 Forgot password?
               </Link>
               <Link to="/signup" className="links">

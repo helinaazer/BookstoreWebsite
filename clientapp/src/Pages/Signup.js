@@ -14,15 +14,18 @@ import {
 } from "@mui/material";
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
+import axios from 'axios'; // Import Axios
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    password:"",
+    last_name: "",
     email: "",
     address: "",
     username: "",
-    phoneNumber: "",
+    phonenumber: "",
     gender: "", // Add gender field in formData state
   });
 
@@ -31,11 +34,20 @@ const Signup = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
-  };
+    console.log("Submitting data:", formData);  // Log formData to confirm all fields are included
+    try {
+        const response = await axios.post("http://localhost:8000/api/register/", formData, {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+        console.log("Response data:", response.data);
+    } catch (error) {
+        console.error("Error registering user:", error.response ? error.response.data : error.message);
+    }
+};
 
   return (
     <div className="background">
@@ -58,11 +70,11 @@ const Signup = () => {
                 <TextField
                   required
                   fullWidth
-                  id="firstName"
-                  name="firstName"
+                  id="first_name"
+                  name="first_name"
                   label="First Name"
                   variant="outlined"
-                  value={formData.firstName}
+                  value={formData.first_name}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
@@ -71,11 +83,11 @@ const Signup = () => {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  name="lastName"
+                  id="last_name"
+                  name="last_name"
                   label="Last Name"
                   variant="outlined"
-                  value={formData.lastName}
+                  value={formData.last_name}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
@@ -103,7 +115,7 @@ const Signup = () => {
                   label="Password"
                   type="password"
                   variant="outlined"
-                  value={formData.email}
+                  value={formData.password}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />
@@ -138,12 +150,12 @@ const Signup = () => {
                 <TextField
                   required
                   fullWidth
-                  id="phoneNumber"
-                  name="phoneNumber"
+                  id="phonenumber"
+                  name="phonenumber"
                   label="Phone Number"
                   type="tel"
                   variant="outlined"
-                  value={formData.phoneNumber}
+                  value={formData.phonenumber}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
                 />

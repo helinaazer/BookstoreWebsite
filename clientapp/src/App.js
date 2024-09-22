@@ -10,6 +10,7 @@ import AdminAddItems from "./Pages/AdminAddItems";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Products from "./Pages/Products";
+import ForgetPassword from "./Pages/ForgetPassword";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
         {/* Dynamic route */}
       </Routes>
     </Router>
