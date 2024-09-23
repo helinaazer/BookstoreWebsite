@@ -23,9 +23,8 @@ import { UserProvider } from "../Components/UserAdminContext";
 import CustomButton from "../Components/CustomeButton";
 
 const AdminAddItems = () => {
-  const [items, setItems] = useState([]); // Initialize items state as an empty array
+  const [items, setItems] = useState([]);
 
-  // Categories array (you can add more categories as needed)
   const [categories, setCategories] = useState([
     "Books",
     "Apparel",
@@ -44,15 +43,14 @@ const AdminAddItems = () => {
     description: "",
     price: "",
     stockNumber: "",
-    categories: [], // Add categories field
+    categories: [],
   });
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [addCategoryOpen, setAddCategoryOpen] = useState(false); // Modal state
-  const [newCategory, setNewCategory] = useState({ name: "", image: "" }); // New category state
+  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const [newCategory, setNewCategory] = useState({ name: "", image: "" });
 
   useEffect(() => {
-    // Check if all fields are filled
     const allFieldsFilled =
       newItem.images.length > 0 &&
       newItem.title &&
@@ -63,9 +61,8 @@ const AdminAddItems = () => {
     setIsButtonDisabled(!allFieldsFilled);
   }, [newItem]);
 
-  // Handle image upload (multiple images)
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files); // Convert FileList to array
+    const files = Array.from(e.target.files);
     const readers = files.map((file) => {
       const reader = new FileReader();
       return new Promise((resolve) => {
@@ -79,7 +76,6 @@ const AdminAddItems = () => {
     });
   };
 
-  // Handle adding the item
   const handleAddItem = () => {
     setItems([...items, { ...newItem, id: items.length + 1 }]);
     setNewItem({
@@ -89,36 +85,33 @@ const AdminAddItems = () => {
       description: "",
       price: "",
       stockNumber: "",
-      categories: [], // Reset categories
+      categories: [],
     });
   };
 
-  // Handle input change for text fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewItem((prevItem) => ({ ...prevItem, [name]: value }));
   };
 
-  // Handle category selection
   const handleCategoryChange = (event) => {
     const value = event.target.value;
-    setNewItem((prevItem) => ({
-      ...prevItem,
-      categories: typeof value === "string" ? value.split(",") : value,
-    }));
+    if (!value.includes("add-category")) {
+      setNewItem((prevItem) => ({
+        ...prevItem,
+        categories: typeof value === "string" ? value.split(",") : value,
+      }));
+    }
   };
 
-  // Handle opening the "Add Category" modal
   const handleAddCategoryClick = () => {
     setAddCategoryOpen(true);
   };
 
-  // Handle closing the modal
   const handleCloseAddCategory = () => {
     setAddCategoryOpen(false);
   };
 
-  // Handle adding a new category
   const handleAddNewCategory = () => {
     if (newCategory.name) {
       setCategories([...categories, newCategory.name]);
@@ -127,7 +120,6 @@ const AdminAddItems = () => {
     }
   };
 
-  // Handle new category image upload
   const handleNewCategoryImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -155,17 +147,14 @@ const AdminAddItems = () => {
       </Box>
 
       <Box className="admin-form">
-        {/* File Upload Input */}
         <input
           type="file"
           accept="image/*"
           multiple
           onChange={handleImageUpload}
           style={{ marginBottom: "20px" }}
-          required
         />
 
-        {/* Category Dropdown */}
         <FormControl fullWidth margin="normal">
           <InputLabel id="category-label">Category</InputLabel>
           <Select
@@ -174,12 +163,11 @@ const AdminAddItems = () => {
             multiple
             value={newItem.categories}
             onChange={handleCategoryChange}
-            required
             renderValue={(selected) => selected.join(", ")}
             MenuProps={{
               PaperProps: {
                 style: {
-                  maxHeight: 224, // Limit the height to 5 items (scrollable after)
+                  maxHeight: 224,
                 },
               },
             }}
@@ -199,7 +187,6 @@ const AdminAddItems = () => {
         <TextField
           label="Title"
           name="title"
-          required
           value={newItem.title}
           onChange={handleInputChange}
           fullWidth
@@ -209,20 +196,18 @@ const AdminAddItems = () => {
         <TextField
           label="Description"
           name="description"
-          required
           value={newItem.description}
           onChange={handleInputChange}
           fullWidth
           margin="normal"
           multiline
-          rows={4} // Text area for description
+          rows={4}
         />
 
         <TextField
           label="Price"
           name="price"
           type="number"
-          required
           value={newItem.price}
           onChange={handleInputChange}
           fullWidth
@@ -232,7 +217,6 @@ const AdminAddItems = () => {
         <TextField
           label="Stock Number"
           name="stockNumber"
-          required
           type="number"
           value={newItem.stockNumber}
           onChange={handleInputChange}
@@ -245,7 +229,7 @@ const AdminAddItems = () => {
             variant="contained"
             onClick={handleAddItem}
             text={"Add Item"}
-            disabled={isButtonDisabled} // Disable button based on form validation
+            disabled={isButtonDisabled}
           />
         </Box>
       </Box>
@@ -259,23 +243,22 @@ const AdminAddItems = () => {
               item.description &&
               item.price &&
               item.stockNumber
-          ) // Only show items with all fields filled
+          )
           .map((item) => (
             <Grid item xs={12} sm={6} md={4} key={item.id}>
               <ItemCardBig
-                image={item.images[0]} // Show the first image
+                image={item.images[0]}
                 title={item.title}
                 description={item.description}
                 price={item.price}
                 stockNumber={item.stockNumber}
-                categories={item.categories.join(", ")} // Show categories as comma-separated list
+                categories={item.categories.join(", ")}
                 isCart={false}
               />
             </Grid>
           ))}
       </Grid>
 
-      {/* Add Category Dialog */}
       <Dialog open={addCategoryOpen} onClose={handleCloseAddCategory}>
         <DialogTitle>Add New Category</DialogTitle>
         <DialogContent>
