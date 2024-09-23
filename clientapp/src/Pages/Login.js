@@ -1,6 +1,6 @@
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Footer from "../Components/Footer";
 import {
   TextField,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./Login.css"; // Add custom styles here
+import { AuthContext } from '../AuthContext';
 
 
 import axios from 'axios'; // Ensure Axios is imported
@@ -22,6 +23,7 @@ const Login = () => {
   const [username, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const { checkAuthentication } = useContext(AuthContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -29,8 +31,11 @@ const Login = () => {
       const response = await axios.post('http://localhost:8000/api/login/', {
         username: username, // Ensure these match the expected keys in your Django view
         password: password
+      }, {
+        withCredentials: true // Ensure session cookies are handled
       });
       console.log("Login succesminasful", response.data);
+      checkAuthentication();
       // Handle further actions after successful login like redirecting the user or storing the login token
     } catch (error) {
       console.error("Login failed:", error.response ? error.response.data : "Server error");
