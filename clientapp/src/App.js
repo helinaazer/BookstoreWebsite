@@ -10,6 +10,7 @@ import AdminAddItems from "./Pages/AdminAddItems";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Products from "./Pages/Products";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   return (

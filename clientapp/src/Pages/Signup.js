@@ -20,21 +20,93 @@ const Signup = () => {
     firstName: "",
     lastName: "",
     email: "",
+    password: "",
     address: "",
     username: "",
     phoneNumber: "",
-    gender: "", // Add gender field in formData state
+    gender: "",
   });
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let formattedValue = value;
+
+    // Function to capitalize the first letter of each word
+    const capitalizeWords = (str) =>
+      str.replace(/\b(\w)/g, (s) => s.toUpperCase());
+
+    if (name === "firstName" || name === "lastName") {
+      // Capitalize the first letter of each word for names
+      formattedValue = capitalizeWords(value.toLowerCase());
+    } else if (name === "email" || name === "username") {
+      // Convert email to lowercase
+      formattedValue = value.toLowerCase();
+    } else if (name === "address") {
+      // Capitalize each word in the address
+      formattedValue = capitalizeWords(value);
+    }
+
+    setFormData({ ...formData, [name]: formattedValue });
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Password validation
+    const password = formData.password;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const isValidLength = password.length >= 8;
+
+    if (!isValidLength || !hasUpperCase || !hasSpecialChar) {
+      newErrors.password =
+        "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.";
+    }
+
+    // Email validation
+    if (!formData.email.includes("@")) {
+      newErrors.email = "Email must contain an @ symbol and be a valid email.";
+    }
+
+    // Phone number validation (US 10-digit phone number)
+    const phoneNumber = formData.phoneNumber;
+    const phoneNumberRegex = /^\d{10}$/;
+    if (!phoneNumberRegex.test(phoneNumber)) {
+      newErrors.phoneNumber =
+        "Phone number must be a valid 10-digit US number.";
+    }
+
+    // Address validation (basic regex for US addresses)
+    const addressRegex = /^\d+\s[\w\s.-]+/; // Accepts numbers, letters, spaces, dots, and hyphens
+    if (!addressRegex.test(formData.address)) {
+      newErrors.address = "Please enter a valid US address.";
+    }
+
+    // Username validation: only letters, numbers, and underscores
+    const usernameRegex = /^[A-Za-z0-9_]+$/;
+    if (!usernameRegex.test(formData.username)) {
+      newErrors.username =
+        "Username invalid. Only letters, numbers, and underscores are allowed.";
+    }
+    // Return the errors object
+    return newErrors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+
+    // Validate form data
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      // Handle form submission logic here
+      console.log(formData);
+      setErrors({});
+    }
   };
 
   return (
@@ -65,6 +137,8 @@ const Signup = () => {
                   value={formData.firstName}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.firstName}
+                  helperText={errors.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -78,6 +152,8 @@ const Signup = () => {
                   value={formData.lastName}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.lastName}
+                  helperText={errors.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -92,6 +168,8 @@ const Signup = () => {
                   value={formData.email}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.email}
+                  helperText={errors.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -103,9 +181,11 @@ const Signup = () => {
                   label="Password"
                   type="password"
                   variant="outlined"
-                  value={formData.email}
+                  value={formData.password}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.password}
+                  helperText={errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -119,6 +199,8 @@ const Signup = () => {
                   value={formData.address}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.address}
+                  helperText={errors.address}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -132,6 +214,8 @@ const Signup = () => {
                   value={formData.username}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.username}
+                  helperText={errors.username}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -146,9 +230,10 @@ const Signup = () => {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.phoneNumber}
+                  helperText={errors.phoneNumber}
                 />
               </Grid>
-              {/* Add Gender Dropdown */}
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel id="gender-label" sx={{ color: "#2b2d42" }}>

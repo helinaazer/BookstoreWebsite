@@ -1,6 +1,6 @@
+import React, { useState } from "react";
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
-import React, { useState } from "react";
 import Footer from "../Components/Footer";
 import {
   TextField,
@@ -9,19 +9,31 @@ import {
   FormControlLabel,
   Typography,
   Box,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import "./Login.css"; // Add custom styles here
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = (event) => {
     event.preventDefault();
-    // Add your login logic here (API call, form validation, etc.)
     alert(`Logging in with ${email}`);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = () => {
+    setTimeout(() => setShowPassword((prev) => !prev), 0);
   };
 
   return (
@@ -53,11 +65,25 @@ const Login = () => {
               <TextField
                 label="Password"
                 variant="outlined"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 fullWidth
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Box>
             <Box sx={{ mb: 2 }}>
@@ -76,7 +102,7 @@ const Login = () => {
               Login
             </Button>
             <Box display="flex" justifyContent="space-between">
-              <Link to="/forgot-password" className="links">
+              <Link to="/forgotpassword" className="links">
                 Forgot password?
               </Link>
               <Link to="/signup" className="links">
