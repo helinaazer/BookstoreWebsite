@@ -11,6 +11,7 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Products from "./Pages/Products";
 import ResetPassword from "./Pages/ResetPassword";
+import Checkout from "./Pages/Checkout";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/products" element={<Products />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/checkout" element={<Checkout />} />
         {/* Dynamic route */}
       </Routes>
     </Router>

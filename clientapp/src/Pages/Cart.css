@@ -115,4 +115,7 @@
     font-size: 20px; /* Smaller delete icon for mobile */
     margin-left: 5px; /* Less space on mobile */
   }
+  .item-title {
+    font-size: 12px;
+  }
 }

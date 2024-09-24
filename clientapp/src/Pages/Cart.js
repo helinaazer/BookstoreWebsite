@@ -67,7 +67,9 @@ function Cart() {
             <img src={item.imgSrc} alt={item.title} className="item-image" />
             <div className="item-details">
               <div className="item-info">
-                <p className="item-title">{item.title}</p>
+                <p className="item-title" style={{ fontSize: "25px" }}>
+                  {item.title}
+                </p>
                 <span className="item-price">${item.price.toFixed(2)}</span>
                 <div className="quantity-selector">
                   <button
