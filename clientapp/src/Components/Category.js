@@ -1,5 +1,6 @@
 import React from "react";
 import "./Category.css";
+import { Link } from 'react-router-dom';
 
 const Category = ({ categories }) => {
   const itemsPerRow = 4;
@@ -12,12 +13,12 @@ const Category = ({ categories }) => {
       }`}
     >
       {categories.map((category, index) => (
-        <a href={category.link} className="category-link" key={index}>
+        <Link to={`/products/${category.categoryid}`} className="category-link">
           <div className="category-image-container">
-            <img src={category.image} alt={category.title} />
+            <img src={category.imageurl} alt={category.categoryname} />
           </div>
-          <div className="category-title">{category.title}</div>
-        </a>
+          <div className="category-title">{category.categoryname}</div>
+        </Link>
       ))}
     </div>
   );

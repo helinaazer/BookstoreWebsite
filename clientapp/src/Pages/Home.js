@@ -13,48 +13,26 @@ import Category from "../Components/Category";
 import axios from "axios";
 
 
-const categories = [
-  {
-    title: "Category 1",
-    image: "/image.png", // URL to the image
-    link: "/products", // URL or path the user should be taken to when clicking
-  },
-  {
-    title: "Category 2",
-    image: "/image.png",
-    link: "/products",
-  },
-  {
-    title: "Category 3",
-    image: "/image.png",
-    link: "/products",
-  },
-  {
-    title: "Category 4",
-    image: "/image.png",
-    link: "/products",
-  },
-  {
-    title: "Category 5",
-    image: "/image.png",
-    link: "/products",
-  },
-  {
-    title: "Category 6",
-    image: "/image.png",
-    link: "/products",
-  },
-  {
-    title: "Category 7",
-    image: "/image.png",
-    link: "/products",
-  },
-  // Add more categories as needed
-];
 
 const Home = () => {
 
+  const [categories, setCategories] = useState([]);
 
+  // Fetch categories from the backend
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/categories/'); // Update this URL based on your backend endpoint
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  
   return (
     <div style={{ backgroundColor: "#f4f4f4" }}>
       <UserProvider>

@@ -27,7 +27,8 @@ function App() {
           <Route path="/adminadditems" element={<AdminAddItems />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/products" element={<Products />} />
+          <Route path="/products/:id/*" element={<Products />} />
+          <Route path="/products/" element={<Products />} />
           <Route path="/forgetpassword" element={<ForgetPassword />} />
         </Routes>
       </Router>
