@@ -1,0 +1,140 @@
+/* Base styles for the container */
+.checkout-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f0f4f8; /* Lighter shade for a fresher look */
+}
+
+/* Section styles */
+.checkout-container .shipping-info,
+.checkout-container .order-summary {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+/* Responsive design adjustments */
+@media (min-width: 768px) {
+  .checkout-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .checkout-container .shipping-info {
+    flex: 2.5; /* Adjust size for balance */
+    padding-right: 20px;
+  }
+
+  .checkout-container .order-summary {
+    flex: 1;
+    padding-left: 20px;
+    border-left: 2px solid #e1e4e8; /* Lighter border for subtle separation */
+  }
+}
+
+/* Steps indicators */
+.checkout-container .steps {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333; /* Darker font for better readability */
+}
+
+/* Step circles */
+.checkout-container .step span {
+  background-color: #ddd; /* Lighter grey for inactive steps */
+  color: #333;
+}
+
+.checkout-container .step.active span {
+  background-color: #0056b3; /* Brand color for active step */
+  color: white;
+}
+
+/* Form groups styling */
+.checkout-container .form-group {
+  display: flex;
+  flex-direction: column; /* Stack vertically for better mobile usability */
+  margin-bottom: 15px;
+}
+
+/* Label and input enhancements */
+.checkout-container label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333; /* Dark grey for readability */
+}
+
+.checkout-container input[type="text"],
+.checkout-container input[type="tel"],
+.checkout-container select,
+.checkout-container input[type="email"] {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px; /* Rounded corners for a modern look */
+  background: #fff;
+}
+
+/* Focus and hover states for interactivity */
+.checkout-container input:focus,
+.checkout-container select:focus {
+  border-color: #0056b3; /* Highlight with brand color */
+  outline: none; /* Remove default focus outline */
+}
+
+/* Button styling */
+.checkout-container button {
+  padding: 10px 15px;
+  background-color: #007bff; /* Vibrant blue for actions */
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: auto; /* Adjusted to content size for better look / border-radius: 5px; / Rounded corners */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.checkout-container button {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.checkout-container .primary-button {
+  background-color: #007bff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-container .secondary-button {
+  background-color: #f8f9fa;
+  color: #007bff;
+  margin-top: 10px;
+}
+
+.checkout-container .secondary-button {
+  background-color: #eceff1; /* Slightly darker on hover */
+}
+
+.checkout-container .summary-details p {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.checkout-container .total {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.checkout-container .billing-checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.checkout-container .billing-checkbox label {
+  margin-left: 8px;
+  font-size: 14px;
+}
