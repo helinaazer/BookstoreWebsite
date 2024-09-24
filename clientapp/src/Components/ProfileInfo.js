@@ -41,6 +41,8 @@ const ProfileInfo = ({ user, isAdmin }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [hasChanged, setHasChanged] = useState(false); // Track if fields have been changed
+  const [emailError, setEmailError] = useState(""); // Track email validation error
+  const [phoneError, setPhoneError] = useState(""); // Track phone number validation error
 
   // Handle tab change navigation
   const handleTabChange = (event, newValue) => {
@@ -51,6 +53,25 @@ const ProfileInfo = ({ user, isAdmin }) => {
     }
   };
 
+  // Capitalize the first letter of each name
+  const capitalizeFirstLetter = (name) => {
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  // Validate phone number: must be 10 digits and contain no letters
+  const isValidPhoneNumber = (phone) => {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone);
+  };
+
+  // Validate email: must contain "@" symbol
+  const isValidEmail = (email) => {
+    return email.includes("@");
+  };
+
   // Handle edit button click
   const handleEditClick = () => {
     setIsEditing(true);
@@ -58,10 +79,28 @@ const ProfileInfo = ({ user, isAdmin }) => {
 
   // Handle save button click (placeholder for actual save logic)
   const handleSaveClick = () => {
-    // Typically make an API call to save the updated information to the database
-    console.log("Saving data:", formData);
-    setIsEditing(false);
-    setHasChanged(false); // Reset change tracking after saving
+    let valid = true;
+
+    if (!isValidEmail(formData.email)) {
+      setEmailError("Please enter a valid email address.");
+      valid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (!isValidPhoneNumber(formData.phoneNumber)) {
+      setPhoneError("Please enter a valid 10-digit phone number.");
+      valid = false;
+    } else {
+      setPhoneError("");
+    }
+
+    if (valid) {
+      // Typically make an API call to save the updated information to the database
+      console.log("Saving data:", formData);
+      setIsEditing(false);
+      setHasChanged(false); // Reset change tracking after saving
+    }
   };
 
   // Handle cancel button click
@@ -70,12 +109,28 @@ const ProfileInfo = ({ user, isAdmin }) => {
     setFormData(initialFormData);
     setIsEditing(false);
     setHasChanged(false); // Reset change tracking
+    setEmailError(""); // Clear email validation error
+    setPhoneError(""); // Clear phone number validation error
   };
 
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    let newValue = value;
+
+    if (name === "firstName" || name === "lastName") {
+      // Capitalize the first letter of the name
+      newValue = capitalizeFirstLetter(value);
+    } else if (name === "email") {
+      // Convert email to lowercase
+      newValue = value.toLowerCase();
+    } else if (name === "phoneNumber") {
+      // Remove any non-digit characters from the phone number
+      newValue = value.replace(/\D/g, ""); // Keep only digits
+    }
+
+    setFormData((prevData) => ({ ...prevData, [name]: newValue }));
     setHasChanged(true); // Mark that a change has been made
   };
 
@@ -222,6 +277,8 @@ const ProfileInfo = ({ user, isAdmin }) => {
             fullWidth
             margin="normal"
             disabled={!isEditing}
+            error={!!phoneError} // Show error if phone number validation fails
+            helperText={phoneError} // Show error message
           />
           <TextField
             label="Email"
@@ -231,6 +288,8 @@ const ProfileInfo = ({ user, isAdmin }) => {
             fullWidth
             margin="normal"
             disabled={!isEditing}
+            error={!!emailError} // Show error if email validation fails
+            helperText={emailError} // Show error message
           />
 
           {/* Gender Dropdown Field */}
