@@ -31,32 +31,33 @@ body {
   margin-top: 16px;
 }
 
+/* Add styles for the tab buttons to match the theme */
 .tab-button {
   display: flex;
-  align-items: center; /* Align items (icon and text) in the center */
-  justify-content: center; /* Center them horizontally */
-  display: block;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   padding: 10px;
-  /* background-color: #9f8a71; */
-  color: rgb(54, 49, 39);
+  color: #001f3f; /* Navy blue text color */
+  background-color: transparent; /* No background color */
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  width: 150px; /* Force both tabs to take the same width */
+  transition: all 0.3s ease; /* Smooth transition */
+  width: 150px;
 }
 
 .tab-button:hover {
-  background-color: #9f8a71; /* Keep the same background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
-  transform: scale(1.05); /* Slightly increase the size */
-  border: 2px solid #e0d8b4; /* Add a border */
+  transform: scale(1.1); /* Increase size on hover */
+  font-weight: bold; /* Make text bolder on hover */
+  color: #001f3f; /* Maintain navy blue text color */
+  background-color: transparent; /* No background color on hover */
+  box-shadow: none; /* No shadow */
 }
 
 .tab-button:active {
-  transform: translateY(0); /* Reset transform on click */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slightly reduce shadow */
+  transform: scale(1); /* Reset transform on click */
+  background-color: transparent;
+  box-shadow: none; /* No shadow on click */
 }
 
 .right-side {
