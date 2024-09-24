@@ -8,6 +8,11 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  Link,
 } from "@mui/material";
 import "./ProfileInfo.css";
 import { useNavigate } from "react-router-dom";
@@ -18,9 +23,8 @@ import CustomButton from "./CustomeButton";
 const ProfileInfo = ({ user, isAdmin }) => {
   const navigate = useNavigate();
 
-  // State to manage the edit mode and form data
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
+  // Store the initial form data to revert on cancel
+  const initialFormData = {
     firstName: user.firstName,
     lastName: user.lastName,
     username: user.username,
@@ -29,8 +33,13 @@ const ProfileInfo = ({ user, isAdmin }) => {
     shippingAddress: user.shippingAddress,
     phoneNumber: user.phoneNumber,
     email: user.email,
-    isAdmin: user.isAdmin, // Track if the user is an admin
-  });
+    isAdmin: user.isAdmin,
+    gender: user.gender || "male", // Default to male if not specified
+  };
+
+  // State to manage the edit mode and form data
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
   const [hasChanged, setHasChanged] = useState(false); // Track if fields have been changed
 
   // Handle tab change navigation
@@ -49,7 +58,7 @@ const ProfileInfo = ({ user, isAdmin }) => {
 
   // Handle save button click (placeholder for actual save logic)
   const handleSaveClick = () => {
-    // Here you would typically make an API call to save the updated information to the database
+    // Typically make an API call to save the updated information to the database
     console.log("Saving data:", formData);
     setIsEditing(false);
     setHasChanged(false); // Reset change tracking after saving
@@ -57,18 +66,8 @@ const ProfileInfo = ({ user, isAdmin }) => {
 
   // Handle cancel button click
   const handleCancelClick = () => {
-    // Reset form data to the original values from the user prop
-    setFormData({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      password: user.password,
-      accountCreated: user.accountCreated,
-      shippingAddress: user.shippingAddress,
-      phoneNumber: user.phoneNumber,
-      email: user.email,
-      isAdmin: user.isAdmin, // Reset admin status
-    });
+    // Reset form data to the original values (including gender)
+    setFormData(initialFormData);
     setIsEditing(false);
     setHasChanged(false); // Reset change tracking
   };
@@ -80,18 +79,33 @@ const ProfileInfo = ({ user, isAdmin }) => {
     setHasChanged(true); // Mark that a change has been made
   };
 
-  // Handle admin checkbox toggle --  Update DB
+  // Handle gender change from the dropdown
+  const handleGenderChange = (e) => {
+    setFormData((prevData) => ({ ...prevData, gender: e.target.value }));
+    setHasChanged(true); // Mark that a change has been made
+  };
+
+  // Handle admin checkbox toggle
   const handleAdminChange = (e) => {
     const { checked } = e.target;
     setFormData((prevData) => ({ ...prevData, isAdmin: checked }));
     setHasChanged(true);
   };
 
+  // Determine avatar image based on gender
+  const getAvatarImage = () => {
+    if (formData.gender === "female") {
+      return "./female.png";
+    } else if (formData.gender === "male") {
+      return "./male.png";
+    }
+  };
+
   return (
     <Box className="profile-info-container">
       <Box className="left-side">
         <Avatar
-          src={user.avatar}
+          src={getAvatarImage()}
           alt="User Avatar"
           sx={{
             width: { xs: 150, sm: 200, md: 300 },
@@ -106,6 +120,25 @@ const ProfileInfo = ({ user, isAdmin }) => {
           <div style={{ fontSize: "30px", fontWeight: "bold" }}>
             {formData.firstName} {formData.lastName}
           </div>
+        </Box>
+        <Box sx={{ textAlign: "center", marginTop: "16px" }}>
+          {/* Add "Change Password" link below Cart */}
+          <Link
+            href="/resetpassword"
+            underline="none"
+            sx={{
+              fontSize: "14px",
+              color: "#001f3f",
+              fontWeight: "bold",
+              cursor: "pointer",
+              textDecoration: "none", // No underline on hover
+              "&:hover": {
+                textDecoration: "none", // Ensure no underline on hover
+              },
+            }}
+          >
+            Change Password
+          </Link>
         </Box>
         <Tabs
           orientation="vertical"
@@ -152,19 +185,17 @@ const ProfileInfo = ({ user, isAdmin }) => {
             label="Username"
             name="username"
             value={formData.username}
-            onChange={handleInputChange}
             fullWidth
             margin="normal"
-            disabled={!isEditing}
+            disabled // Username is not editable
           />
           <TextField
             label="Password"
             name="password"
             value={formData.password}
-            onChange={handleInputChange}
             fullWidth
             margin="normal"
-            disabled={!isEditing}
+            disabled // Password field is always uneditable
           />
           <TextField
             label="Account Created"
@@ -201,6 +232,19 @@ const ProfileInfo = ({ user, isAdmin }) => {
             margin="normal"
             disabled={!isEditing}
           />
+
+          {/* Gender Dropdown Field */}
+          <FormControl fullWidth margin="normal" disabled={!isEditing}>
+            <InputLabel>Gender</InputLabel>
+            <Select
+              value={formData.gender}
+              onChange={handleGenderChange}
+              label="Gender"
+            >
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
 
         {/* Admin checkbox - only shown if the logged-in user is an admin */}
@@ -239,7 +283,10 @@ const ProfileInfo = ({ user, isAdmin }) => {
               )}
               <Button
                 variant="outlined"
-                color="secondary"
+                sx={{
+                  color: "#001f3f", // Navy blue color
+                  borderColor: "#001f3f", // Navy blue border
+                }}
                 onClick={handleCancelClick}
               >
                 Cancel

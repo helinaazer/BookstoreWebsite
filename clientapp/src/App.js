@@ -26,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         {/* Dynamic route */}
       </Routes>
     </Router>
