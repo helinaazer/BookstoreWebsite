@@ -29,15 +29,15 @@ import { useMediaQuery } from "@mui/material";
 import "./NavBar.css";
 
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [productMenuAnchorEl, setProductMenuAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [manageProductsOpen, setManageProductsOpen] = useState(false); // New state for managing the dropdown
+  const [manageProductsOpen, setManageProductsOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
 
   // Handle account menu
@@ -60,7 +60,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    // Add any additional logout logic here
   };
 
   return (
@@ -68,12 +67,12 @@ const Navbar = () => {
       position="static"
       sx={{
         backgroundColor: "#00203FFF",
-        padding: "10px 20px",
+        padding: isMobile ? "5px 10px" : "10px 20px",
         boxShadow: "none",
         borderBottom: "2px solid #ADEFD1FF",
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* Hamburger menu for mobile */}
         <IconButton
           edge="start"
@@ -82,7 +81,7 @@ const Navbar = () => {
           onClick={toggleDrawer(true)}
           sx={{ display: isMobile ? "block" : "none" }}
         >
-          <MenuIcon />
+          <MenuIcon sx={{ fontSize: "30px" }} />
         </IconButton>
 
         {/* Logo and Title */}
@@ -95,8 +94,8 @@ const Navbar = () => {
               alignItems: "center",
               color: "white",
               fontWeight: "bold",
-              fontSize: isMobile ? "1rem" : "1.5rem", // Adjust size for mobile
-              whiteSpace: "normal", // Allow the title to wrap on two lines max
+              fontSize: isMobile ? "1.2rem" : "1.5rem",
+              whiteSpace: "normal",
               lineHeight: isMobile ? "1.2" : "1.5",
             }}
           >
@@ -104,7 +103,7 @@ const Navbar = () => {
               src="St_Mary_Coc_Logo_No_Background.png"
               alt="Logo"
               style={{
-                height: "60px",
+                height: isMobile ? "40px" : "60px",
                 marginRight: "10px",
                 borderRadius: "50%",
               }}
@@ -232,7 +231,7 @@ const Navbar = () => {
         {/* Search bar */}
         {!searchOpen && (
           <IconButton color="inherit" onClick={() => setSearchOpen(true)}>
-            <SearchIcon />
+            <SearchIcon sx={{ fontSize: "30px" }} />
           </IconButton>
         )}
         {searchOpen && (
@@ -246,11 +245,16 @@ const Navbar = () => {
               borderRadius: "20px",
               boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
               gap: "10px",
+              width: isMobile ? "100%" : "auto",
             }}
           >
             <FormControl
               variant="outlined"
-              sx={{ minWidth: 120, height: "40px" }}
+              sx={{
+                width: isMobile ? "30%" : "15%",
+                minWidth: "100px",
+                height: "40px",
+              }} // Adjusted for mobile
             >
               <InputLabel id="category-select-label">Category</InputLabel>
               <Select
@@ -262,7 +266,6 @@ const Navbar = () => {
                 sx={{
                   height: "40px",
                   borderRadius: "10px",
-                  backgroundColor: "#f4f4f4",
                 }}
               >
                 <MenuItem value="books">Books</MenuItem>
@@ -276,8 +279,6 @@ const Navbar = () => {
               placeholder="Search…"
               sx={{
                 flex: 1,
-                marginLeft: 1,
-                marginRight: 1,
                 padding: "5px 10px",
                 borderRadius: "10px",
                 backgroundColor: "#f4f4f4",
@@ -319,7 +320,7 @@ const Navbar = () => {
               color="inherit"
               sx={{ marginLeft: "10px" }}
             >
-              <AccountCircle sx={{ color: "white" }} />
+              <AccountCircle sx={{ color: "white", fontSize: "30px" }} />
             </IconButton>
             <Menu
               id="simple-menu"
@@ -410,7 +411,6 @@ const Navbar = () => {
               Home
             </Link>
           </MenuItem>
-          {/* Admin-specific dropdown in drawer */}
           {isAdmin ? (
             <>
               <MenuItem
