@@ -367,7 +367,7 @@ const Navbar = () => {
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
                     <Link
-                      to="/orders"
+                      to="/manageorders"
                       style={{ textDecoration: "none", color: "white" }}
                     >
                       Orders
@@ -506,7 +506,7 @@ const Navbar = () => {
               </MenuItem>
               <MenuItem>
                 <Link
-                  to="/orders"
+                  to="/manageorders"
                   style={{ color: "white", textDecoration: "none" }}
                 >
                   Orders

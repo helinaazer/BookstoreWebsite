@@ -27,6 +27,8 @@ In terminal, run: <br>
 - `npm install @mui/material @mui/system`<br>
 - `npm install react styled-components` <br>
 - `npm install react-icons` <br>
+- `npm install react-bootstrap bootstrap` <br>
+- `npm install react-material-ui-carousel` <br>
 
 ### Setup:
 

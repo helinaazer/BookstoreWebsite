@@ -1,0 +1,160 @@
+.main-container {
+  font-family: "Arial", sans-serif;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  color: #333;
+}
+
+.page-header {
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #ccc;
+}
+
+/* Ensure the order-container is a column layout by default */
+.order-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+/* Delivery details and order summary styles */
+.delivery-details,
+.order-summary {
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Flex container for each item in the order */
+.item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item img {
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+
+.item-details {
+  display: flex;
+  flex-wrap: wrap; /* Ensure content wraps if needed */
+  flex-grow: 1;
+}
+
+.item-details p {
+  flex: 1; /* Make each item detail take up equal space */
+  margin-right: 10px; /* Add spacing between details */
+}
+
+.status {
+  color: green;
+  font-weight: bold;
+}
+
+/* Tablet view adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .order-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .delivery-details,
+  .order-summary {
+    width: 48%;
+    margin-right: 0;
+  }
+
+  .item {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .item img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .item-details p {
+    flex: 1;
+    margin-right: 5px;
+    font-size: 14px;
+  }
+}
+
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .order-container {
+    flex-direction: column;
+  }
+
+  .order-summary {
+    margin-top: 20px;
+  }
+
+  /* Ensure the items and details stack on smaller screens */
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+
+  .item-details {
+    flex-direction: column;
+  }
+
+  .item-details p {
+    margin-right: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .order-summary p {
+    font-size: 16px;
+  }
+
+  /* Add padding to mobile views for better spacing */
+  .delivery-details,
+  .order-summary {
+    padding: 15px;
+  }
+}
+
+/* General adjustments for all screen sizes */
+@media (max-width: 1024px) {
+  .main-container {
+    padding: 15px;
+  }
+
+  .delivery-details,
+  .order-summary {
+    padding: 15px;
+  }
+
+  .item-details p {
+    margin-right: 8px;
+    font-size: 15px;
+  }
+}
