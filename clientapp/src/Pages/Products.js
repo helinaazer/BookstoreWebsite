@@ -48,64 +48,66 @@ const Products = () => {
   };
 
   return (
-    <div className="products-page">
+    <div>
       <UserProvider>
         <NavBar
           logoSrc="/St_Mary_COC_Logo_No_Background.png"
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
-      <div className="header">Products</div>
-      <div className="products-container">
-        {isMobile ? (
-          <div className="category-filter">
-            <FormControl fullWidth>
-              <InputLabel id="category-label">Filter by Category</InputLabel>
-              <Select
-                labelId="category-label"
-                id="category-select"
-                value={category}
-                label="Filter by Category"
-                onChange={handleCategoryChange}
-              >
-                <MenuItem value="all">All Products</MenuItem>
-                <MenuItem value="books">Books</MenuItem>
-                <MenuItem value="supplies">Church Supplies</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-        ) : (
-          <div className="sidebar">
-            <ul className="category-list">
-              <li onClick={() => setCategory("all")}>All Products</li>
-              <li onClick={() => setCategory("books")}>Books</li>
-              <li onClick={() => setCategory("supplies")}>Church Supplies</li>
-            </ul>
-          </div>
-        )}
-        <div className="products-content">
-          <Grid container spacing={4}>
-            {currentProducts.map((product) => (
-              <Grid item xs={12} sm={4} md={4} lg={4} key={product.id}>
-                <ItemCard
-                  id={product.id} // Pass id to ItemCard for navigation
-                  image={product.image}
-                  title={product.title}
-                  price={product.price}
-                  quantity={product.quantity}
-                  isRequestable={product.isRequestable}
-                />
-              </Grid>
-            ))}
-          </Grid>
+      <div className="products-page">
+        <div className="header">Products</div>
+        <div className="products-container">
+          {isMobile ? (
+            <div className="category-filter">
+              <FormControl fullWidth>
+                <InputLabel id="category-label">Filter by Category</InputLabel>
+                <Select
+                  labelId="category-label"
+                  id="category-select"
+                  value={category}
+                  label="Filter by Category"
+                  onChange={handleCategoryChange}
+                >
+                  <MenuItem value="all">All Products</MenuItem>
+                  <MenuItem value="books">Books</MenuItem>
+                  <MenuItem value="supplies">Church Supplies</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          ) : (
+            <div className="sidebar">
+              <ul className="category-list">
+                <li onClick={() => setCategory("all")}>All Products</li>
+                <li onClick={() => setCategory("books")}>Books</li>
+                <li onClick={() => setCategory("supplies")}>Church Supplies</li>
+              </ul>
+            </div>
+          )}
+          <div className="products-content">
+            <Grid container spacing={4}>
+              {currentProducts.map((product) => (
+                <Grid item xs={12} sm={4} md={4} lg={4} key={product.id}>
+                  <ItemCard
+                    id={product.id} // Pass id to ItemCard for navigation
+                    image={product.image}
+                    title={product.title}
+                    price={product.price}
+                    quantity={product.quantity}
+                    isRequestable={product.isRequestable}
+                  />
+                </Grid>
+              ))}
+            </Grid>
 
-          {/* Pagination Component */}
-          <Pagination
-            currentPage={currentPage}
-            totalProducts={totalProducts}
-            productsPerPage={productsPerPage}
-            paginate={paginate}
-          />
+            {/* Pagination Component */}
+            <Pagination
+              currentPage={currentPage}
+              totalProducts={totalProducts}
+              productsPerPage={productsPerPage}
+              paginate={paginate}
+            />
+          </div>
         </div>
       </div>
     </div>
