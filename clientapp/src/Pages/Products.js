@@ -56,7 +56,7 @@ const Products = () => {
         />
       </UserProvider>
       <div className="products-page">
-        <div className="header">Products</div>
+        <div className="ProductsHeader">Products</div>
         <div className="products-container">
           {isMobile ? (
             <div className="category-filter">
@@ -89,12 +89,14 @@ const Products = () => {
               {currentProducts.map((product) => (
                 <Grid item xs={12} sm={4} md={4} lg={4} key={product.id}>
                   <ItemCard
-                    id={product.id} // Pass id to ItemCard for navigation
-                    image={product.image}
+                    id={product.id}
                     title={product.title}
                     price={product.price}
+                    image={product.image}
                     quantity={product.quantity}
                     isRequestable={product.isRequestable}
+                    categoriesList={product.categories}
+                    isAdmin={true} // Set this based on the user's role
                   />
                 </Grid>
               ))}

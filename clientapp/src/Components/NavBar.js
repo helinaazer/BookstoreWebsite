@@ -100,7 +100,7 @@ const Navbar = () => {
             }}
           >
             <img
-              src="St_Mary_Coc_Logo_No_Background.png"
+              src="/St_Mary_Coc_Logo_No_Background.png"
               alt="Logo"
               style={{
                 height: isMobile ? "40px" : "60px",

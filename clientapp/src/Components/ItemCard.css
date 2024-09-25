@@ -14,3 +14,7 @@
   filter: grayscale(100%);
   color: lightgray;
 }
+
+.card-hover {
+  height: 100%; /* Ensure height consistency */
+}
