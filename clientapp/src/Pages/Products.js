@@ -1,15 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../Components/NavBar";
-import "./Cart.css";
-import Grid from "@mui/material/Grid";
 import "./Products.css";
+import Grid from "@mui/material/Grid";
 import ItemCard from "../Components/ItemCard";
 import { UserProvider } from "../Components/UserAdminContext";
-import CategorySidebar from "../Components/CategorySidebar";
+import {
+  useMediaQuery,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 
 const Products = () => {
+  const [category, setCategory] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 33;
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  // Create 100 dummy products with unique names, prices, and quantities for testing
+  const totalProducts = 100;
+  const products = Array.from({ length: totalProducts }, (_, index) => ({
+    id: index + 1, // Ensure each product has a unique id
+    title: `Product long for testing purposes ${index + 1}`,
+    price: `$${(index + 1) * 5}.99`, // Different prices for testing
+    image: "./agpeya.png",
+    quantity: index % 3 === 0 ? 0 : 10, // Every third product is out of stock
+    isRequestable: index % 5 === 0, // Every fifth product is requestable
+  }));
+
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
+
+  // Calculate the current products to display
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Change page and scroll to top
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top with smooth behavior
+  };
+
   return (
-    <div>
+    <div className="products-page">
       <UserProvider>
         <NavBar
           logoSrc="/St_Mary_COC_Logo_No_Background.png"
@@ -17,44 +56,86 @@ const Products = () => {
         />
       </UserProvider>
       <div className="header">Products</div>
-      <div className="container">
-        <div className="sidebar">
-          <CategorySidebar />
-        </div>
-        <div className="products">
-          <Grid container spacing={3} className="grid-container">
-            <Grid item xs={12} sm={6} md={4} className="grid-item">
-              <ItemCard
-                image="./agpeya.png"
-                title="Coptic Prayer Book of the Seven Hours"
-                price="39.99"
-                link="/product/3"
-              />
-            </Grid>
-
-            {/* Additional Product Items */}
-            <Grid item xs={12} sm={6} md={4} className="grid-item">
-              <ItemCard
-                image="https://via.placeholder.com/345x200"
-                title="Sample Item 3"
-                description="This item is also pretty cool. You might want to consider buying it."
-                price="39.99"
-                link="/product/3"
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={4} className="grid-item">
-              <ItemCard
-                image="/logo192.png"
-                title="Church Supplies"
-                link="/product/2"
-              />
-            </Grid>
-
-            {/* Additional Product Items */}
+      <div className="products-container">
+        {isMobile ? (
+          <div className="category-filter">
+            <FormControl fullWidth>
+              <InputLabel id="category-label">Filter by Category</InputLabel>
+              <Select
+                labelId="category-label"
+                id="category-select"
+                value={category}
+                label="Filter by Category"
+                onChange={handleCategoryChange}
+              >
+                <MenuItem value="all">All Products</MenuItem>
+                <MenuItem value="books">Books</MenuItem>
+                <MenuItem value="supplies">Church Supplies</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        ) : (
+          <div className="sidebar">
+            <ul className="category-list">
+              <li onClick={() => setCategory("all")}>All Products</li>
+              <li onClick={() => setCategory("books")}>Books</li>
+              <li onClick={() => setCategory("supplies")}>Church Supplies</li>
+            </ul>
+          </div>
+        )}
+        <div className="products-content">
+          <Grid container spacing={4}>
+            {currentProducts.map((product) => (
+              <Grid item xs={12} sm={4} md={4} lg={4} key={product.id}>
+                <ItemCard
+                  id={product.id} // Pass id to ItemCard for navigation
+                  image={product.image}
+                  title={product.title}
+                  price={product.price}
+                  quantity={product.quantity}
+                  isRequestable={product.isRequestable}
+                />
+              </Grid>
+            ))}
           </Grid>
+
+          {/* Pagination Component */}
+          <Pagination
+            currentPage={currentPage}
+            totalProducts={totalProducts}
+            productsPerPage={productsPerPage}
+            paginate={paginate}
+          />
         </div>
       </div>
+    </div>
+  );
+};
+
+// Define the Pagination component
+const Pagination = ({
+  currentPage,
+  productsPerPage,
+  totalProducts,
+  paginate,
+}) => {
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalProducts / productsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <div className="pagination">
+      {pageNumbers.map((number) => (
+        <button
+          key={number}
+          onClick={() => paginate(number)}
+          className={number === currentPage ? "active" : ""}
+        >
+          {number}
+        </button>
+      ))}
     </div>
   );
 };
