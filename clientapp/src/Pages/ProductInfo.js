@@ -23,8 +23,8 @@ const products = {
     price: 39.99,
     image: "https://via.placeholder.com/345x200",
   },
-  4: {
-    name: "Sample Product 4",
+  5: {
+    name: "Sample Product 5",
     description: "This is a sample product description for product 4.",
     price: 49.99,
     image: "https://via.placeholder.com/345x200",
