@@ -11,8 +11,6 @@
 }
 
 .out-of-stock {
-  filter: grayscale(
-    100%
-  ); /* Gray out the product image if out of stock and not requestable */
+  filter: grayscale(100%);
   color: lightgray;
 }
