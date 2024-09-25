@@ -1,21 +1,18 @@
 import React from "react";
 import { Button } from "@mui/material";
 
-const CustomButton = ({ variant, onClick, text }) => {
+const CustomButton = ({ text, onClick }) => {
   return (
     <Button
-      variant={variant}
+      variant="contained"
       onClick={onClick}
       sx={{
-        backgroundColor: "#e0d8b4",
-        color: "rgb(54, 49, 39)",
+        backgroundColor: "#001f3f", // Navy blue
+        color: "white",
         "&:hover": {
-          backgroundColor: "#9f8a71",
-          color: "#333",
+          backgroundColor: "#001a33", // Darker navy on hover
+          color: "#e0d8b4", // Lighter text color on hover
         },
-        padding: "10px",
-        borderRadius: "4px",
-        transition: "all 0.3s ease",
       }}
     >
       {text}

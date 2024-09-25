@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -14,13 +14,26 @@ import {
 } from "@mui/material";
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
+import { AuthContext } from '../AuthContext';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios'; // Import Axios
 
 
 const Signup = () => {
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate(); // Initialize navigate hook
+  const { isAuthenticated } = useContext(AuthContext);
+
+  // Check if user is authenticated before rendering the component
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/"); // Redirect to home if authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
   const [formData, setFormData] = useState({
     first_name: "",
-    password:"",
+    password: "",
     last_name: "",
     email: "",
     address: "",
@@ -31,23 +44,96 @@ const Signup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let formattedValue = value;
+
+    // Function to capitalize the first letter of each word
+    const capitalizeWords = (str) =>
+      str.replace(/\b(\w)/g, (s) => s.toUpperCase());
+
+    if (name === "first_name" || name === "last_name") {
+      // Capitalize the first letter of each word for names
+      formattedValue = capitalizeWords(value.toLowerCase());
+    } else if (name === "email" || name === "username") {
+      // Convert email to lowercase
+      formattedValue = value.toLowerCase();
+    } else if (name === "address") {
+      // Capitalize each word in the address
+      formattedValue = capitalizeWords(value);
+    }
+
+    setFormData({ ...formData, [name]: formattedValue });
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Password validation
+    const password = formData.password;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const isValidLength = password.length >= 8;
+
+    if (!isValidLength || !hasUpperCase || !hasSpecialChar) {
+      newErrors.password =
+        "Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.";
+    }
+
+    // Email validation
+    if (!formData.email.includes("@")) {
+      newErrors.email = "Email must contain an @ symbol and be a valid email.";
+    }
+
+    // Phone number validation (US 10-digit phone number)
+    const phoneNumber = formData.phonenumber;
+    const phoneNumberRegex = /^\d{10}$/;
+    if (!phoneNumberRegex.test(phoneNumber)) {
+      newErrors.phoneNumber =
+        "Phone number must be a valid 10-digit US number.";
+    }
+
+    // Address validation (basic regex for US addresses)
+    const addressRegex = /^\d+\s[\w\s.-]+/; // Accepts numbers, letters, spaces, dots, and hyphens
+    if (!addressRegex.test(formData.address)) {
+      newErrors.address = "Please enter a valid US address.";
+    }
+
+    // Username validation: only letters, numbers, and underscores
+    const usernameRegex = /^[A-Za-z0-9_]+$/;
+    if (!usernameRegex.test(formData.username)) {
+      newErrors.username =
+        "Username invalid. Only letters, numbers, and underscores are allowed.";
+    }
+
+    return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting data:", formData);  // Log formData to confirm all fields are included
-    try {
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      // Handle form submission logic here
+      console.log(formData);
+      try {
         const response = await axios.post("http://localhost:8000/api/register/", formData, {
           headers: {
-              'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
           }
-      });
+        });
         console.log("Response data:", response.data);
-    } catch (error) {
+      } catch (error) {
         console.error("Error registering user:", error.response ? error.response.data : error.message);
+      }
+      setErrors({});
     }
-};
+  };
+
+  // Don't render the form if the user is already authenticated
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="background">
@@ -77,6 +163,8 @@ const Signup = () => {
                   value={formData.first_name}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.firstName}
+                  helperText={errors.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -90,6 +178,8 @@ const Signup = () => {
                   value={formData.last_name}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.lastName}
+                  helperText={errors.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -104,6 +194,8 @@ const Signup = () => {
                   value={formData.email}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.email}
+                  helperText={errors.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -118,6 +210,8 @@ const Signup = () => {
                   value={formData.password}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.password}
+                  helperText={errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -131,6 +225,8 @@ const Signup = () => {
                   value={formData.address}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.address}
+                  helperText={errors.address}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -144,6 +240,8 @@ const Signup = () => {
                   value={formData.username}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.username}
+                  helperText={errors.username}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -158,9 +256,10 @@ const Signup = () => {
                   value={formData.phonenumber}
                   onChange={handleChange}
                   InputLabelProps={{ sx: { color: "#2b2d42" } }}
+                  error={!!errors.phoneNumber}
+                  helperText={errors.phoneNumber}
                 />
               </Grid>
-              {/* Add Gender Dropdown */}
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel id="gender-label" sx={{ color: "#2b2d42" }}>

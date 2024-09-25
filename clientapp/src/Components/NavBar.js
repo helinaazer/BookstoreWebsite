@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -8,11 +9,14 @@ import {
   Menu,
   Box,
   Button,
-  Divider,
   Drawer,
+  FormControl,
+  Select,
+  InputLabel,
 } from "@mui/material";
 import {
   Search as SearchIcon,
+  Close as CloseIcon,
   AccountCircle,
   ShoppingCart,
   Logout,
@@ -22,19 +26,18 @@ import {
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useMediaQuery } from "@mui/material";
-import "./NavBar.css"; // Importing the CSS file
-import axios from 'axios';
-import { useState, useContext, useEffect } from 'react';
-import isAuthenticated from "../App"
-import { AuthContext } from '../AuthContext';
+import "./NavBar.css";
 
 const Navbar = () => {
-  // Simulate user states
-  const { isAuthenticated, isAdmin, username } = useContext(AuthContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const [productMenuAnchorEl, setProductMenuAnchorEl] = useState(null); // For Manage Products dropdown
+  const [productMenuAnchorEl, setProductMenuAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [manageProductsOpen, setManageProductsOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
 
   // Handle account menu
@@ -47,7 +50,6 @@ const Navbar = () => {
     setProductMenuAnchorEl(null);
   };
 
-  // Handle Manage Products dropdown
   const handleProductMenu = (event) => {
     setProductMenuAnchorEl(event.currentTarget);
   };
@@ -56,20 +58,21 @@ const Navbar = () => {
     setDrawerOpen(open);
   };
 
-  console.log(isAdmin);
-  console.log(isAuthenticated);
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
 
   return (
     <AppBar
       position="static"
       sx={{
         backgroundColor: "#00203FFF",
-        padding: "10px 20px",
+        padding: isMobile ? "5px 10px" : "10px 20px",
         boxShadow: "none",
         borderBottom: "2px solid #ADEFD1FF",
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* Hamburger menu for mobile */}
         <IconButton
           edge="start"
@@ -78,30 +81,39 @@ const Navbar = () => {
           onClick={toggleDrawer(true)}
           sx={{ display: isMobile ? "block" : "none" }}
         >
-          <MenuIcon />
+          <MenuIcon sx={{ fontSize: "30px" }} />
         </IconButton>
 
         {/* Logo and Title */}
-        <Typography
-          variant="h6"
-          sx={{
-            flexGrow: 1,
-            display: "flex",
-            alignItems: "center",
-            color: "white",
-            fontWeight: "bold",
-          }}
-        >
-          <img
-            src="St_Mary_Coc_Logo_No_Background.png"
-            alt="Logo"
-            style={{ height: "60px", marginRight: "15px", borderRadius: "50%" }}
-          />
-          St.Mary's Coptic Orthodox Church Bookstore
-        </Typography>
+        {!searchOpen && (
+          <Typography
+            variant="h6"
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: isMobile ? "1.2rem" : "1.5rem",
+              whiteSpace: "normal",
+              lineHeight: isMobile ? "1.2" : "1.5",
+            }}
+          >
+            <img
+              src="St_Mary_Coc_Logo_No_Background.png"
+              alt="Logo"
+              style={{
+                height: isMobile ? "40px" : "60px",
+                marginRight: "10px",
+                borderRadius: "50%",
+              }}
+            />
+            St.Mary's Coptic Orthodox Church Bookstore
+          </Typography>
+        )}
 
         {/* Links for larger screens */}
-        {!isMobile && (
+        {!isMobile && !searchOpen && (
           <Box sx={{ display: "flex", gap: "20px", alignItems: "center" }}>
             <Button
               component={Link}
@@ -118,9 +130,7 @@ const Navbar = () => {
             >
               Home
             </Button>
-            
-            
-            {/* Admin: Manage Products Dropdown */}
+
             {isAdmin && (
               <>
                 <Button
@@ -138,7 +148,6 @@ const Navbar = () => {
                 >
                   Manage Products
                 </Button>
-                {/* Dropdown for Manage Products */}
                 <Menu
                   anchorEl={productMenuAnchorEl}
                   open={Boolean(productMenuAnchorEl)}
@@ -182,7 +191,6 @@ const Navbar = () => {
               </>
             )}
 
-            {/* Non-admin links */}
             {!isAdmin && (
               <>
                 <Button
@@ -223,107 +231,164 @@ const Navbar = () => {
         {/* Search bar */}
         {!searchOpen && (
           <IconButton color="inherit" onClick={() => setSearchOpen(true)}>
-            <SearchIcon />
+            <SearchIcon sx={{ fontSize: "30px" }} />
           </IconButton>
         )}
         {searchOpen && (
-          <InputBase
-            placeholder="Search…"
+          <Box
             sx={{
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
               backgroundColor: "#fff",
-              padding: "5px 10px",
+              padding: "2px 10px",
               borderRadius: "20px",
-              width: isMobile ? "100%" : "300px",
               boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+              gap: "10px",
+              width: isMobile ? "100%" : "auto",
             }}
-            inputProps={{ "aria-label": "search" }}
-            endAdornment={
-              <IconButton
-                onClick={() => setSearchOpen(false)}
-                sx={{ color: "#00203FFF" }}
+          >
+            <FormControl
+              variant="outlined"
+              sx={{
+                width: isMobile ? "30%" : "15%",
+                minWidth: "100px",
+                height: "40px",
+              }} // Adjusted for mobile
+            >
+              <InputLabel id="category-select-label">Category</InputLabel>
+              <Select
+                labelId="category-select-label"
+                id="category-select"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                label="Category"
+                sx={{
+                  height: "40px",
+                  borderRadius: "10px",
+                }}
               >
-                ✕
-              </IconButton>
-            }
-          />
+                <MenuItem value="books">Books</MenuItem>
+                <MenuItem value="icons">Icons</MenuItem>
+                <MenuItem value="candles">Candles</MenuItem>
+                <MenuItem value="crosses">Crosses</MenuItem>
+              </Select>
+            </FormControl>
+
+            <InputBase
+              placeholder="Search…"
+              sx={{
+                flex: 1,
+                padding: "5px 10px",
+                borderRadius: "10px",
+                backgroundColor: "#f4f4f4",
+              }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              inputProps={{ "aria-label": "search" }}
+            />
+
+            {searchTerm && (
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: "#ADEFD1FF", height: "40px" }}
+              >
+                Search
+              </Button>
+            )}
+
+            <IconButton
+              onClick={() => {
+                setSearchOpen(false);
+                setSearchTerm("");
+              }}
+              sx={{ color: "#00203FFF" }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
         )}
 
-        {/* Account and Cart Icons */}
-        <IconButton
-          edge="end"
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-          sx={{ marginLeft: "10px" }}
-        >
-          <AccountCircle sx={{ color: "white" }} />
-        </IconButton>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              backgroundColor: "#00203FFF",
-              color: "#fff",
-            },
-          }}
-        >
-          {!isAuthenticated ? (
-            <>
-              <MenuItem onClick={handleClose}>
-                <Login />{" "}
-                <Link
-                  to="/login"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  Login
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link
-                  to="/signup"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  Signup
-                </Link>
-              </MenuItem>
-            </>
-          ) : (
-            <>
-              <MenuItem onClick={handleClose}>
-                <Link
-                  to="/profile"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  Profile
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link
-                  to="/orders"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  Orders
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link
-                  to="/cart"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  <ShoppingCart /> Cart
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Logout /> Logout
-              </MenuItem>
-            </>
-          )}
-        </Menu>
+        {/* Account and Cart Icons (Disabled for mobile) */}
+        {!searchOpen && !isMobile && (
+          <>
+            <IconButton
+              edge="end"
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+              sx={{ marginLeft: "10px" }}
+            >
+              <AccountCircle sx={{ color: "white", fontSize: "30px" }} />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              PaperProps={{
+                style: {
+                  backgroundColor: "#00203FFF",
+                  color: "#fff",
+                },
+              }}
+            >
+              {!isAuthenticated ? (
+                <>
+                  <MenuItem onClick={handleClose}>
+                    <Login />
+                    <Link
+                      to="/login"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      Login
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to="/signup"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      Signup
+                    </Link>
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to="/profile"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      Profile
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to="/orders"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      Orders
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to="/cart"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      <ShoppingCart /> Cart
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <Logout /> Logout
+                  </MenuItem>
+                </>
+              )}
+            </Menu>
+          </>
+        )}
       </Toolbar>
 
       {/* Drawer for mobile view */}
@@ -346,50 +411,49 @@ const Navbar = () => {
               Home
             </Link>
           </MenuItem>
-          <Divider sx={{ backgroundColor: "white" }} />
-
-          {/* Admin-specific dropdown in drawer */}
           {isAdmin ? (
             <>
-              <MenuItem onClick={handleProductMenu}>
+              <MenuItem
+                onClick={() => setManageProductsOpen(!manageProductsOpen)}
+              >
                 Manage Products <ExpandMoreIcon sx={{ color: "#ADEFD1FF" }} />
               </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
-              <MenuItem>
-                <Link
-                  to="/add-product"
-                  style={{ color: "white", textDecoration: "none" }}
-                >
-                  Add Product
-                </Link>
-              </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
-              <MenuItem>
-                <Link
-                  to="/edit-product"
-                  style={{ color: "white", textDecoration: "none" }}
-                >
-                  Edit Product
-                </Link>
-              </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
-              <MenuItem>
-                <Link
-                  to="/remove-product"
-                  style={{ color: "white", textDecoration: "none" }}
-                >
-                  Remove Product
-                </Link>
-              </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
-              <MenuItem>
-                <Link
-                  to="/add-category"
-                  style={{ color: "white", textDecoration: "none" }}
-                >
-                  Add Category
-                </Link>
-              </MenuItem>
+              {manageProductsOpen && (
+                <>
+                  <MenuItem>
+                    <Link
+                      to="/add-product"
+                      style={{ color: "white", textDecoration: "none" }}
+                    >
+                      Add Product
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      to="/edit-product"
+                      style={{ color: "white", textDecoration: "none" }}
+                    >
+                      Edit Product
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      to="/remove-product"
+                      style={{ color: "white", textDecoration: "none" }}
+                    >
+                      Remove Product
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      to="/add-category"
+                      style={{ color: "white", textDecoration: "none" }}
+                    >
+                      Add Category
+                    </Link>
+                  </MenuItem>
+                </>
+              )}
             </>
           ) : (
             <>
@@ -401,7 +465,6 @@ const Navbar = () => {
                   St.Mary's COC Website
                 </Link>
               </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
               <MenuItem>
                 <Link
                   to="/contact"
@@ -412,7 +475,6 @@ const Navbar = () => {
               </MenuItem>
             </>
           )}
-
           {!isAuthenticated ? (
             <>
               <MenuItem>
@@ -423,7 +485,6 @@ const Navbar = () => {
                   Login
                 </Link>
               </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
               <MenuItem>
                 <Link
                   to="/signup"
@@ -443,7 +504,6 @@ const Navbar = () => {
                   Profile
                 </Link>
               </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
               <MenuItem>
                 <Link
                   to="/orders"
@@ -452,7 +512,6 @@ const Navbar = () => {
                   Orders
                 </Link>
               </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
               <MenuItem>
                 <Link
                   to="/cart"
@@ -461,8 +520,7 @@ const Navbar = () => {
                   <ShoppingCart /> Cart
                 </Link>
               </MenuItem>
-              <Divider sx={{ backgroundColor: "white" }} />
-              <MenuItem>
+              <MenuItem onClick={handleLogout}>
                 <Logout /> Logout
               </MenuItem>
             </>

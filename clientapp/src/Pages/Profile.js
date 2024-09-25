@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ProfileInfo from "../Components/ProfileInfo";
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
+import { AuthContext } from '../AuthContext'; // Ensure you are using AuthContext
+import axios from 'axios';
 
 const Profile = () => {
-  const user = {
-    firstName: "John",
-    lastName: "Doe",
-    username: "johndoe123",
-    password: "********",
-    accountCreated: "2023-01-01",
-    shippingAddress: "123 Main St, Anytown, USA",
-    phoneNumber: "123-456-7890",
-    email: "johndoe@example.com",
-    avatar: "/image.png",
-  };
+  const { isAuthenticated } = useContext(AuthContext); // Use context for authentication
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/user_details/', {
+          withCredentials: true // Ensure cookies are sent
+        });
+        setUser(response.data); // Set the user data
+        setLoading(false); // Stop loading when data is fetched
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+        setLoading(false); // Stop loading on error
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchUserDetails();
+    }
+  }, [isAuthenticated]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -24,7 +41,7 @@ const Profile = () => {
           title="St. Mary's Coptic Orthodox Church Bookstore"
         />
       </UserProvider>
-      <ProfileInfo user={user} />
+      {user && <ProfileInfo user={user} />}
     </div>
   );
 };

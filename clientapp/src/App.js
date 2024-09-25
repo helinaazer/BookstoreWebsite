@@ -12,6 +12,7 @@ import Signup from "./Pages/Signup";
 import Products from "./Pages/Products";
 import ForgetPassword from "./Pages/ForgetPassword";
 import { AuthProvider } from './AuthContext';
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/products/:id/*" element={<Products />} />
           <Route path="/products/" element={<Products />} />
           <Route path="/forgetpassword" element={<ForgetPassword />} />
+          <Route path="/auth/reset/:uid/:token" element={<ResetPassword />} />
         </Routes>
       </Router>
     </AuthProvider>

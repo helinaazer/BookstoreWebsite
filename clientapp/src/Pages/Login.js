@@ -1,6 +1,7 @@
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
 import {
   TextField,
@@ -13,8 +14,6 @@ import {
 import { Link } from "react-router-dom";
 import "./Login.css"; // Add custom styles here
 import { AuthContext } from '../AuthContext';
-
-
 import axios from 'axios'; // Ensure Axios is imported
 
 
@@ -23,7 +22,16 @@ const Login = () => {
   const [username, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const { checkAuthentication } = useContext(AuthContext);
+  const { isAuthenticated, checkAuthentication } = useContext(AuthContext);
+  const navigate = useNavigate(); // Initialize navigate hook
+
+  useEffect(() => {
+    // If user is already authenticated, redirect to home
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -36,6 +44,7 @@ const Login = () => {
       });
       console.log("Login succesminasful", response.data);
       checkAuthentication();
+      navigate("/");
       // Handle further actions after successful login like redirecting the user or storing the login token
     } catch (error) {
       console.error("Login failed:", error.response ? error.response.data : "Server error");
