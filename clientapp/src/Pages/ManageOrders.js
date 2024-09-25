@@ -248,7 +248,7 @@ const ManageOrders = () => {
                 >
                   <TableCell component="th" scope="row">
                     <Link
-                      to={`/order-details/${order.id}`}
+                      to={`/orderdetails/${order.id}`}
                       style={{ textDecoration: "none" }}
                     >
                       <Chip label={`#${order.id}`} color="primary" clickable />
