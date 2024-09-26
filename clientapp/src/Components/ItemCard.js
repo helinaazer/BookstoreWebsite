@@ -61,6 +61,14 @@ export default function ItemCard({
     "Children",
   ]);
 
+  const [errors, setErrors] = useState({
+    title: "",
+    price: "",
+    quantity: "",
+    description: "",
+    categories: "",
+  });
+
   const outOfStock = quantity === 0 && !isRequestable;
   const requestable = quantity === 0 && isRequestable;
 
@@ -137,6 +145,11 @@ export default function ItemCard({
       ...prev,
       [name]: formattedValue,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "", // Clear error message for this field on change
+    }));
   };
 
   // Handle category selection change
@@ -145,6 +158,12 @@ export default function ItemCard({
     setEditedProduct((prev) => ({
       ...prev,
       categories: typeof value === "string" ? value.split(",") : value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      categories:
+        value.length === 0 ? "At least one category is required." : "",
     }));
   };
 
@@ -169,8 +188,27 @@ export default function ItemCard({
 
   // Handle save functionality
   const handleSave = () => {
-    console.log("Saved product", editedProduct);
-    setIsDialogOpen(false);
+    const newErrors = {
+      title: editedProduct.title ? "" : "Product name is required.",
+      price: editedProduct.price ? "" : "Price is required.",
+      quantity: editedProduct.quantity ? "" : "Stock quantity is required.",
+      description: editedProduct.description
+        ? ""
+        : "Product description is required.",
+      categories:
+        editedProduct.categories.length === 0
+          ? "At least one category is required."
+          : "",
+    };
+
+    setErrors(newErrors);
+
+    const hasError = Object.values(newErrors).some((err) => err !== "");
+
+    if (!hasError) {
+      console.log("Saved product", editedProduct);
+      setIsDialogOpen(false);
+    }
   };
 
   // Handle adding new category (capitalize words in the new category)
@@ -292,7 +330,12 @@ export default function ItemCard({
         <DialogContent>
           {/* Categories */}
           <Grid item xs={12}>
-            <FormControl fullWidth margin="normal">
+            <FormControl
+              fullWidth
+              margin="normal"
+              required
+              error={!!errors.categories}
+            >
               <InputLabel id="category-select-label">Categories</InputLabel>
               <Select
                 labelId="category-select-label"
@@ -319,6 +362,11 @@ export default function ItemCard({
                   </MenuItem>
                 ))}
               </Select>
+              {errors.categories && (
+                <Typography sx={{ color: "red", fontSize: "0.8rem", mt: 0.5 }}>
+                  {errors.categories}
+                </Typography>
+              )}
               <Button
                 variant="text"
                 color="primary"
@@ -338,6 +386,8 @@ export default function ItemCard({
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
+                error={!!errors.title}
+                helperText={errors.title}
               />
             </Grid>
             {/* Description */}
@@ -351,6 +401,8 @@ export default function ItemCard({
                 multiline
                 rows={3}
                 margin="normal"
+                error={!!errors.description}
+                helperText={errors.description}
               />
             </Grid>
             {/* Price */}
@@ -362,6 +414,8 @@ export default function ItemCard({
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
+                error={!!errors.price}
+                helperText={errors.price}
               />
             </Grid>
             {/* Stock Quantity */}
@@ -373,6 +427,8 @@ export default function ItemCard({
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
+                error={!!errors.quantity}
+                helperText={errors.quantity}
               />
             </Grid>
 
