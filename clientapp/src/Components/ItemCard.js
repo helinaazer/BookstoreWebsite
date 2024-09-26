@@ -485,7 +485,7 @@ export default function ItemCard({
         onClose={handleAddCategoryDialogClose}
       >
         <DialogTitle>Add New Category</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ padding: "16px" }}>
           <TextField
             label="Category Name"
             value={newCategory}

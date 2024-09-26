@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState } from "react";
 import NavBar from "../Components/NavBar";
 import "./Products.css";
 import Grid from "@mui/material/Grid";
@@ -21,8 +21,25 @@ import {
   Typography,
   Grid as GridDialog,
   ListItemText,
+  FormHelperText,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+
+// Utility functions for formatting
+const capitalizeWords = (str) => {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+const capitalizeSentences = (str) => {
+  return str.replace(/(^\w|\.\s*\w)/g, (char) => char.toUpperCase());
+};
+
+const ensureDollarSign = (str) => {
+  if (str.charAt(0) !== "$") {
+    return `$${str.replace(/[^0-9.]/g, "")}`;
+  }
+  return `$${str.replace(/[^0-9.]/g, "")}`;
+};
 
 const Products = () => {
   const [category, setCategory] = useState("all");
@@ -34,7 +51,7 @@ const Products = () => {
   const [newCategory, setNewCategory] = useState("");
   const [newProduct, setNewProduct] = useState({
     title: "",
-    price: "",
+    price: "$", // Start with a dollar sign
     image: "",
     quantity: "",
     isRequestable: false,
@@ -43,15 +60,16 @@ const Products = () => {
     images: [],
   });
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [errors, setErrors] = useState({
-    title: "",
-    price: "",
-    quantity: "",
-    description: "",
-    categories: "",
-  });
-
   const isAdmin = true;
+
+  // Error state for each field
+  const [errors, setErrors] = useState({
+    title: false,
+    price: false,
+    quantity: false,
+    description: false,
+    categories: false,
+  });
 
   const [categories, setCategories] = useState([
     "Books",
@@ -65,51 +83,32 @@ const Products = () => {
   ]);
 
   const totalProducts = 100;
-  const products = useMemo(
-    () =>
-      Array.from({ length: totalProducts }, (_, index) => ({
-        id: index + 1,
-        title: `Product ${index + 1}`,
-        price: `$${((index + 1) * 5).toFixed(2)}`,
-        image: "./agpeya.png",
-        quantity: index % 3 === 0 ? 0 : 10,
-        isRequestable: index % 5 === 0,
-      })),
-    [totalProducts]
-  );
+  const products = Array.from({ length: totalProducts }, (_, index) => ({
+    id: index + 1,
+    title: `Product ${index + 1}`,
+    price: `$${((index + 1) * 5).toFixed(2)}`,
+    image: "./agpeya.png",
+    quantity: index % 3 === 0 ? 0 : 10,
+    isRequestable: index % 5 === 0,
+  }));
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = useMemo(
-    () => products.slice(indexOfFirstProduct, indexOfLastProduct),
-    [indexOfFirstProduct, indexOfLastProduct, products]
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
   );
 
-  const paginate = useCallback(
-    (pageNumber) => {
-      setCurrentPage(pageNumber);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    },
-    [setCurrentPage]
-  );
-
-  const handleCategoryChange = useCallback((event) => {
-    setCategory(event.target.value);
-  }, []);
-
-  const handleOpenAddProduct = () => {
-    setIsAddProductOpen(true);
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleCloseAddProduct = () => {
-    setIsAddProductOpen(false);
-    resetNewProduct();
-  };
-
-  const resetNewProduct = useCallback(() => {
+  // Reset new product fields after saving or canceling
+  const resetNewProduct = () => {
     setNewProduct({
       title: "",
-      price: "",
+      price: "$", // Ensure $ sign remains
       image: "",
       quantity: "",
       isRequestable: false,
@@ -118,93 +117,107 @@ const Products = () => {
       images: [],
     });
     setSelectedCategories([]);
+  };
+
+  const handleOpenAddProduct = () => {
+    setIsAddProductOpen(true);
+  };
+
+  const handleCloseAddProduct = () => {
+    setIsAddProductOpen(false);
+    resetNewProduct(); // Clear the input fields on cancel
     setErrors({
-      title: "",
-      price: "",
-      quantity: "",
-      description: "",
-      categories: "",
+      title: false,
+      price: false,
+      quantity: false,
+      description: false,
+      categories: false,
     });
-  }, []);
+  };
 
-  const handleNewProductChange = useCallback(
-    (e) => {
-      const { name, value } = e.target;
-      setNewProduct((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+  const handleNewProductChange = (e) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
 
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    },
-    [setNewProduct, setErrors]
-  );
-
-  const handleCategoryChangeAddProduct = useCallback(
-    (event) => {
-      const value = event.target.value;
-      setSelectedCategories(value);
-      setErrors((prev) => ({
-        ...prev,
-        categories:
-          value.length === 0 ? "At least one category is required." : "",
-      }));
-    },
-    [setSelectedCategories, setErrors]
-  );
-
-  const handleSaveNewProduct = useCallback(() => {
-    const newErrors = {
-      title: newProduct.title ? "" : "Product name is required.",
-      price: newProduct.price ? "" : "Price is required.",
-      quantity: newProduct.quantity ? "" : "Stock quantity is required.",
-      description: newProduct.description
-        ? ""
-        : "Product description is required.",
-      categories:
-        selectedCategories.length === 0
-          ? "At least one category is required."
-          : "",
-    };
-
-    setErrors(newErrors);
-
-    const hasError = Object.values(newErrors).some((err) => err !== "");
-
-    if (!hasError) {
-      console.log("New product created:", {
-        ...newProduct,
-        categories: selectedCategories,
-      });
-      setIsAddProductOpen(false);
-      resetNewProduct();
+    if (name === "title") {
+      formattedValue = capitalizeWords(value); // Capitalize each word in product name
+    } else if (name === "price") {
+      formattedValue = ensureDollarSign(value); // Ensure $ in price
+    } else if (name === "quantity") {
+      // Only positive whole numbers
+      formattedValue = value.replace(/[^0-9]/g, "");
+    } else if (name === "description") {
+      formattedValue = capitalizeSentences(value); // Capitalize first word of each sentence
     }
-  }, [newProduct, selectedCategories, resetNewProduct]);
 
-  const handleImageUpload = useCallback(
-    (e) => {
-      const files = Array.from(e.target.files);
-      const newImages = files.map((file) => URL.createObjectURL(file));
+    setNewProduct((prev) => ({
+      ...prev,
+      [name]: formattedValue,
+    }));
+  };
 
-      setNewProduct((prev) => ({
-        ...prev,
-        images: [...prev.images, ...newImages],
-      }));
-    },
-    [setNewProduct]
-  );
+  const handleCategoryChangeAddProduct = (event) => {
+    const value = event.target.value;
+    setSelectedCategories(value);
+  };
 
-  const handleAddNewCategory = useCallback(() => {
+  const handleSaveNewProduct = () => {
+    const { title, price, quantity, description } = newProduct;
+
+    // Check if all required fields are filled and set errors
+    setErrors({
+      title: !title,
+      price: !price || price === "$", // Ensure price is not just "$"
+      quantity: !quantity,
+      description: !description,
+      categories: selectedCategories.length === 0,
+    });
+
+    // If any field has an error, don't proceed
+    if (
+      !title ||
+      !price ||
+      !quantity ||
+      !description ||
+      selectedCategories.length === 0
+    ) {
+      return;
+    }
+
+    // Add new product to the product list here (logic omitted for simplicity)
+    console.log("New product created:", {
+      ...newProduct,
+      categories: selectedCategories,
+    });
+
+    setIsAddProductOpen(false); // Close the dialog
+    resetNewProduct(); // Clear the input fields after adding
+  };
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = files.map((file) => URL.createObjectURL(file));
+
+    setNewProduct((prev) => ({
+      ...prev,
+      images: [...prev.images, ...newImages],
+    }));
+  };
+
+  const handleAddNewCategory = () => {
     if (newCategory.trim()) {
-      setCategories([...categories, newCategory]);
-      setSelectedCategories([...selectedCategories, newCategory]);
+      const formattedCategory = capitalizeWords(newCategory.trim()); // Capitalize each word in category name
+      setCategories([...categories, formattedCategory]); // Add to categories with proper formatting
+      setSelectedCategories([...selectedCategories, formattedCategory]); // Update selected categories
       setIsAddCategoryDialogOpen(false);
-      setNewCategory("");
+      setNewCategory(""); // Clear the input field after adding
     }
-  }, [newCategory, categories, selectedCategories]);
+  };
+
+  const handleCloseAddCategory = () => {
+    setIsAddCategoryDialogOpen(false);
+    setNewCategory(""); // Clear the input field on cancel
+  };
 
   return (
     <div>
@@ -240,14 +253,11 @@ const Products = () => {
                   id="category-select"
                   value={category}
                   label="Filter by Category"
-                  onChange={handleCategoryChange}
+                  onChange={(e) => setCategory(e.target.value)}
                 >
                   <MenuItem value="all">All Products</MenuItem>
-                  {categories.map((category, index) => (
-                    <MenuItem key={index} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
+                  <MenuItem value="books">Books</MenuItem>
+                  <MenuItem value="supplies">Church Supplies</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -255,11 +265,8 @@ const Products = () => {
             <div className="sidebar">
               <ul className="category-list">
                 <li onClick={() => setCategory("all")}>All Products</li>
-                {categories.map((category, index) => (
-                  <li key={index} onClick={() => setCategory(category)}>
-                    {category}
-                  </li>
-                ))}
+                <li onClick={() => setCategory("books")}>Books</li>
+                <li onClick={() => setCategory("supplies")}>Church Supplies</li>
               </ul>
             </div>
           )}
@@ -276,7 +283,6 @@ const Products = () => {
                     isRequestable={product.isRequestable}
                     categoriesList={product.categories}
                     isAdmin={isAdmin}
-                    onEdit={() => console.log("Edit product")}
                   />
                 </Grid>
               ))}
@@ -293,38 +299,186 @@ const Products = () => {
       </div>
 
       {/* Add Product Dialog */}
-      <AddProductDialog
-        isOpen={isAddProductOpen}
-        onClose={handleCloseAddProduct}
-        newProduct={newProduct}
-        handleNewProductChange={handleNewProductChange}
-        handleCategoryChangeAddProduct={handleCategoryChangeAddProduct}
-        handleImageUpload={handleImageUpload}
-        selectedCategories={selectedCategories}
-        errors={errors}
-        handleSaveNewProduct={handleSaveNewProduct}
-        categories={categories}
-        setIsAddCategoryDialogOpen={setIsAddCategoryDialogOpen}
-      />
+      <Dialog open={isAddProductOpen} onClose={handleCloseAddProduct}>
+        <DialogTitle>Add New Product</DialogTitle>
+        <DialogContent>
+          <GridDialog item xs={12}>
+            <FormControl
+              fullWidth
+              margin="normal"
+              required
+              error={errors.categories}
+            >
+              <InputLabel id="category-select-label">Categories</InputLabel>
+              <Select
+                labelId="category-select-label"
+                id="category-select"
+                multiple
+                value={selectedCategories}
+                onChange={handleCategoryChangeAddProduct}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 48 * 4.5 + 8,
+                      width: 250,
+                    },
+                  },
+                }}
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category} value={category}>
+                    <Checkbox
+                      checked={selectedCategories.indexOf(category) > -1}
+                    />
+                    <ListItemText primary={category} />
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.categories && (
+                <FormHelperText>
+                  At least one category is required.
+                </FormHelperText>
+              )}
+              <Button
+                variant="text"
+                color="primary"
+                onClick={() => setIsAddCategoryDialogOpen(true)}
+              >
+                + Add Category
+              </Button>
+            </FormControl>
+          </GridDialog>
+          <GridDialog container spacing={2}>
+            <GridDialog item xs={12}>
+              <TextField
+                label="Product Name"
+                name="title"
+                value={newProduct.title}
+                onChange={handleNewProductChange}
+                fullWidth
+                margin="normal"
+                required
+                error={errors.title}
+                helperText={errors.title ? "Product name is required." : ""}
+              />
+            </GridDialog>
+
+            <GridDialog item xs={12}>
+              <TextField
+                label="Product Description"
+                name="description"
+                value={newProduct.description}
+                onChange={handleNewProductChange}
+                fullWidth
+                multiline
+                rows={3}
+                margin="normal"
+                required
+                error={errors.description}
+                helperText={
+                  errors.description ? "Product description is required." : ""
+                }
+              />
+            </GridDialog>
+
+            <GridDialog item xs={12}>
+              <TextField
+                label="Price"
+                name="price"
+                value={newProduct.price}
+                onChange={handleNewProductChange}
+                fullWidth
+                margin="normal"
+                required
+                error={errors.price}
+                helperText={errors.price ? "Product price is required." : ""}
+              />
+            </GridDialog>
+
+            <GridDialog item xs={12}>
+              <TextField
+                label="Stock Quantity"
+                name="quantity"
+                value={newProduct.quantity}
+                onChange={handleNewProductChange}
+                fullWidth
+                margin="normal"
+                inputProps={{ type: "number", min: "0" }}
+                required
+                error={errors.quantity}
+                helperText={
+                  errors.quantity ? "Stock quantity is required." : ""
+                }
+              />
+            </GridDialog>
+
+            <GridDialog item xs={12}>
+              <Typography variant="h6">Product Images</Typography>
+              <GridDialog container spacing={2}>
+                {newProduct.images?.map((img, index) => (
+                  <GridDialog item xs={4} key={index}>
+                    <img
+                      src={img}
+                      alt={`Product Image ${index + 1}`}
+                      style={{ width: "100%", borderRadius: "4px" }}
+                    />
+                  </GridDialog>
+                ))}
+              </GridDialog>
+              <Button variant="contained" component="label" sx={{ mt: 2 }}>
+                Upload Images
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  hidden
+                  onChange={handleImageUpload}
+                />
+              </Button>
+            </GridDialog>
+
+            <GridDialog item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={newProduct.isRequestable}
+                    onChange={(e) =>
+                      setNewProduct((prev) => ({
+                        ...prev,
+                        isRequestable: e.target.checked,
+                      }))
+                    }
+                  />
+                }
+                label="Requestable"
+              />
+            </GridDialog>
+          </GridDialog>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddProduct}>Cancel</Button>
+          <Button onClick={handleSaveNewProduct} variant="contained">
+            Add Product
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Add Category Dialog */}
-      <Dialog
-        open={isAddCategoryDialogOpen}
-        onClose={() => setIsAddCategoryDialogOpen(false)}
-      >
+      <Dialog open={isAddCategoryDialogOpen} onClose={handleCloseAddCategory}>
         <DialogTitle>Add New Category</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ padding: "16px" }}>
           <TextField
             label="Category Name"
             value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}
+            onChange={(e) => setNewCategory(capitalizeWords(e.target.value))}
             fullWidth
+            error={errors.categories}
+            helperText={errors.categories ? "Category name is required." : ""}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsAddCategoryDialogOpen(false)}>
-            Cancel
-          </Button>
+          <Button onClick={handleCloseAddCategory}>Cancel</Button>
           <Button onClick={handleAddNewCategory} variant="contained">
             Add Category
           </Button>
@@ -334,184 +488,17 @@ const Products = () => {
   );
 };
 
-// Separate AddProductDialog Component
-const AddProductDialog = ({
-  isOpen,
-  onClose,
-  newProduct,
-  handleNewProductChange,
-  handleCategoryChangeAddProduct,
-  handleImageUpload,
-  selectedCategories,
-  errors,
-  handleSaveNewProduct,
-  categories,
-  setIsAddCategoryDialogOpen,
-}) => (
-  <Dialog open={isOpen} onClose={onClose}>
-    <DialogTitle>Add New Product</DialogTitle>
-    <DialogContent>
-      <GridDialog container spacing={2}>
-        {/* Swap categories and product name */}
-        <GridDialog item xs={12}>
-          <FormControl fullWidth margin="normal" required>
-            <InputLabel id="category-select-label">Categories</InputLabel>
-            <Select
-              labelId="category-select-label"
-              id="category-select"
-              multiple
-              value={selectedCategories}
-              onChange={handleCategoryChangeAddProduct}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={{
-                PaperProps: {
-                  style: {
-                    maxHeight: 48 * 4.5 + 8,
-                    width: 250,
-                  },
-                },
-              }}
-            >
-              {categories.map((category) => (
-                <MenuItem key={category} value={category}>
-                  <Checkbox
-                    checked={selectedCategories.indexOf(category) > -1}
-                  />
-                  <ListItemText primary={category} />
-                </MenuItem>
-              ))}
-            </Select>
-            {errors.categories && (
-              <Typography sx={{ color: "red", fontSize: "0.8rem", mt: 0.5 }}>
-                {errors.categories}
-              </Typography>
-            )}
-            <Button
-              variant="text"
-              color="primary"
-              onClick={() => setIsAddCategoryDialogOpen(true)}
-            >
-              + Add Category
-            </Button>
-          </FormControl>
-        </GridDialog>
-
-        <GridDialog item xs={12}>
-          <TextField
-            label="Product Name"
-            name="title"
-            value={newProduct.title}
-            onChange={handleNewProductChange}
-            fullWidth
-            margin="normal"
-            error={!!errors.title}
-            helperText={errors.title}
-          />
-        </GridDialog>
-
-        <GridDialog item xs={12}>
-          <TextField
-            label="Product Description"
-            name="description"
-            value={newProduct.description}
-            onChange={handleNewProductChange}
-            fullWidth
-            multiline
-            rows={3}
-            margin="normal"
-            error={!!errors.description}
-            helperText={errors.description}
-          />
-        </GridDialog>
-
-        <GridDialog item xs={12}>
-          <TextField
-            label="Price"
-            name="price"
-            value={newProduct.price}
-            onChange={handleNewProductChange}
-            fullWidth
-            margin="normal"
-            error={!!errors.price}
-            helperText={errors.price}
-          />
-        </GridDialog>
-
-        <GridDialog item xs={12}>
-          <TextField
-            label="Stock Quantity"
-            name="quantity"
-            value={newProduct.quantity}
-            onChange={handleNewProductChange}
-            fullWidth
-            margin="normal"
-            inputProps={{ type: "number", min: "0" }}
-            error={!!errors.quantity}
-            helperText={errors.quantity}
-          />
-        </GridDialog>
-
-        <GridDialog item xs={12}>
-          <Typography variant="h6">Product Images</Typography>
-          <GridDialog container spacing={2}>
-            {newProduct.images?.map((img, index) => (
-              <GridDialog item xs={4} key={index}>
-                <img
-                  src={img}
-                  alt={`Product Image ${index + 1}`}
-                  style={{ width: "100%", borderRadius: "4px" }}
-                />
-              </GridDialog>
-            ))}
-          </GridDialog>
-          <Button variant="contained" component="label" sx={{ mt: 2 }}>
-            Upload Images
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              hidden
-              onChange={handleImageUpload}
-            />
-          </Button>
-        </GridDialog>
-
-        <GridDialog item xs={12}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={newProduct.isRequestable}
-                onChange={(e) =>
-                  handleNewProductChange({
-                    target: { name: "isRequestable", value: e.target.checked },
-                  })
-                }
-              />
-            }
-            label="Requestable"
-          />
-        </GridDialog>
-      </GridDialog>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={onClose}>Cancel</Button>
-      <Button onClick={handleSaveNewProduct} variant="contained">
-        Add Product
-      </Button>
-    </DialogActions>
-  </Dialog>
-);
-
 const Pagination = ({
   currentPage,
   productsPerPage,
   totalProducts,
   paginate,
 }) => {
-  const pageNumbers = useMemo(() => {
-    const totalPages = Math.ceil(totalProducts / productsPerPage);
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }, [totalProducts, productsPerPage]);
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalProducts / productsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <div className="pagination">
