@@ -1,13 +1,13 @@
 /* Hover effect: scale up the card slightly */
 .card-hover:hover {
-  transform: scale(1.05); /* Slightly enlarge the card */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 /* Remove the default navy blue highlight */
 .MuiCardActionArea-root:hover {
-  background-color: transparent; /* Remove highlight */
+  background-color: transparent;
 }
 
 .out-of-stock {
@@ -16,5 +16,5 @@
 }
 
 .card-hover {
-  height: 100%; /* Ensure height consistency */
+  height: 100%;
 }

@@ -13,7 +13,6 @@ const OrderDetails = () => {
         id: 6286427,
         image: "https://via.placeholder.com/100",
         name: "Product 1",
-        description: "Description of Product 1",
         price: 49.99,
         quantity: 1,
       },
@@ -21,7 +20,6 @@ const OrderDetails = () => {
         id: 6286428,
         image: "https://via.placeholder.com/100",
         name: "Product 2",
-        description: "Description of Product 2",
         price: 39.99,
         quantity: 2,
       },
@@ -55,7 +53,9 @@ const OrderDetails = () => {
             </p>
             <p>
               <strong>Order Status:</strong>{" "}
-              <span className="status">{mockOrder.status}</span>
+              <span className={`status ${mockOrder.status.toLowerCase()}`}>
+                {mockOrder.status}
+              </span>
             </p>
             {mockOrder.items.map((item) => (
               <div key={item.id} className="item">
@@ -63,9 +63,6 @@ const OrderDetails = () => {
                 <div className="item-details">
                   <p>
                     <strong>Name:</strong> {item.name}
-                  </p>
-                  <p>
-                    <strong>Description:</strong> {item.description}
                   </p>
                   <p>
                     <strong>Price:</strong> ${item.price}
