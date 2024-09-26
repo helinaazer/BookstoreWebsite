@@ -1,160 +1,181 @@
-.main-container {
-  font-family: "Arial", sans-serif;
-  max-width: 1200px;
-  margin: auto;
+/* Global Styles */
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #f4f4f4; /* Light grey background for minimalistic design */
+  color: #333; /* Dark grey text for better readability */
+}
+
+/* Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px;
+  background-color: #fff; /* White background for the header */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
   color: #333;
 }
 
-.page-header {
-  text-align: center;
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-bottom: 2px solid #ccc;
+/* Button Styling */
+.button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Ensure the order-container is a column layout by default */
+.cancel-order-btn {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+
+.cancel-order-btn:hover {
+  background-color: #e60000;
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+/* Main Container */
+.main-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Order Container */
 .order-container {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  gap: 20px;
 }
 
-/* Delivery details and order summary styles */
-.delivery-details,
-.order-summary {
+/* Details Section */
+.details {
   padding: 20px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* Flex container for each item in the order */
+.details h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.details p {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #666; /* Lighter text for less important details */
+}
+
+/* Item Styles */
 .item {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 20px;
-}
-
-.item:last-child {
-  border-bottom: none;
+  align-items: center;
+  gap: 15px;
+  background: #f9f9f9; /* Slightly off-white background for items */
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .item img {
-  width: 80px;
-  height: 80px;
-  margin-right: 20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .item-details {
   display: flex;
-  flex-wrap: wrap; /* Ensure content wraps if needed */
+  flex-direction: column;
   flex-grow: 1;
 }
 
 .item-details p {
-  flex: 1; /* Make each item detail take up equal space */
-  margin-right: 10px; /* Add spacing between details */
+  margin: 2px 0;
 }
 
+/* Status Styling */
 .status {
-  color: green;
   font-weight: bold;
 }
 
-/* Tablet view adjustments */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .order-container {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .delivery-details,
-  .order-summary {
-    width: 48%;
-    margin-right: 0;
-  }
-
-  .item {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .item img {
-    width: 60px;
-    height: 60px;
-  }
-
-  .item-details p {
-    flex: 1;
-    margin-right: 5px;
-    font-size: 14px;
-  }
+.status.shipped {
+  color: #4caf50; /* Material green for positive status */
 }
 
-/* Mobile view adjustments */
+/* Order Summary */
+.order-summary {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.order-summary h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.order-summary p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .page-header h1 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  .order-container {
-    flex-direction: column;
-  }
-
-  .order-summary {
-    margin-top: 20px;
-  }
-
-  /* Ensure the items and details stack on smaller screens */
   .item {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .item img {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 10px;
-  }
-
-  .item-details {
-    flex-direction: column;
-  }
-
   .item-details p {
-    margin-right: 0;
-    margin-bottom: 10px;
-    font-size: 14px;
+    font-size: 0.9rem;
   }
 
-  .order-summary p {
-    font-size: 16px;
+  .page-header h1,
+  .details h2,
+  .order-summary h2 {
+    font-size: 1.5rem;
   }
 
-  /* Add padding to mobile views for better spacing */
-  .delivery-details,
-  .order-summary {
-    padding: 15px;
+  .button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 }
 
-/* General adjustments for all screen sizes */
-@media (max-width: 1024px) {
-  .main-container {
-    padding: 15px;
+@media (max-width: 480px) {
+  .item img {
+    width: 80px;
+    height: 80px;
   }
 
-  .delivery-details,
+  .item-details p {
+    font-size: 0.8rem;
+  }
+
+  .main-container,
+  .details,
   .order-summary {
     padding: 15px;
   }
 
-  .item-details p {
-    margin-right: 8px;
-    font-size: 15px;
+  .button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
   }
 }
