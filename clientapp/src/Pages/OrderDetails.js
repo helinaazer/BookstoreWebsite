@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./OrderDetails.css";
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
 
 const OrderDetails = () => {
   const order = {
-    dateOrdered: "2024-09-25",
+    dateOrdered: new Date().toISOString(), // Current date and time
     orderNumber: "123456",
-    status: "Shipped",
+    status: "Processing", // Not "Shipped" to enable cancel button
     items: [
       {
         id: 6286427,
@@ -30,6 +30,24 @@ const OrderDetails = () => {
     total: 137.97,
   };
 
+  const [canCancel, setCanCancel] = useState(false);
+
+  useEffect(() => {
+    // Calculate the time difference in hours
+    const currentTime = new Date();
+    const orderTime = new Date(order.dateOrdered);
+    const timeDifference = (currentTime - orderTime) / (1000 * 60 * 60); // Convert milliseconds to hours
+
+    if (timeDifference < 24 && order.status !== "Shipped") {
+      setCanCancel(true); // Allow cancellation if less than 24 hours
+    }
+  }, [order.dateOrdered, order.status]);
+
+  const handleCancelOrder = () => {
+    // Handle the cancellation logic here
+    alert("Order canceled!");
+  };
+
   return (
     <UserProvider>
       <NavBar
@@ -44,7 +62,10 @@ const OrderDetails = () => {
         <main className="order-main-container">
           <section className="delivery-details">
             <h2>Delivery Details</h2>
-            <OrderInfo label="Date Ordered" value={order.dateOrdered} />
+            <OrderInfo
+              label="Date Ordered"
+              value={new Date(order.dateOrdered).toLocaleDateString("en-US")}
+            />
             <OrderInfo label="Order Number" value={order.orderNumber} />
             <OrderInfo
               label="Order Status"
@@ -59,7 +80,11 @@ const OrderDetails = () => {
             ))}
           </section>
 
-          <OrderSummary order={order} />
+          <OrderSummary
+            order={order}
+            canCancel={canCancel}
+            onCancel={handleCancelOrder}
+          />
         </main>
       </div>
     </UserProvider>
@@ -89,13 +114,20 @@ const OrderItem = ({ item }) => (
   </div>
 );
 
-const OrderSummary = ({ order }) => (
+const OrderSummary = ({ order, canCancel, onCancel }) => (
   <section className="order-summary">
     <h2>Order Total</h2>
     <OrderInfo label="Subtotal" value={`$${order.subtotal}`} />
     <OrderInfo label="Shipping" value={order.shipping} />
     <OrderInfo label="Sales Tax" value={`$${order.tax}`} />
     <OrderInfo label="Total" value={`$${order.total}`} />
+
+    {/* Render the Cancel button below the total */}
+    {canCancel && (
+      <button className="cancel-button" onClick={onCancel}>
+        Cancel Order
+      </button>
+    )}
   </section>
 );
 
