@@ -1,44 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
   MenuItem,
   Menu,
   Box,
   Button,
   Drawer,
-  FormControl,
-  Select,
-  InputLabel,
+  InputBase,
 } from "@mui/material";
 import {
   Search as SearchIcon,
-  Close as CloseIcon,
   AccountCircle,
   ShoppingCart,
   Logout,
   Login,
-  ExpandMore as ExpandMoreIcon,
+  Close as CloseIcon,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useMediaQuery } from "@mui/material";
-import "./NavBar.css";
+import { useTheme } from "@mui/material/styles";
 
-const Navbar = () => {
+const Navbar = ({ children }) => {
+  const theme = useTheme();
+  const below870px = useMediaQuery("(max-width:870px)");
+
+  // Simulate authenticated user ID and admin status
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("");
+  const [isAdmin, setIsAdmin] = useState(true); // Set true for admin
+
   const [anchorEl, setAnchorEl] = useState(null);
-  const [productMenuAnchorEl, setProductMenuAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [manageProductsOpen, setManageProductsOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width:768px)");
+  const [searchOpen, setSearchOpen] = useState(false); // Manage search bar visibility
+  const [searchTerm, setSearchTerm] = useState(""); // Manage search term
+
+  const searchInputRef = useRef(null); // Ref to search input
+
+  // Simulating an authenticated user ID for profile link (replace with actual authentication logic)
+  const userId = 123; // Example user ID
+
+  // Focus the input when search is open
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      searchInputRef.current.focus(); // Focus on input when search opens
+    }
+  }, [searchOpen]);
 
   // Handle account menu
   const handleMenu = (event) => {
@@ -47,11 +56,6 @@ const Navbar = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
-    setProductMenuAnchorEl(null);
-  };
-
-  const handleProductMenu = (event) => {
-    setProductMenuAnchorEl(event.currentTarget);
   };
 
   const toggleDrawer = (open) => (event) => {
@@ -60,336 +64,339 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    // Perform logout logic here
+  };
+
+  const toggleSearchBar = () => {
+    setSearchOpen((prev) => !prev); // Toggle search bar visibility
+    setSearchTerm(""); // Clear search term when closing
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: "#00203FFF",
-        padding: isMobile ? "5px 10px" : "10px 20px",
-        boxShadow: "none",
-        borderBottom: "2px solid #ADEFD1FF",
-      }}
-    >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        {/* Hamburger menu for mobile */}
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={toggleDrawer(true)}
-          sx={{ display: isMobile ? "block" : "none" }}
-        >
-          <MenuIcon sx={{ fontSize: "30px" }} />
-        </IconButton>
-
-        {/* Logo and Title */}
-        {!searchOpen && (
-          <Typography
-            variant="h6"
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              alignItems: "center",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: isMobile ? "1.2rem" : "1.5rem",
-              whiteSpace: "normal",
-              lineHeight: isMobile ? "1.2" : "1.5",
-            }}
-          >
-            <img
-              src="/St_Mary_Coc_Logo_No_Background.png"
-              alt="Logo"
-              style={{
-                height: isMobile ? "40px" : "60px",
-                marginRight: "10px",
-                borderRadius: "50%",
-              }}
-            />
-            St.Mary's Coptic Orthodox Church Bookstore
-          </Typography>
-        )}
-
-        {/* Links for larger screens */}
-        {!isMobile && !searchOpen && (
-          <Box sx={{ display: "flex", gap: "20px", alignItems: "center" }}>
-            <Button
-              component={Link}
-              to="/"
-              sx={{
-                fontSize: "1rem",
-                fontWeight: 600,
-                color: "white",
-                textTransform: "none",
-                "&:hover": {
-                  transition: "0.3s ease",
-                },
-              }}
-            >
-              Home
-            </Button>
-
-            {isAdmin && (
-              <>
-                <Button
-                  onClick={handleProductMenu}
-                  endIcon={<ExpandMoreIcon />}
-                  sx={{
-                    color: "white",
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    textTransform: "none",
-                    "&:hover": {
-                      transition: "0.3s ease",
-                    },
-                  }}
+    <>
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "#00203FFF",
+          padding: below870px ? "5px 10px" : "10px 20px",
+          boxShadow: "none",
+          borderBottom: "2px solid #ADEFD1FF",
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
+          {/* If search is not open, show the regular navbar */}
+          {!searchOpen ? (
+            <>
+              {/* Hamburger menu for mobile and below 870px */}
+              {below870px && (
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={toggleDrawer(true)}
+                  sx={{ display: "block" }}
                 >
-                  Manage Products
-                </Button>
-                <Menu
-                  anchorEl={productMenuAnchorEl}
-                  open={Boolean(productMenuAnchorEl)}
-                  onClose={handleClose}
-                  PaperProps={{
-                    style: {
-                      backgroundColor: "#00203FFF",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  <MenuItem
-                    onClick={handleClose}
-                    component={Link}
-                    to="/AdminAddItems"
-                  >
-                    Add Product
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    component={Link}
-                    to="/edit-product"
-                  >
-                    Edit Product
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    component={Link}
-                    to="/remove-product"
-                  >
-                    Remove Product
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    component={Link}
-                    to="/add-category"
-                  >
-                    Add Category
-                  </MenuItem>
-                </Menu>
-              </>
-            )}
+                  <MenuIcon sx={{ fontSize: "30px" }} />
+                </IconButton>
+              )}
 
-            {!isAdmin && (
-              <>
-                <Button
-                  component={Link}
-                  to="/stmary-coc"
-                  sx={{
-                    color: "white",
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    textTransform: "none",
-                    "&:hover": {
-                      transition: "0.3s ease",
-                    },
-                  }}
-                >
-                  St.Mary's COC Website
-                </Button>
-                <Button
-                  component={Link}
-                  to="/contact"
-                  sx={{
-                    color: "white",
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    textTransform: "none",
-                    "&:hover": {
-                      transition: "0.3s ease",
-                    },
-                  }}
-                >
-                  Contact Us
-                </Button>
-              </>
-            )}
-          </Box>
-        )}
-
-        {/* Search bar */}
-        {!searchOpen && (
-          <IconButton color="inherit" onClick={() => setSearchOpen(true)}>
-            <SearchIcon sx={{ fontSize: "30px" }} />
-          </IconButton>
-        )}
-        {searchOpen && (
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: "#fff",
-              padding: "2px 10px",
-              borderRadius: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-              gap: "10px",
-              width: isMobile ? "100%" : "auto",
-            }}
-          >
-            <FormControl
-              variant="outlined"
-              sx={{
-                width: isMobile ? "30%" : "15%",
-                minWidth: "100px",
-                height: "40px",
-              }} // Adjusted for mobile
-            >
-              <InputLabel id="category-select-label">Category</InputLabel>
-              <Select
-                labelId="category-select-label"
-                id="category-select"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                label="Category"
+              {/* Logo and Title */}
+              <Box
                 sx={{
-                  height: "40px",
-                  borderRadius: "10px",
+                  flexGrow: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  color: "white",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
                 }}
               >
-                <MenuItem value="books">Books</MenuItem>
-                <MenuItem value="icons">Icons</MenuItem>
-                <MenuItem value="candles">Candles</MenuItem>
-                <MenuItem value="crosses">Crosses</MenuItem>
-              </Select>
-            </FormControl>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontWeight: "bold",
+                    fontSize: "clamp(0.8rem, 2.5vw, 1.5rem)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  <img
+                    src="/St_Mary_Coc_Logo_No_Background.png"
+                    alt="Logo"
+                    style={{
+                      height: "clamp(30px, 5vw, 60px)",
+                      marginRight: "10px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  St.Mary's Bookstore
+                </Typography>
+              </Box>
 
-            <InputBase
-              placeholder="Search…"
-              sx={{
-                flex: 1,
-                padding: "5px 10px",
-                borderRadius: "10px",
-                backgroundColor: "#f4f4f4",
-              }}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              inputProps={{ "aria-label": "search" }}
-            />
+              {/* Links for larger screens (hidden below 870px) */}
+              {!below870px && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "20px",
+                    alignItems: "center",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Button
+                    component={Link}
+                    to="/"
+                    sx={{
+                      fontSize: "clamp(0.8rem, 2vw, 1.1rem)",
+                      fontWeight: 600,
+                      color: "white",
+                      textTransform: "none",
+                      "&:hover": {
+                        transition: "0.3s ease",
+                      },
+                    }}
+                  >
+                    Home
+                  </Button>
 
-            {searchTerm && (
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: "#ADEFD1FF", height: "40px" }}
-              >
-                Search
-              </Button>
-            )}
+                  {/* Admin Links */}
+                  {isAdmin && (
+                    <>
+                      <Button
+                        component={Link}
+                        to="/products"
+                        sx={{
+                          fontSize: "clamp(0.8rem, 2vw, 1.1rem)",
+                          fontWeight: 600,
+                          color: "white",
+                          textTransform: "none",
+                          "&:hover": {
+                            transition: "0.3s ease",
+                          },
+                        }}
+                      >
+                        Products
+                      </Button>
+                      <Button
+                        component={Link}
+                        to="/manageorders"
+                        sx={{
+                          fontSize: "clamp(0.8rem, 2vw, 1.1rem)",
+                          fontWeight: 600,
+                          color: "white",
+                          textTransform: "none",
+                          "&:hover": {
+                            transition: "0.3s ease",
+                          },
+                        }}
+                      >
+                        Orders
+                      </Button>
+                      <Button
+                        component={Link}
+                        to="/manageusers"
+                        sx={{
+                          fontSize: "clamp(0.8rem, 2vw, 1.1rem)",
+                          fontWeight: 600,
+                          color: "white",
+                          textTransform: "none",
+                          "&:hover": {
+                            transition: "0.3s ease",
+                          },
+                        }}
+                      >
+                        Users
+                      </Button>
+                    </>
+                  )}
 
-            <IconButton
-              onClick={() => {
-                setSearchOpen(false);
-                setSearchTerm("");
-              }}
-              sx={{ color: "#00203FFF" }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        )}
+                  {!isAdmin && (
+                    <>
+                      <Button
+                        component={Link}
+                        to="https://www.stmaryseattle.org/OurChurch.aspx"
+                        sx={{
+                          fontSize: "clamp(0.8rem, 2vw, 1.1rem)",
+                          fontWeight: 600,
+                          color: "white",
+                          textTransform: "none",
+                          "&:hover": {
+                            transition: "0.3s ease",
+                          },
+                        }}
+                      >
+                        St.Mary's COC Website
+                      </Button>
+                      <Button
+                        component={Link}
+                        to="/contact"
+                        sx={{
+                          fontSize: "clamp(0.8rem, 2vw, 1.1rem)",
+                          fontWeight: 600,
+                          color: "white",
+                          textTransform: "none",
+                          "&:hover": {
+                            transition: "0.3s ease",
+                          },
+                        }}
+                      >
+                        Contact Us
+                      </Button>
+                    </>
+                  )}
+                </Box>
+              )}
 
-        {/* Account and Cart Icons (Disabled for mobile) */}
-        {!searchOpen && !isMobile && (
-          <>
-            <IconButton
-              edge="end"
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-              sx={{ marginLeft: "10px" }}
-            >
-              <AccountCircle sx={{ color: "white", fontSize: "30px" }} />
-            </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              PaperProps={{
-                style: {
-                  backgroundColor: "#00203FFF",
-                  color: "#fff",
-                },
-              }}
-            >
-              {!isAuthenticated ? (
+              {/* Search icon */}
+              <IconButton color="inherit" onClick={toggleSearchBar}>
+                <SearchIcon sx={{ fontSize: "30px" }} />
+              </IconButton>
+
+              {/* Account and Cart Icons */}
+              {!below870px && (
                 <>
-                  <MenuItem onClick={handleClose}>
-                    <Login />
-                    <Link
-                      to="/login"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      Login
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to="/signup"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      Signup
-                    </Link>
-                  </MenuItem>
-                </>
-              ) : (
-                <>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to="/profile"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      Profile
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to="/manageorders"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      Orders
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to="/cart"
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      <ShoppingCart /> Cart
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>
-                    <Logout /> Logout
-                  </MenuItem>
+                  <IconButton
+                    edge="end"
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleMenu}
+                    color="inherit"
+                    sx={{ marginLeft: "10px" }}
+                  >
+                    <AccountCircle sx={{ color: "white", fontSize: "30px" }} />
+                  </IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    PaperProps={{
+                      style: {
+                        backgroundColor: "#00203FFF",
+                        color: "#fff",
+                      },
+                    }}
+                  >
+                    {!isAuthenticated ? (
+                      <>
+                        <MenuItem onClick={handleClose}>
+                          <Login />
+                          <Link
+                            to="/login"
+                            style={{ textDecoration: "none", color: "white" }}
+                          >
+                            Login
+                          </Link>
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          <Link
+                            to="/signup"
+                            style={{ textDecoration: "none", color: "white" }}
+                          >
+                            Signup
+                          </Link>
+                        </MenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <MenuItem onClick={handleClose}>
+                          <Link
+                            to={`/profile/${userId}`} // Use userId here
+                            style={{ textDecoration: "none", color: "white" }}
+                          >
+                            Profile
+                          </Link>
+                        </MenuItem>
+                        {!isAdmin && ( // Hide orders if the user is an admin
+                          <MenuItem onClick={handleClose}>
+                            <Link
+                              to="/manageorders"
+                              style={{ textDecoration: "none", color: "white" }}
+                            >
+                              Orders
+                            </Link>
+                          </MenuItem>
+                        )}
+                        <MenuItem onClick={handleClose}>
+                          <Link
+                            to="/cart"
+                            style={{ textDecoration: "none", color: "white" }}
+                          >
+                            <ShoppingCart /> Cart
+                          </Link>
+                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>
+                          <Logout /> Logout
+                        </MenuItem>
+                      </>
+                    )}
+                  </Menu>
                 </>
               )}
-            </Menu>
-          </>
-        )}
-      </Toolbar>
+            </>
+          ) : (
+            // When search is open, show the search bar instead of title and links
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexGrow: 1,
+                gap: 1,
+              }}
+            >
+              <InputBase
+                placeholder="Search…"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                inputRef={searchInputRef} // Attach ref to search input
+                sx={{
+                  flexGrow: 1,
+                  backgroundColor: "transparent", // Transparent background
+                  color: "white", // White text color
+                  border: "none", // Remove border
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                  outline: "none", // Remove outline
+                  "&:focus": {
+                    outline: "none", // Ensure no outline on focus
+                  },
+                  "& input": {
+                    "&:focus": {
+                      outline: "none", // Ensure no outline on the actual input
+                    },
+                  },
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
+              {searchTerm && (
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#00203FFF", // Match navbar background
+                    color: "white", // White text color for button
+                    "&:hover": {
+                      backgroundColor: "#00203FFF", // Ensure no hover effect
+                    },
+                  }}
+                >
+                  Search
+                </Button>
+              )}
+              <IconButton onClick={toggleSearchBar} sx={{ color: "white" }}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      {/* Add padding to compensate for the fixed navbar height */}
+      <Box sx={{ paddingTop: "70px" }}>{children}</Box>
 
       {/* Drawer for mobile view */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
@@ -411,55 +418,43 @@ const Navbar = () => {
               Home
             </Link>
           </MenuItem>
-          {isAdmin ? (
-            <>
-              <MenuItem
-                onClick={() => setManageProductsOpen(!manageProductsOpen)}
-              >
-                Manage Products <ExpandMoreIcon sx={{ color: "#ADEFD1FF" }} />
-              </MenuItem>
-              {manageProductsOpen && (
-                <>
-                  <MenuItem>
-                    <Link
-                      to="/add-product"
-                      style={{ color: "white", textDecoration: "none" }}
-                    >
-                      Add Product
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link
-                      to="/edit-product"
-                      style={{ color: "white", textDecoration: "none" }}
-                    >
-                      Edit Product
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link
-                      to="/remove-product"
-                      style={{ color: "white", textDecoration: "none" }}
-                    >
-                      Remove Product
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link
-                      to="/add-category"
-                      style={{ color: "white", textDecoration: "none" }}
-                    >
-                      Add Category
-                    </Link>
-                  </MenuItem>
-                </>
-              )}
-            </>
-          ) : (
+
+          {/* Admin Links in Drawer */}
+          {isAdmin && (
             <>
               <MenuItem>
                 <Link
-                  to="/stmary-coc"
+                  to="/products"
+                  style={{ color: "white", textDecoration: "none" }}
+                >
+                  Products
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  to="/manageorders"
+                  style={{ color: "white", textDecoration: "none" }}
+                >
+                  Orders
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  to="/manageusers"
+                  style={{ color: "white", textDecoration: "none" }}
+                >
+                  Users
+                </Link>
+              </MenuItem>
+            </>
+          )}
+
+          {/* Non-admin links */}
+          {!isAdmin && (
+            <>
+              <MenuItem>
+                <Link
+                  to="https://www.stmaryseattle.org/OurChurch.aspx"
                   style={{ color: "white", textDecoration: "none" }}
                 >
                   St.Mary's COC Website
@@ -475,6 +470,7 @@ const Navbar = () => {
               </MenuItem>
             </>
           )}
+
           {!isAuthenticated ? (
             <>
               <MenuItem>
@@ -498,20 +494,22 @@ const Navbar = () => {
             <>
               <MenuItem>
                 <Link
-                  to="/profile"
+                  to={`/profile/${userId}`} // Use userId here in the drawer
                   style={{ color: "white", textDecoration: "none" }}
                 >
                   Profile
                 </Link>
               </MenuItem>
-              <MenuItem>
-                <Link
-                  to="/manageorders"
-                  style={{ color: "white", textDecoration: "none" }}
-                >
-                  Orders
-                </Link>
-              </MenuItem>
+              {!isAdmin && ( // Hide orders for admins
+                <MenuItem>
+                  <Link
+                    to="/manageorders"
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    Orders
+                  </Link>
+                </MenuItem>
+              )}
               <MenuItem>
                 <Link
                   to="/cart"
@@ -527,7 +525,7 @@ const Navbar = () => {
           )}
         </Box>
       </Drawer>
-    </AppBar>
+    </>
   );
 };
 

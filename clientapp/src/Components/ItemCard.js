@@ -367,13 +367,13 @@ export default function ItemCard({
                   {errors.categories}
                 </Typography>
               )}
-              <Button
+              {/* <Button
                 variant="text"
                 color="primary"
                 onClick={() => setIsAddCategoryDialogOpen(true)}
               >
                 + Add Category
-              </Button>
+              </Button> */}
             </FormControl>
           </Grid>
           <Grid container spacing={2}>
