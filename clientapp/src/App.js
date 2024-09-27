@@ -14,6 +14,7 @@ import ResetPassword from "./Pages/ResetPassword";
 import Checkout from "./Pages/Checkout";
 import ManageOrders from "./Pages/ManageOrders";
 import OrderDetails from "./Pages/OrderDetails";
+import ManageUsers from "./Pages/ManageUsers";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/productinfo/:id" element={<ProductInfo />} />{" "}
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/adminadditems" element={<AdminAddItems />} />
         <Route path="/login" element={<Login />} />
@@ -31,8 +32,9 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/manageorders" element={<ManageOrders />} />
         <Route path="/orderdetails/:id" element={<OrderDetails />} />
+        <Route path="/manageorders" element={<ManageOrders />} />
+        <Route path="/manageusers" element={<ManageUsers />} />
         {/* Dynamic route */}
       </Routes>
     </Router>

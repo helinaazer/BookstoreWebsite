@@ -1,10 +1,13 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import ProfileInfo from "../Components/ProfileInfo";
 import NavBar from "../Components/NavBar";
 import { UserProvider } from "../Components/UserAdminContext";
 
-const Profile = () => {
-  const user = {
+// Sample users data (in case you're not using a backend or context for user management)
+const usersData = [
+  {
+    id: 1,
     firstName: "John",
     lastName: "Doe",
     username: "johndoe123",
@@ -13,8 +16,35 @@ const Profile = () => {
     shippingAddress: "123 Main St, Anytown, USA",
     phoneNumber: "123-456-7890",
     email: "johndoe@example.com",
-    avatar: "/image.png",
-  };
+    avatar: "/male.png",
+    gender: "Male",
+  },
+  {
+    id: 2,
+    firstName: "Jane",
+    lastName: "Smith",
+    username: "janesmith456",
+    password: "********",
+    accountCreated: "2023-03-15",
+    shippingAddress: "456 Oak St, Sometown, USA",
+    phoneNumber: "987-654-3210",
+    email: "janesmith@example.com",
+    avatar: "/female.png",
+    gender: "Female",
+  },
+];
+
+const Profile = () => {
+  const { id } = useParams(); // Get user ID from the route params
+  const user = usersData.find((u) => u.id === parseInt(id));
+
+  if (!user) {
+    return (
+      <div>
+        <h2>User not found</h2>
+      </div>
+    );
+  }
 
   return (
     <div>

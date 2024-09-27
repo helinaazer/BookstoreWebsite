@@ -1,140 +1,226 @@
-/* Base styles for the container */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f4;
+}
+
+.navbar {
+  background-color: #003366;
+  color: white;
+  padding: 10px 20px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.checkout-wrapper {
+  margin: 20px;
+}
+
 .checkout-container {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: #f0f4f8; /* Lighter shade for a fresher look */
-}
-
-/* Section styles */
-.checkout-container .shipping-info,
-.checkout-container .order-summary {
-  background: white;
-  padding: 25px;
+  background-color: white;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 30px;
+  padding: 0 10px;
 }
 
-/* Responsive design adjustments */
-@media (min-width: 768px) {
-  .checkout-container {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .checkout-container .shipping-info {
-    flex: 2.5; /* Adjust size for balance */
-    padding-right: 20px;
-  }
-
-  .checkout-container .order-summary {
-    flex: 1;
-    padding-left: 20px;
-    border-left: 2px solid #e1e4e8; /* Lighter border for subtle separation */
-  }
+.step {
+  text-align: center;
+  flex: 1;
 }
 
-/* Steps indicators */
-.checkout-container .steps {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #333; /* Darker font for better readability */
+.step span {
+  display: block;
+  background-color: #ddd;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  margin: auto;
+  color: black;
 }
 
-/* Step circles */
-.checkout-container .step span {
-  background-color: #ddd; /* Lighter grey for inactive steps */
-  color: #333;
-}
-
-.checkout-container .step.active span {
-  background-color: #0056b3; /* Brand color for active step */
-  color: white;
-}
-
-/* Form groups styling */
-.checkout-container .form-group {
-  display: flex;
-  flex-direction: column; /* Stack vertically for better mobile usability */
-  margin-bottom: 15px;
-}
-
-/* Label and input enhancements */
-.checkout-container label {
-  font-weight: 500;
-  margin-bottom: 5px;
-  color: #333; /* Dark grey for readability */
-}
-
-.checkout-container input[type="text"],
-.checkout-container input[type="tel"],
-.checkout-container select,
-.checkout-container input[type="email"] {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px; /* Rounded corners for a modern look */
-  background: #fff;
-}
-
-/* Focus and hover states for interactivity */
-.checkout-container input:focus,
-.checkout-container select:focus {
-  border-color: #0056b3; /* Highlight with brand color */
-  outline: none; /* Remove default focus outline */
-}
-
-/* Button styling */
-.checkout-container button {
-  padding: 10px 15px;
-  background-color: #007bff; /* Vibrant blue for actions */
-  color: white;
-  border: none;
-  cursor: pointer;
-  width: auto; /* Adjusted to content size for better look / border-radius: 5px; / Rounded corners */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.checkout-container button {
-  background-color: #0056b3;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.checkout-container .primary-button {
+.step.active span {
   background-color: #007bff;
+  color: white;
+}
+
+h2,
+h3 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form-group label {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  margin-right: px;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.primary-button {
+  background-color: #007bff;
+  margin-right: 10px;
+}
+
+.secondary-button {
+  background-color: #666;
+}
+
+.order-summary {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.summary-details p,
+.summary-details strong {
+  margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    display: block;
+  }
+
+  .steps {
+    flex-direction: column;
+  }
+
+  .step {
+    margin-bottom: 15px;
+  }
+
+  .checkout-container {
+    width: auto;
+    margin: 10px;
+  }
+
+  .order-summary {
+    margin-top: 30px;
+  }
+}
+
+.checkbox-label {
+  /* align-items: center; Ensures vertical centering of items within the label */
+  display: flex; /* Uses flexbox for better control over the alignment */
+}
+
+.big-button {
+  padding: 15px 30px; /* Larger button size */
+  font-size: 18px; /* Larger font size for button text */
+}
+
+.order-details {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc; /* Add border for clarity */
+  border-radius: 5px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.checkout-container .secondary-button {
-  background-color: #f8f9fa;
-  color: #007bff;
-  margin-top: 10px;
+.product-image {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  background: #f0f0f0; /* Placeholder background */
 }
 
-.checkout-container .secondary-button {
-  background-color: #eceff1; /* Slightly darker on hover */
+.item-info p {
+  margin: 5px 0;
+  font-size: 1rem;
 }
 
-.checkout-container .summary-details p {
-  margin: 10px 0;
-  font-size: 16px;
-  line-height: 1.5;
+.payment-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
-.checkout-container .total {
-  font-weight: bold;
+.big-button {
+  padding: 15px 30px;
   font-size: 18px;
 }
 
-.checkout-container .billing-checkbox {
-  display: flex;
-  align-items: center;
-  margin-top: 15px;
+.order-details {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.checkout-container .billing-checkbox label {
-  margin-left: 8px;
-  font-size: 14px;
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .payment-form {
+    grid-template-columns: 1fr;
+  }
 }
