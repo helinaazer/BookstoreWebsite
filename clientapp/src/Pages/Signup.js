@@ -122,7 +122,9 @@ const Signup = () => {
             'Content-Type': 'application/json'
           }
         });
+
         console.log("Response data:", response.data);
+        navigate('/login');
       } catch (error) {
         console.error("Error registering user:", error.response ? error.response.data : error.message);
       }

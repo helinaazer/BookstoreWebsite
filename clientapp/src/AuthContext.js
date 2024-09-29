@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true // Ensure session cookies are sent
       });
       if (response.data.isAuthenticated) {
+        console.log("Auth response:", response.data);  // Log response for debugging
         setIsAuthenticated(response.data.isAuthenticated);
         setIsAdmin(response.data.isAdmin);
         setUsername(response.data.username);

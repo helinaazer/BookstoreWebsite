@@ -13,6 +13,10 @@ import Products from "./Pages/Products";
 import ForgetPassword from "./Pages/ForgetPassword";
 import { AuthProvider } from './AuthContext';
 import ResetPassword from "./Pages/ResetPassword";
+import ManageOrders from "./Pages/ManageOrders";
+import ManageUsers from "./Pages/ManageUsers";
+import OrderDetails from "./Pages/OrderDetails";
+import Checkout from "./Pages/Checkout";
 
 function App() {
   return (
@@ -22,7 +26,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/productinfo/:id" element={<ProductInfo />} />
+          <Route path="/productinfo/:id" element={<ProductInfo />} />{" "}
           <Route path="/profile" element={<Profile />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/adminadditems" element={<AdminAddItems />} />
@@ -32,6 +36,10 @@ function App() {
           <Route path="/products/" element={<Products />} />
           <Route path="/forgetpassword" element={<ForgetPassword />} />
           <Route path="/auth/reset/:uid/:token" element={<ResetPassword />} />
+          <Route path="/manageorders" element={<ManageOrders />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orderdetails/:id" element={<OrderDetails />} />
+          <Route path="/manageusers" element={<ManageUsers />} />
         </Routes>
       </Router>
     </AuthProvider>
